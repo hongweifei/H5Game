@@ -13,13 +13,16 @@ class Game
 
     Start()
     {
+        this.renderer.ClearColor(0,0,0,1);
         this.MainLoop();
     }
 
     private MainLoop()
     {
-        this.renderer.ClearColor(0,0,0,1);
-        this.renderer.Clear(this.renderer.GetContext().COLOR_BUFFER_BIT);
+        this.renderer.Clear(GL.COLOR_BUFFER_BIT);
+
         console.log("mainloop");
+
+        requestAnimationFrame(this.MainLoop.bind(this));
     }
 }

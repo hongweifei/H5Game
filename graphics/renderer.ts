@@ -186,12 +186,29 @@ class Renderer
 
 namespace GL
 {
-    export let COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
-    export let DEPTH_BITS = WebGLRenderingContext.DEPTH_BITS;
+    export const COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
+    export const DEPTH_BITS = WebGLRenderingContext.DEPTH_BITS;
+
+    // Vertex shader program
+
+    const vertex_shader_source = `
+    attribute vec4 aVertexPosition;
+
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uProjectionMatrix;
+
+    void main()
+    {
+        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    }`;
+
+    const fragment_shader_source = `void main(){gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);}`;
+
 
     export class Renderer
     {
         protected gl_context : WebGLRenderingContext;
+        protected shader : Shader;
 
         constructor(scene:GL.Scene = null)
         {
@@ -216,6 +233,12 @@ namespace GL
                 this.gl_context = scene.GetCanvas().getContext("webgl");
             if(this.gl_context == undefined || this.gl_context == null)
                 throw new Error("Unable to initialize WebGL!");
+
+            this.shader = new Shader(this.gl_context,vertex_shader_source,fragment_shader_source);
+            this.shader.Use();
+
+            this.gl_context.viewport(0,0,scene.GetCanvas().width,scene.GetCanvas().height);
+
             /*
             for (let i = 0; i < scene.GetLayerNumber(); i++)
             {
@@ -239,6 +262,13 @@ namespace GL
             this.gl_context.clear(mask);
         }
 
+        /**
+         * 
+         * @param red 红
+         * @param green 绿
+         * @param blue 蓝
+         * @param alpha 透明
+         */
         ClearColor(red: number, green: number, blue: number, alpha: number) : void
         {
             this.gl_context.clearColor(red,green,blue,alpha);
@@ -247,6 +277,118 @@ namespace GL
         Finish()
         {
             this.gl_context.finish();
+        }
+
+        
+        /**
+         * 
+         * @param vertices 
+         * @param index 
+         */
+        /*
+        private GetVerticesBuffer(vertices:number[],index:number = 0)
+        {
+            const buffer = this.gl_context.createBuffer();
+
+            this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER,buffer);
+            this.gl_context.vertexAttribPointer(index,vertices.length/3,this.gl_context.FLOAT,false,0,0);
+            this.gl_context.enableVertexAttribArray(index);
+            this.gl_context.bufferData(this.gl_context.ARRAY_BUFFER,new Float32Array(vertices),this.gl_context.STATIC_DRAW);
+
+            //this.gl_context.drawArrays(this.gl_context.ARRAY_BUFFER,0,vertices.length/3);
+
+            this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER,undefined);
+            this.gl_context.disableVertexAttribArray(index);
+
+            return buffer;
+        }
+        */
+       
+        /**
+         * 
+         * @param vertices 
+         * @param index 
+         */
+        /*
+        DrawVertices(vertices:number[],index:number = 0)
+        {
+            const buffer = this.GetVerticesBuffer(vertices,index);
+            this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, buffer);
+            this.gl_context.vertexAttribPointer(index, vertices.length/3, this.gl_context.FLOAT, false, 0, 0);
+            this.gl_context.enableVertexAttribArray(0);
+        }
+        */
+    }
+
+    class Shader
+    {
+        private gl_context;
+        private name:string
+        private program:WebGLProgram;
+
+        constructor(gl_context:WebGLRenderingContext,vertex_shader_source:string, fragment_shader_source:string)
+        {
+            this.gl_context = gl_context;
+            this.program = this.InitShaderProgram(vertex_shader_source,fragment_shader_source);
+        }
+
+        /**
+         * 
+         * @param type 着色器类型
+         * @param source 代码
+         */
+        LoadShader(type:number,source:string) : WebGLShader
+        {
+            const shader = this.gl_context.createShader(type);//创建一个新的着色器
+
+            this.gl_context.shaderSource(shader, source);//将源代码发送到着色器   Send the source to the shader object
+            this.gl_context.compileShader(shader);//一旦着色器获取到源代码就进行编译   Compile the shader program
+
+            // See if it compiled successfully
+            if (!this.gl_context.getShaderParameter(shader, this.gl_context.COMPILE_STATUS))
+            {
+                alert('An error occurred compiling the shaders: ' + this.gl_context.getShaderInfoLog(shader));
+                this.gl_context.deleteShader(shader);
+                return null;
+            }
+
+            return shader;
+        }
+
+        /**
+         * 初始化着色器程序，让WebGL知道如何绘制我们的数据
+         * 
+         * @param vertex_shader_source 顶点着色器代码
+         * @param fragment_shader_source 片段着色器代码
+         */
+        InitShaderProgram(vertex_shader_source:string, fragment_shader_source:string) : WebGLProgram
+        {
+            const vertex_shader = this.LoadShader(this.gl_context.VERTEX_SHADER, vertex_shader_source);
+            const fragment_shader = this.LoadShader(this.gl_context.FRAGMENT_SHADER, fragment_shader_source);
+        
+            // 创建着色器程序
+        
+            const shader_program = this.gl_context.createProgram();
+            this.gl_context.attachShader(shader_program, vertex_shader);
+            this.gl_context.attachShader(shader_program, fragment_shader);
+            this.gl_context.linkProgram(shader_program);
+        
+            // 创建失败， alert
+            if (!this.gl_context.getProgramParameter(shader_program, this.gl_context.LINK_STATUS))
+            {
+                alert('Unable to initialize the shader program: ' + this.gl_context.getProgramInfoLog(shader_program));
+                return null;
+            }
+        
+            return shader_program;
+        }
+
+        /**
+         * 使用Program
+         */
+        Use() : void
+        {
+            this.gl_context.useProgram(this.program);
         }
     }
 }

@@ -301,6 +301,9 @@ var GL;
 (function (GL) {
     GL.COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
     GL.DEPTH_BITS = WebGLRenderingContext.DEPTH_BITS;
+    // Vertex shader program
+    var vertex_shader_source = "\n    attribute vec4 aVertexPosition;\n\n    uniform mat4 uModelViewMatrix;\n    uniform mat4 uProjectionMatrix;\n\n    void main()\n    {\n        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;\n    }";
+    var fragment_shader_source = "void main(){gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);}";
     var Renderer = /** @class */ (function () {
         function Renderer(scene) {
             if (scene === void 0) { scene = null; }
@@ -322,6 +325,9 @@ var GL;
                 this.gl_context = scene.GetCanvas().getContext("webgl");
             if (this.gl_context == undefined || this.gl_context == null)
                 throw new Error("Unable to initialize WebGL!");
+            this.shader = new Shader(this.gl_context, vertex_shader_source, fragment_shader_source);
+            this.shader.Use();
+            this.gl_context.viewport(0, 0, scene.GetCanvas().width, scene.GetCanvas().height);
             /*
             for (let i = 0; i < scene.GetLayerNumber(); i++)
             {
@@ -342,6 +348,13 @@ var GL;
         Renderer.prototype.Clear = function (mask) {
             this.gl_context.clear(mask);
         };
+        /**
+         *
+         * @param red 红
+         * @param green 绿
+         * @param blue 蓝
+         * @param alpha 透明
+         */
         Renderer.prototype.ClearColor = function (red, green, blue, alpha) {
             this.gl_context.clearColor(red, green, blue, alpha);
         };
@@ -351,6 +364,57 @@ var GL;
         return Renderer;
     }());
     GL.Renderer = Renderer;
+    var Shader = /** @class */ (function () {
+        function Shader(gl_context, vertex_shader_source, fragment_shader_source) {
+            this.gl_context = gl_context;
+            this.program = this.InitShaderProgram(vertex_shader_source, fragment_shader_source);
+        }
+        /**
+         *
+         * @param type 着色器类型
+         * @param source 代码
+         */
+        Shader.prototype.LoadShader = function (type, source) {
+            var shader = this.gl_context.createShader(type); //创建一个新的着色器
+            this.gl_context.shaderSource(shader, source); //将源代码发送到着色器   Send the source to the shader object
+            this.gl_context.compileShader(shader); //一旦着色器获取到源代码就进行编译   Compile the shader program
+            // See if it compiled successfully
+            if (!this.gl_context.getShaderParameter(shader, this.gl_context.COMPILE_STATUS)) {
+                alert('An error occurred compiling the shaders: ' + this.gl_context.getShaderInfoLog(shader));
+                this.gl_context.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        };
+        /**
+         * 初始化着色器程序，让WebGL知道如何绘制我们的数据
+         *
+         * @param vertex_shader_source 顶点着色器代码
+         * @param fragment_shader_source 片段着色器代码
+         */
+        Shader.prototype.InitShaderProgram = function (vertex_shader_source, fragment_shader_source) {
+            var vertex_shader = this.LoadShader(this.gl_context.VERTEX_SHADER, vertex_shader_source);
+            var fragment_shader = this.LoadShader(this.gl_context.FRAGMENT_SHADER, fragment_shader_source);
+            // 创建着色器程序
+            var shader_program = this.gl_context.createProgram();
+            this.gl_context.attachShader(shader_program, vertex_shader);
+            this.gl_context.attachShader(shader_program, fragment_shader);
+            this.gl_context.linkProgram(shader_program);
+            // 创建失败， alert
+            if (!this.gl_context.getProgramParameter(shader_program, this.gl_context.LINK_STATUS)) {
+                alert('Unable to initialize the shader program: ' + this.gl_context.getProgramInfoLog(shader_program));
+                return null;
+            }
+            return shader_program;
+        };
+        /**
+         * 使用Program
+         */
+        Shader.prototype.Use = function () {
+            this.gl_context.useProgram(this.program);
+        };
+        return Shader;
+    }());
 })(GL || (GL = {}));
 var Scene = /** @class */ (function () {
     function Scene(scene_id) {
@@ -504,12 +568,13 @@ var Game = /** @class */ (function () {
         this.renderer = new GL.Renderer(this.scene);
     }
     Game.prototype.Start = function () {
+        this.renderer.ClearColor(0, 0, 0, 1);
         this.MainLoop();
     };
     Game.prototype.MainLoop = function () {
-        this.renderer.ClearColor(0, 0, 0, 1);
-        this.renderer.Clear(this.renderer.GetContext().COLOR_BUFFER_BIT);
+        this.renderer.Clear(GL.COLOR_BUFFER_BIT);
         console.log("mainloop");
+        requestAnimationFrame(this.MainLoop.bind(this));
     };
     return Game;
 }());
