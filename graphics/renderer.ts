@@ -16,15 +16,6 @@ class Renderer
     }
 
     /**
-     * 设置字体
-     * 
-     * @param font 字体
-     * @param index 字体适用图层
-     */
-    SetFont(font:string,index:number = 0) : void
-    {this.context[index].font = font;}
-
-    /**
      * 获取上下文
      * 
      * @param index 索引，默认0
@@ -35,6 +26,15 @@ class Renderer
      * 获取所有上下文
      */
     GetContests() : CanvasRenderingContext2D[] {return this.context;}
+
+    /**
+     * 设置字体
+     * 
+     * @param font 字体
+     * @param index 字体适用图层
+     */
+    SetFont(font:string,index:number = 0) : void
+    {this.context[index].font = font;}
 
     /**
      * 设置场景
@@ -184,3 +184,70 @@ class Renderer
 }
 
 
+namespace GL
+{
+    export let COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
+    export let DEPTH_BITS = WebGLRenderingContext.DEPTH_BITS;
+
+    export class Renderer
+    {
+        protected gl_context : WebGLRenderingContext;
+
+        constructor(scene:GL.Scene = null)
+        {
+            if(scene)
+                this.SetScene(scene)
+        }
+
+        /**
+         * 获取上下文
+         */
+        GetContext(index:number) : WebGLRenderingContext {return this.gl_context;}
+
+        /**
+         * 设置场景
+         * 
+         * @param scene 渲染器所渲染的场景
+         */
+        SetScene(scene:GL.Scene) : void
+        {
+            
+            this.gl_context = scene.GetCanvas().getContext("webgl2");
+            if(this.gl_context == undefined || this.gl_context == null)
+                this.gl_context = scene.GetCanvas().getContext("webgl");
+            if(this.gl_context == undefined || this.gl_context == null)
+                throw new Error("Unable to initialize WebGL!");
+            /*
+            for (let i = 0; i < scene.GetLayerNumber(); i++)
+            {
+                this.gl_context.push(scene.GetCanvas(i).getContext("webgl2"));
+                if(this.gl_context[i] == undefined || this.gl_context[i] == null)
+                    this.gl_context.push(scene.GetCanvas(i).getContext("webgl"));
+                if(this.gl_context[i] == undefined || this.gl_context[i] == null)
+                    throw new Error("Unable to initialize WebGL!");
+            }
+            */
+        }
+
+        /**
+         * 清空缓冲区
+         * 
+         * @param mask 缓冲区类型，可用GL.COLOR_BUFFER_BIT,GL.DEPTH_BITS等 
+         * @param index 图层索引，默认0
+         */
+        Clear(mask:number|GLbitfield) : void
+        {
+            this.gl_context.clear(mask);
+        }
+
+        ClearColor(red: number, green: number, blue: number, alpha: number) : void
+        {
+            this.gl_context.clearColor(red,green,blue,alpha);
+        }
+
+        Finish()
+        {
+            this.gl_context.finish();
+        }
+    }
+}

@@ -1,5 +1,5 @@
 
-let layer_n:number = 0
+
 
 class Layer
 {
@@ -17,16 +17,18 @@ class Layer
         height:string|number = window.innerHeight)
     {
         this.canvas = document.createElement("canvas");
-        this.canvas.setAttribute("id","layer" + layer_n);
+        this.canvas.setAttribute("id","layer");
         this.canvas.setAttribute("width",width.toString());
         this.canvas.setAttribute("height",height.toString());
         this.canvas.setAttribute("style","position: absolute")
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         if (scene)
+        {
+            this.canvas.setAttribute("id","layer" + scene.GetLayerNumber().toString());
             scene.AddLayer(this);
-
-        layer_n++;
+        }
+        
     }
 
     /**
