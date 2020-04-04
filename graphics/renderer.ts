@@ -202,7 +202,7 @@ namespace GL
         /**
          * 获取上下文
          */
-        GetContext(index:number) : WebGLRenderingContext {return this.gl_context;}
+        GetContext() : WebGLRenderingContext {return this.gl_context;}
 
         /**
          * 设置场景
@@ -211,7 +211,6 @@ namespace GL
          */
         SetScene(scene:GL.Scene) : void
         {
-            
             this.gl_context = scene.GetCanvas().getContext("webgl2");
             if(this.gl_context == undefined || this.gl_context == null)
                 this.gl_context = scene.GetCanvas().getContext("webgl");

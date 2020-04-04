@@ -7,7 +7,7 @@ class Game
 
     constructor()
     {
-        this.scene = new GL.Scene("scened");
+        this.scene = new GL.Scene("scened",800,600);
         this.renderer = new GL.Renderer(this.scene);
     }
 
@@ -18,9 +18,8 @@ class Game
 
     private MainLoop()
     {
-        this.renderer.Clear(GL.COLOR_BUFFER_BIT);
-        this.renderer.ClearColor(1,0,0,0);
-        this.renderer.Finish();
+        this.renderer.ClearColor(0,0,0,1);
+        this.renderer.Clear(this.renderer.GetContext().COLOR_BUFFER_BIT);
         console.log("mainloop");
     }
 }

@@ -59,7 +59,8 @@ namespace GL
         protected div:HTMLDivElement;
         protected canvas:HTMLCanvasElement;
 
-        constructor(scene_id:string = "scene")
+        constructor(scene_id:string = "scene",width:string|number = window.innerWidth,
+        height:string|number = window.innerHeight)
         {
             this.div = document.createElement("div");
             this.div.setAttribute("id",scene_id);
@@ -68,8 +69,8 @@ namespace GL
 
             this.canvas = document.createElement("canvas");
             this.canvas.setAttribute("id","glcanvas");
-            this.canvas.setAttribute("width",window.innerWidth.toString());
-            this.canvas.setAttribute("height",window.innerHeight.toString());
+            this.canvas.setAttribute("width",width.toString());
+            this.canvas.setAttribute("height",height.toString());
             this.canvas.setAttribute("style","position: absolute")
 
             this.div.appendChild(this.canvas);
