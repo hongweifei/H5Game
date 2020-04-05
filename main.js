@@ -2,15 +2,17 @@ var Layer = /** @class */ (function () {
     /**
      *
      * @param scene 图层所在场景，默认null
+     * @param layer_id 图层id
      * @param width 图层宽
      * @param height 图层高
      */
-    function Layer(scene, width, height) {
+    function Layer(scene, layer_id, width, height) {
         if (scene === void 0) { scene = null; }
+        if (layer_id === void 0) { layer_id = "layer"; }
         if (width === void 0) { width = window.innerWidth; }
         if (height === void 0) { height = window.innerHeight; }
         this.canvas = document.createElement("canvas");
-        this.canvas.setAttribute("id", "layer");
+        this.canvas.setAttribute("id", layer_id);
         this.canvas.setAttribute("width", width.toString());
         this.canvas.setAttribute("height", height.toString());
         this.canvas.setAttribute("style", "position: absolute");
@@ -163,6 +165,71 @@ var Renderer = /** @class */ (function () {
         }
     };
     /**
+     * 清空某一图层
+     *
+     * @param index 图层索引,默认0
+     */
+    Renderer.prototype.Clear = function (index) {
+        if (index === void 0) { index = 0; }
+        this.context[index].clearRect(0, 0, window.innerWidth, window.innerHeight);
+    };
+    /**
+     * 清空所有图层
+     */
+    Renderer.prototype.ClearAll = function () {
+        for (var i = 0; i < this.context.length; i++)
+            this.context[i].clearRect(0, 0, window.innerWidth, window.innerHeight);
+    };
+    /**
+     * 删除某一图层上的部分内容
+     *
+     * @param x 要删除部分的横坐标
+     * @param y 要删除部分的纵坐标
+     * @param width 要删除部分的宽
+     * @param height 要删除部分的高
+     * @param index 要删除部分内容的图层索引，默认0
+     */
+    Renderer.prototype.ClearRect = function (x, y, width, height, index) {
+        if (index === void 0) { index = 0; }
+        this.context[index].clearRect(x, y, width, height);
+    };
+    /**
+     * 删除某所有图层上的部分内容
+     *
+     * @param x 要删除部分的横坐标
+     * @param y 要删除部分的纵坐标
+     * @param width 要删除部分的宽
+     * @param height 要删除部分的高
+     */
+    Renderer.prototype.ClearAllRect = function (x, y, width, height) {
+        for (var i = 0; i < this.context.length; i++)
+            this.context[i].clearRect(x, y, width, height);
+    };
+    /**
+     * 用某一颜色覆盖图层
+     *
+     * @param color 要覆盖的颜色
+     * @param index 图层索引，默认0
+     */
+    Renderer.prototype.ClearColor = function (color, index) {
+        if (color === void 0) { color = "#FFFFFF"; }
+        if (index === void 0) { index = 0; }
+        var last_style = this.context[index].fillStyle;
+        this.context[index].fillStyle = color;
+        this.context[index].fillRect(0, 0, window.innerWidth, window.innerHeight);
+        this.context[index].fillStyle = last_style;
+    };
+    /**
+     * 用某一颜色覆盖所有图层
+     *
+     * @param color 要覆盖的颜色
+     */
+    Renderer.prototype.ClearAllColor = function (color) {
+        if (color === void 0) { color = "#FFFFFF"; }
+        for (var i = 0; i < this.context.length; i++)
+            this.ClearColor(color, i);
+    };
+    /**
      * 画实心矩形
      *
      * @param x 横坐标
@@ -187,6 +254,40 @@ var Renderer = /** @class */ (function () {
     Renderer.prototype.DrawStrokeRect = function (x, y, width, height, index) {
         if (index === void 0) { index = 0; }
         this.context[index].strokeRect(x, y, width, height);
+    };
+    /**
+     * 画实心圆
+     *
+     * @param x 圆的中心的 x 坐标
+     * @param y 圆的中心的 y 坐标
+     * @param r 圆的半径
+     * @param start_angle 起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
+     * @param end_angle 结束角，以弧度计
+     * @param anticlockwise 可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。
+     * @param index 图层索引，默认0
+     */
+    Renderer.prototype.DrawFillCircle = function (x, y, r, start_angle, end_angle, anticlockwise, index) {
+        if (anticlockwise === void 0) { anticlockwise = false; }
+        if (index === void 0) { index = 0; }
+        this.context[index].arc(x, y, r, start_angle, end_angle);
+        this.context[index].fill();
+    };
+    /**
+     * 画空心圆
+     *
+     * @param x 圆的中心的 x 坐标
+     * @param y 圆的中心的 y 坐标
+     * @param r 圆的半径
+     * @param start_angle 起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
+     * @param end_angle 结束角，以弧度计
+     * @param anticlockwise 可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。
+     * @param index 图层索引，默认0
+     */
+    Renderer.prototype.DrawSrtokeCircle = function (x, y, r, start_angle, end_angle, anticlockwise, index) {
+        if (anticlockwise === void 0) { anticlockwise = false; }
+        if (index === void 0) { index = 0; }
+        this.context[index].arc(x, y, r, start_angle, end_angle);
+        this.context[index].stroke();
     };
     /**
      * 画实心路径
@@ -301,6 +402,7 @@ var GL;
 (function (GL) {
     GL.COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
     GL.DEPTH_BITS = WebGLRenderingContext.DEPTH_BITS;
+    GL.DEPTH_TEST = WebGLRenderingContext.DEPTH_TEST;
     // Vertex shader program
     var vertex_shader_source = "\n    attribute vec4 aVertexPosition;\n\n    uniform mat4 uModelViewMatrix;\n    uniform mat4 uProjectionMatrix;\n\n    void main()\n    {\n        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;\n    }";
     var fragment_shader_source = "void main(){gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);}";
@@ -325,9 +427,10 @@ var GL;
                 this.gl_context = scene.GetCanvas().getContext("webgl");
             if (this.gl_context == undefined || this.gl_context == null)
                 throw new Error("Unable to initialize WebGL!");
-            this.shader = new Shader(this.gl_context, vertex_shader_source, fragment_shader_source);
-            this.shader.Use();
             this.gl_context.viewport(0, 0, scene.GetCanvas().width, scene.GetCanvas().height);
+            this.shader = new Shader(this.gl_context, vertex_shader_source, fragment_shader_source);
+            //this.shader.Use();
+            this.gl_context.useProgram(this.shader.GetProgram());
             /*
             for (let i = 0; i < scene.GetLayerNumber(); i++)
             {
@@ -339,28 +442,154 @@ var GL;
             }
             */
         };
+        Renderer.prototype.InitVertexBuffer = function (vertices, size) {
+            var buffer = this.gl_context.createBuffer();
+            this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, buffer); // 绑定缓冲区对象到目标
+            this.BufferDataB(this.gl_context.ARRAY_BUFFER, vertices, this.gl_context.STATIC_DRAW); // 将数据写入到缓冲区对象
+            var aVertexPosition = this.gl_context.getAttribLocation(this.shader.GetProgram(), "aVertexPosition");
+            if (aVertexPosition < 0)
+                console.log('获取attribute变量失败！');
+            this.gl_context.vertexAttribPointer(aVertexPosition, size, this.gl_context.FLOAT, false, 0, 0); // 将缓冲区对象分配给attribute变量
+            this.gl_context.enableVertexAttribArray(aVertexPosition); // 开启attribute变量
+            this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, undefined);
+            this.gl_context.disableVertexAttribArray(aVertexPosition);
+            return buffer;
+        };
+        /**
+         * 画矩形
+         *
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param width 宽
+         * @param height 高
+         */
+        Renderer.prototype.DrawFillRect = function (x, y, width, height) {
+            var vertices = new Float32Array([x, y, 1, x + width, y, 1, x + width, y + height, 1, x, y + height, 1]);
+            var buffer = this.InitVertexBuffer(vertices, 2);
+            this.gl_context.bindBuffer(this.gl_context.ARRAY_BUFFER, buffer);
+            this.gl_context.vertexAttribPointer(0, 2, this.gl_context.FLOAT, false, 0, 0);
+            this.gl_context.enableVertexAttribArray(0);
+            this.DrawArrays(this.gl_context.TRIANGLE_STRIP, 0, 4);
+        };
         /**
          * 清空缓冲区
          *
-         * @param mask 缓冲区类型，可用GL.COLOR_BUFFER_BIT,GL.DEPTH_BITS等
-         * @param index 图层索引，默认0
+         * @param mask 一个用于指定需要清除的缓冲区的 GLbitfield 。可接受复合值,可能的值有：
+         * gl.COLOR_BUFFER_BIT   //颜色缓冲区
+         * gl.DEPTH_BUFFER_BIT   //深度缓冲区
+         * gl.STENCIL_BUFFER_BIT  //模板缓冲区
          */
-        Renderer.prototype.Clear = function (mask) {
-            this.gl_context.clear(mask);
+        Renderer.prototype.Clear = function (mask) { this.gl_context.clear(mask); };
+        /**
+         *
+         * @param red 指定清除缓冲时的红色值。默认值：0。
+         * @param green 指定清除缓冲时的绿色值。默认值：0。
+         * @param blue 指定清除缓冲时的蓝色值。默认值：0。
+         * @param alpha 指定清除缓冲时的不透明度。默认值：0。
+         */
+        Renderer.prototype.ClearColor = function (red, green, blue, alpha) {
+            if (red === void 0) { red = 0; }
+            if (green === void 0) { green = 0; }
+            if (blue === void 0) { blue = 0; }
+            if (alpha === void 0) { alpha = 0; }
+            this.gl_context.clearColor(red, green, blue, alpha);
         };
         /**
          *
-         * @param red 红
-         * @param green 绿
-         * @param blue 蓝
-         * @param alpha 透明
+         * @param depth 深度值的设定，是当清除深度缓冲区的时候使用。默认值为1。
          */
-        Renderer.prototype.ClearColor = function (red, green, blue, alpha) {
-            this.gl_context.clearColor(red, green, blue, alpha);
+        Renderer.prototype.ClearDepth = function (depth) {
+            if (depth === void 0) { depth = 1; }
+            this.gl_context.clearDepth(depth);
         };
-        Renderer.prototype.Finish = function () {
-            this.gl_context.finish();
+        /**
+         *
+         * @param cap 让WebGL开启某种特性，可能的值：
+         * gl.BLEND 	激活片元的颜色融合计算.
+         * gl.CULL_FACE 	激活多边形正反面剔除.
+         * gl.DEPTH_TEST 	激活深度比较，并且更新深度缓冲区。
+         * gl.DITHER 	激活在写入颜色缓冲区之前，抖动颜色成分。
+         * gl.POLYGON_OFFSET_FILL 	激活添加多边形片段的深度值偏移。
+         * gl.SAMPLE_ALPHA_TO_COVERAGE 	激活通过alpha值决定的临时覆盖值计算。（抗锯齿）
+         * gl.SAMPLE_COVERAGE 	激活使用临时覆盖值，位和运算片段的覆盖值。
+         * gl.SCISSOR_TEST 	激活剪裁测试，即丢弃在剪裁矩形范围外的片段。
+         * gl.STENCIL_TEST 	激活模板测试并且更新模板缓冲区。
+         */
+        Renderer.prototype.Enable = function (cap) { this.gl_context.enable(cap); };
+        /**
+         *
+         * @param cap
+         */
+        Renderer.prototype.Disable = function (cap) { this.gl_context.disable(cap); };
+        /**
+         *
+         */
+        Renderer.prototype.Finish = function () { this.gl_context.finish(); };
+        /**
+         *
+         * @param target 指定Buffer绑定点(目标).可取
+         * gl.ARRAY_BUFFER:包含顶点属性的Buffer,如顶点坐标,纹理坐标数据或顶点颜色数据。
+         * gl.ELEMENT_ARRAY_BUFFER: 用于元素索引的Buffer。
+         *
+         * @param size 设定Buffer对象的数据存储区大小。
+         * @param usage 指定数据存储区的使用方法。
+         * gl.STATIC_DRAW:缓冲区的内容可能经常使用,而不会经常更改.内容被写入缓冲区,但不被读取。
+         * gl.DYNAMIC_DRAW:缓冲区的内容可能经常被使用,并且经常更改.内容被写入缓冲区,但不被读取。
+         * gl.STREAM_DRAW:缓冲区的内容可能不会经常使用.内容被写入缓冲区,但不被读取。
+         */
+        Renderer.prototype.BufferDataA = function (target, size, usage) { this.gl_context.bufferData(target, size, usage); };
+        /**
+         *
+         * @param target 指定Buffer绑定点(目标).可取
+         * gl.ARRAY_BUFFER:包含顶点属性的Buffer,如顶点坐标,纹理坐标数据或顶点颜色数据。
+         * gl.ELEMENT_ARRAY_BUFFER: 用于元素索引的Buffer。
+         *
+         * @param data 一个ArrayBuffer，SharedArrayBuffer 或者 ArrayBufferView 类型的数组对象，将被复制到Buffer的数据存储区。
+         * 如果为null，数据存储区仍会被创建，但是不会进行初始化和定义。
+         *
+         * @param usage 指定数据存储区的使用方法。
+         * gl.STATIC_DRAW:缓冲区的内容可能经常使用,而不会经常更改.内容被写入缓冲区,但不被读取。
+         * gl.DYNAMIC_DRAW:缓冲区的内容可能经常被使用,并且经常更改.内容被写入缓冲区,但不被读取。
+         * gl.STREAM_DRAW:缓冲区的内容可能不会经常使用.内容被写入缓冲区,但不被读取。
+         */
+        Renderer.prototype.BufferDataB = function (target, data, usage) {
+            if (data === void 0) { data = null; }
+            this.gl_context.bufferData(target, data, usage);
         };
+        /**
+         *
+         * @param mode 指定绘制图元的方式,可能值如下:
+         * gl.POINTS: 绘制一系列点。
+         * gl.LINE_STRIP: 绘制一个线条。即，绘制一系列线段，上一点连接下一点。
+         * gl.LINE_LOOP: 绘制一个线圈。即，绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连。
+         * gl.LINES: 绘制一系列单独线段。每两个点作为端点，线段之间不连接。
+         * gl.TRIANGLE_STRIP：绘制一个三角带。
+         * gl.TRIANGLE_FAN：绘制一个三角扇。
+         * gl.TRIANGLES: 绘制一系列三角形。每三个点作为顶点。
+         *
+         * @param first 指定从哪个点开始绘制。
+         * @param count 指定绘制需要使用到多少个点。
+         */
+        Renderer.prototype.DrawArrays = function (mode, first, count) { this.gl_context.drawArrays(mode, first, count); };
+        /**
+         *
+         * @param mode 指定绘制图元的方式,可能值如下:
+         * gl.POINTS: 绘制一系列点。
+         * gl.LINE_STRIP: 绘制一个线条。即，绘制一系列线段，上一点连接下一点。
+         * gl.LINE_LOOP: 绘制一个线圈。即，绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连。
+         * gl.LINES: 绘制一系列单独线段。每两个点作为端点，线段之间不连接。
+         * gl.TRIANGLE_STRIP：绘制一个三角带。
+         * gl.TRIANGLE_FAN：绘制一个三角扇。
+         * gl.TRIANGLES: 绘制一系列三角形。每三个点作为顶点。
+         *
+         * @param count 指定要渲染的元素数量.
+         * @param type 指定元素数组缓冲区中的值的类型。可能的值是:
+         * gl.UNSIGNED_BYTE
+         * gl.UNSIGNED_SHORT
+         *
+         * @param offset 指定元素数组缓冲区中的偏移量。必须是给定类型大小的有效倍数.
+         */
+        Renderer.prototype.DrawElements = function (mode, count, type, offset) { this.gl_context.drawElements(mode, count, type, offset); };
         return Renderer;
     }());
     GL.Renderer = Renderer;
@@ -406,6 +635,9 @@ var GL;
                 return null;
             }
             return shader_program;
+        };
+        Shader.prototype.GetProgram = function () {
+            return this.program;
         };
         /**
          * 使用Program
@@ -564,15 +796,18 @@ var Sprite = /** @class */ (function () {
 }());
 var Game = /** @class */ (function () {
     function Game() {
-        this.scene = new GL.Scene("scened", 800, 600);
-        this.renderer = new GL.Renderer(this.scene);
+        this.x = 0;
+        this.scene = new Scene("scened");
+        this.scene.AddLayer(new Layer(null, "layer1"));
+        this.renderer = new Renderer(this.scene);
     }
     Game.prototype.Start = function () {
-        this.renderer.ClearColor(0, 0, 0, 1);
         this.MainLoop();
     };
     Game.prototype.MainLoop = function () {
-        this.renderer.Clear(GL.COLOR_BUFFER_BIT);
+        this.renderer.Clear();
+        this.renderer.DrawFillRect(this.x, 10, 10, 10);
+        this.x++;
         console.log("mainloop");
         requestAnimationFrame(this.MainLoop.bind(this));
     };

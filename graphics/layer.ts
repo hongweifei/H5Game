@@ -10,14 +10,15 @@ class Layer
     /**
      * 
      * @param scene 图层所在场景，默认null
+     * @param layer_id 图层id
      * @param width 图层宽
      * @param height 图层高
      */
-    constructor(scene:Scene = null,width:string|number = window.innerWidth,
+    constructor(scene:Scene = null,layer_id:string = "layer",width:string|number = window.innerWidth,
         height:string|number = window.innerHeight)
     {
         this.canvas = document.createElement("canvas");
-        this.canvas.setAttribute("id","layer");
+        this.canvas.setAttribute("id",layer_id);
         this.canvas.setAttribute("width",width.toString());
         this.canvas.setAttribute("height",height.toString());
         this.canvas.setAttribute("style","position: absolute")

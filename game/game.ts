@@ -2,24 +2,27 @@
 
 class Game
 {
-    scene:GL.Scene;
-    renderer:GL.Renderer;
+    scene:Scene;
+    renderer:Renderer;
+    x = 0;
 
     constructor()
     {
-        this.scene = new GL.Scene("scened",800,600);
-        this.renderer = new GL.Renderer(this.scene);
+        this.scene = new Scene("scened");
+        this.scene.AddLayer(new Layer(null,"layer1"));
+        this.renderer = new Renderer(this.scene);
     }
 
     Start()
     {
-        this.renderer.ClearColor(0,0,0,1);
         this.MainLoop();
     }
 
     private MainLoop()
     {
-        this.renderer.Clear(GL.COLOR_BUFFER_BIT);
+        this.renderer.Clear();
+        this.renderer.DrawFillRect(this.x,10,10,10);
+        this.x++;
 
         console.log("mainloop");
 
