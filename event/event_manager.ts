@@ -16,6 +16,9 @@ class EventManager
     joy_axis_event:JoyAxisEvent;
     joy_ball_event:JoyBallEvent;
     joy_hat_event:JoyHatEvent;
+    joy_button_event:JoyButtonEvent;
+    joy_device_event:JoyDeviceEvent;
+    finger_touch_event:FingerTouchEvent;
 }
 
 class CommonEvent
@@ -49,6 +52,7 @@ class _KeyboardEvent_
 class MouseMotionEvent
 {
     type:number;    /**< MOUSE_MOTION */
+    which:number;   /**< The mouse instance id */
     state:number;   /**< The current button state */
     x:number;       /**< X coordinate, relative to window */
     y:number;       /**< Y coordinate, relative to window */
@@ -59,6 +63,7 @@ class MouseMotionEvent
 class MouseButtonEvent
 {
     type:number;    /**< MOUSE_BUTTON_DOWN or MOUSE_BUTTON_UP */
+    which:number;   /**< The mouse instance id */
     button:number;  /**< The mouse button index */
     state:number;   /**< PRESSED or RELEASED */
     clicks:number;  /**< 1 for single-click, 2 for double-click, etc. */
@@ -69,6 +74,7 @@ class MouseButtonEvent
 class _MouseWheelEvent_
 {
     type:number;    /**< MOUSE_WHEEL */
+    which:number;   /**< The mouse instance id */
     x:number;       /**< The amount scrolled horizontally, positive to the right and negative to the left */
     y:number;       /**< The amount scrolled vertically, positive away from the user and negative toward the user */
 }
@@ -76,66 +82,117 @@ class _MouseWheelEvent_
 class JoyAxisEvent
 {
     type:number;        /**< JOY_AXIS_MOTION */
+    which:JoystickID;   /**< The joystick instance id */
+    axis:number;        /**< The joystick axis index */
+    value:number;       /**< The axis value (range: -32768 to 32767) */
 }
 
 class JoyBallEvent
 {
     type:number;        /**< JOY_BALL_MOTION */
+    which:JoystickID;   /**< The joystick instance id */
+    ball:number;        /**< The joystick trackball index */
+    x_rel:number;       /**< The relative motion in the X direction */
+    y_rel:number;       /**< The relative motion in the Y direction */
 }
 
 class JoyHatEvent
 {
     type:number;        /**< JOY_HAT_MOTION */
+    which:JoystickID;   /**< The joystick instance id */
+    hat:number;         /**< The joystick hat index */
+    value:number;       /**< The hat position value.
+                         *   HAT_LEFTUP     HAT_UP          HAT_RIGHTUP
+                         *   HAT_LEFT       HAT_CENTERED    HAT_RIGHT
+                         *   HAT_LEFTDOWN   HAT_DOWN        HAT_RIGHTDOWN
+                         *
+                         *   Note that zero means the POV is centered.
+                         */
 }
 
-class EventType
+class JoyButtonEvent
+{
+    type:number;        /**< JOY_BUTTON_DOWN or JOY_BUTTON_UP */
+    which:JoystickID;   /**< The joystick instance id */
+    button:number;      /**< The joystick button index */
+    state:number;       /**< PRESSED or RELEASED */
+}
+
+class JoyDeviceEvent
+{
+    type:number;
+    which:number;       /**< The joystick device index for the ADDED event, instance id for the REMOVED event */
+}
+
+
+//class ControllerAxisEvent
+//{
+//    type:number;        /**< CONTROLLER_AXIS_MOTION */
+//    axis:number;        /**< The controller axis (GameControllerAxis) */
+//    value:number;       /**< The axis value (range: -32768 to 32767) */
+//}
+
+class FingerTouchEvent
+{
+    type:number;            /**< FINGER_MOTION or FINGER_DOWN or FINGER_UP */
+    touch_id:TouchID;       /**< The touch device id */
+    finger_id:FingerID;
+    x:number;               /**< Normalized in the range 0...1 */
+    y:number;               /**< Normalized in the range 0...1 */
+    dx:number;              /**< Normalized in the range -1...1 */
+    dy:number;              /**< Normalized in the range -1...1 */
+    pressure:number;        /**< Normalized in the range 0...1 */
+}
+
+enum EventType
 {
     /**< Unused (do not remove) */
-    static FIRSTEVENT = 0;
+    FIRSTEVENT = 0,
 
     /**< User-requested quit */
-    static QUIT = 1;
+    QUIT = 0x100,
 
     /* Display events */
-    static DISPLAY = 2;             /**< Display state change */
+    DISPLAY = 0x150,            /**< Display state change */
 
     /* Window events */
-    static WINDOW_EVENT = 3;        /**< Window state change */
+    WINDOW_EVENT = 0x200,       /**< Window state change */
 
     /* Keyboard events */
-    static KEYBOARD_EVENT = 4;
-    static KEY_DOWN = 5;            /**< Key pressed */
-    static KEY_UP = 6;              /**< Key released */
-    static TEXT_EDITING = 7;        /**< Keyboard text editing (composition) */
-    static TEXT_INPUT = 8;          /**< Keyboard text input */
-    static KEYMAP_CHANGED = 9;      /**< Keymap changed due to a system event such as aninput language or keyboard layout change.*/
+    //KEYBOARD_EVENT,
+    KEY_DOWN = 0x300,           /**< Key pressed */
+    KEY_UP,                     /**< Key released */
+    TEXT_EDITING,               /**< Keyboard text editing (composition) */
+    TEXT_INPUT,                 /**< Keyboard text input */
+    KEYMAP_CHANGED,             /**< Keymap changed due to a system event such as aninput language or keyboard layout change.*/
 
     /* Mouse events */
-    static MOUSE_MOTION = 10;           /**< Mouse moved */
-    static MOUSE_BUTTON_DOWN = 11;      /**< Mouse button pressed */
-    static MOUSE_BUTTON_UP = 12;        /**< Mouse button released */
-    static MOUSE_WHEEL = 13;            /**< Mouse wheel motion */
+    MOUSE_MOTION = 0x400,       /**< Mouse moved */
+    MOUSE_BUTTON_DOWN,          /**< Mouse button pressed */
+    MOUSE_BUTTON_UP,            /**< Mouse button released */
+    MOUSE_WHEEL,                /**< Mouse wheel motion */
 
     /* Joystick events */
-    static JOY_AXIS_MOTION = 14;        /**< Joystick axis motion */
-    static JOY_BALL_MOTION = 15;        /**< Joystick trackball motion */
-    static JOY_HAT_MOTION = 16;         /**< Joystick hat position change */
-    static JOY_BUTTON_DOWN = 17;        /**< Joystick button pressed */
-    static JOY_BUTTON_UP = 18;          /**< Joystick button released */
-    static JOY_DEVICE_ADDED = 19;       /**< A new joystick has been inserted into the system */
-    static JOY_DEVICE_REMOVED = 20;     /**< An opened joystick has been removed */
-
-    /* Audio hotplug events */
-    static AUDIO_DEVICE_ADDED = 21;     /**< A new audio device is available */
-    static AUDIO_DEVICE_REMOVED = 22;   /**< An audio device has been removed. */
+    JOY_AXIS_MOTION = 0x600,    /**< Joystick axis motion */
+    JOY_BALL_MOTION,            /**< Joystick trackball motion */
+    JOY_HAT_MOTION,             /**< Joystick hat position change */
+    JOY_BUTTON_DOWN,            /**< Joystick button pressed */
+    JOY_BUTTON_UP,              /**< Joystick button released */
+    JOY_DEVICE_ADDED,           /**< A new joystick has been inserted into the system */
+    JOY_DEVICE_REMOVED,         /**< An opened joystick has been removed */
 
     /* Touch events */
-    static FINGER_DOWN = 23;
-    static FINGER_UP = 24;
-    static FINGER_MOTION = 25;
+    FINGER_DOWN = 0x700,
+    FINGER_UP,
+    FINGER_MOTION,
+
+    /* Audio hotplug events */
+    AUDIO_DEVICE_ADDED = 0x1000,    /**< A new audio device is available */
+    AUDIO_DEVICE_REMOVED,           /**< An audio device has been removed. */
 
     /* User events */
-    static USER_EVENT = 26;
+    USER_EVENT = 0x8000
 }
+
 
 
