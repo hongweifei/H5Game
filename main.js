@@ -1,3 +1,620 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+* <code>Keyboard</code> 类的属性是一些常数，这些常数表示控制游戏时最常用的键。
+*/
+var Keyboard = /** @class */ (function () {
+    function Keyboard() {
+    }
+    /** 与 0 的键控代码值(48)关联的常数。*/
+    Keyboard.NUMBER_0 = 48;
+    /** 与 1 的键控代码值(49)关联的常数。*/
+    Keyboard.NUMBER_1 = 49;
+    /** 与 2 的键控代码值(50)关联的常数。*/
+    Keyboard.NUMBER_2 = 50;
+    /** 与 3 的键控代码值(51)关联的常数。*/
+    Keyboard.NUMBER_3 = 51;
+    /** 与 4 的键控代码值(52)关联的常数。*/
+    Keyboard.NUMBER_4 = 52;
+    /** 与 5 的键控代码值(53)关联的常数。*/
+    Keyboard.NUMBER_5 = 53;
+    /** 与 6 的键控代码值(54)关联的常数。*/
+    Keyboard.NUMBER_6 = 54;
+    /** 与 7 的键控代码值(55)关联的常数。*/
+    Keyboard.NUMBER_7 = 55;
+    /** 与 8 的键控代码值(56)关联的常数。*/
+    Keyboard.NUMBER_8 = 56;
+    /** 与 9 的键控代码值(57)关联的常数。*/
+    Keyboard.NUMBER_9 = 57;
+    /** 与 A 键的键控代码值(65)关联的常数。*/
+    Keyboard.A = 65;
+    /** 与 B 键的键控代码值(66)关联的常数。*/
+    Keyboard.B = 66;
+    /** 与 C 键的键控代码值(67)关联的常数。*/
+    Keyboard.C = 67;
+    /** 与 D 键的键控代码值(68)关联的常数。*/
+    Keyboard.D = 68;
+    /** 与 E 键的键控代码值(69)关联的常数。*/
+    Keyboard.E = 69;
+    /** 与 F 键的键控代码值(70)关联的常数。*/
+    Keyboard.F = 70;
+    /** 与 G 键的键控代码值(71)关联的常数。*/
+    Keyboard.G = 71;
+    /** 与 H 键的键控代码值(72)关联的常数。*/
+    Keyboard.H = 72;
+    /** 与 I 键的键控代码值(73)关联的常数。*/
+    Keyboard.I = 73;
+    /** 与 J 键的键控代码值(74)关联的常数。*/
+    Keyboard.J = 74;
+    /** 与 K 键的键控代码值(75)关联的常数。*/
+    Keyboard.K = 75;
+    /** 与 L 键的键控代码值(76)关联的常数。*/
+    Keyboard.L = 76;
+    /** 与 M 键的键控代码值(77)关联的常数。*/
+    Keyboard.M = 77;
+    /** 与 N 键的键控代码值(78)关联的常数。*/
+    Keyboard.N = 78;
+    /** 与 O 键的键控代码值(79)关联的常数。*/
+    Keyboard.O = 79;
+    /** 与 P 键的键控代码值(80)关联的常数。*/
+    Keyboard.P = 80;
+    /** 与 Q 键的键控代码值(81)关联的常数。*/
+    Keyboard.Q = 81;
+    /** 与 R 键的键控代码值(82)关联的常数。*/
+    Keyboard.R = 82;
+    /** 与 S 键的键控代码值(83)关联的常数。*/
+    Keyboard.S = 83;
+    /** 与 T 键的键控代码值(84)关联的常数。*/
+    Keyboard.T = 84;
+    /** 与 U 键的键控代码值(85)关联的常数。*/
+    Keyboard.U = 85;
+    /** 与 V 键的键控代码值(86)关联的常数。*/
+    Keyboard.V = 86;
+    /** 与 W 键的键控代码值(87)关联的常数。*/
+    Keyboard.W = 87;
+    /** 与 X 键的键控代码值(88)关联的常数。*/
+    Keyboard.X = 88;
+    /** 与 Y 键的键控代码值(89)关联的常数。*/
+    Keyboard.Y = 89;
+    /** 与 Z 键的键控代码值(90)关联的常数。*/
+    Keyboard.Z = 90;
+    /** 与 F1 的键控代码值(112)关联的常数。*/
+    Keyboard.F1 = 112;
+    /** 与 F2 的键控代码值(113)关联的常数。*/
+    Keyboard.F2 = 113;
+    /** 与 F3 的键控代码值(114)关联的常数。*/
+    Keyboard.F3 = 114;
+    /** 与 F4 的键控代码值(115)关联的常数。*/
+    Keyboard.F4 = 115;
+    /** 与 F5 的键控代码值(116)关联的常数。*/
+    Keyboard.F5 = 116;
+    /** 与 F6 的键控代码值(117)关联的常数。*/
+    Keyboard.F6 = 117;
+    /** 与 F7 的键控代码值(118)关联的常数。*/
+    Keyboard.F7 = 118;
+    /** 与 F8 的键控代码值(119)关联的常数。*/
+    Keyboard.F8 = 119;
+    /** 与 F9 的键控代码值(120)关联的常数。*/
+    Keyboard.F9 = 120;
+    /** 与 F10 的键控代码值(121)关联的常数。*/
+    Keyboard.F10 = 121;
+    /** 与 F11 的键控代码值(122)关联的常数。*/
+    Keyboard.F11 = 122;
+    /** 与 F12 的键控代码值(123)关联的常数。*/
+    Keyboard.F12 = 123;
+    /** 与 F13 的键控代码值(124)关联的常数。*/
+    Keyboard.F13 = 124;
+    /** 与 F14 的键控代码值(125)关联的常数。*/
+    Keyboard.F14 = 125;
+    /** 与 F15 的键控代码值(126)关联的常数。*/
+    Keyboard.F15 = 126;
+    /** 与数字键盘的伪键控代码(21)关联的常数。*/
+    Keyboard.NUMPAD = 21;
+    /** 与数字键盘上的数字 0 的键控代码值(96)关联的常数。*/
+    Keyboard.NUMPAD_0 = 96;
+    /** 与数字键盘上的数字 1 的键控代码值(97)关联的常数。*/
+    Keyboard.NUMPAD_1 = 97;
+    /** 与数字键盘上的数字 2 的键控代码值(98)关联的常数。*/
+    Keyboard.NUMPAD_2 = 98;
+    /** 与数字键盘上的数字 3 的键控代码值(99)关联的常数。*/
+    Keyboard.NUMPAD_3 = 99;
+    /** 与数字键盘上的数字 4 的键控代码值(100)关联的常数。*/
+    Keyboard.NUMPAD_4 = 100;
+    /** 与数字键盘上的数字 5 的键控代码值(101)关联的常数。*/
+    Keyboard.NUMPAD_5 = 101;
+    /** 与数字键盘上的数字 6 的键控代码值(102)关联的常数。*/
+    Keyboard.NUMPAD_6 = 102;
+    /** 与数字键盘上的数字 7 的键控代码值(103)关联的常数。*/
+    Keyboard.NUMPAD_7 = 103;
+    /** 与数字键盘上的数字 8 的键控代码值(104)关联的常数。*/
+    Keyboard.NUMPAD_8 = 104;
+    /** 与数字键盘上的数字 9 的键控代码值(105)关联的常数。*/
+    Keyboard.NUMPAD_9 = 105;
+    /** 与数字键盘上的加号(+)的键控代码值(107)关联的常数。*/
+    Keyboard.NUMPAD_ADD = 107;
+    /** 与数字键盘上的小数点(.)的键控代码值(110)关联的常数。*/
+    Keyboard.NUMPAD_DECIMAL = 110;
+    /** 与数字键盘上的除号(/)的键控代码值(111)关联的常数。*/
+    Keyboard.NUMPAD_DIVIDE = 111;
+    /** 与数字键盘上的 Enter 的键控代码值(108)关联的常数。*/
+    Keyboard.NUMPAD_ENTER = 108;
+    /** 与数字键盘上的乘号(*)的键控代码值(106)关联的常数。*/
+    Keyboard.NUMPAD_MULTIPLY = 106;
+    /** 与数字键盘上的减号(-)的键控代码值(109)关联的常数。*/
+    Keyboard.NUMPAD_SUBTRACT = 109;
+    /** 与 ; 键的键控代码值(186)关联的常数。*/
+    Keyboard.SEMICOLON = 186;
+    /** 与=键的键控代码值(187)关联的常数。*/
+    Keyboard.EQUAL = 187;
+    /** 与 F15 的键控代码值(188)关联的常数。*/
+    Keyboard.COMMA = 188;
+    /** 与 - 键的键控代码值(189)关联的常数。*/
+    Keyboard.MINUS = 189;
+    /** 与 . 键的键控代码值(190)关联的常数。*/
+    Keyboard.PERIOD = 190;
+    /** 与 / 键的键控代码值(191)关联的常数。*/
+    Keyboard.SLASH = 191;
+    /** 与 ` 键的键控代码值(192)关联的常数。*/
+    Keyboard.BACKQUOTE = 192;
+    /** 与 [ 键的键控代码值(219)关联的常数。*/
+    Keyboard.LEFTBRACKET = 219;
+    /** 与 \ 键的键控代码值(220)关联的常数。*/
+    Keyboard.BACKSLASH = 220;
+    /** 与 ] 键的键控代码值(221)关联的常数。*/
+    Keyboard.RIGHTBRACKET = 221;
+    /** 与 ' 键的键控代码值(222)关联的常数。*/
+    Keyboard.QUOTE = 222;
+    /** 与 Alternate(Option)键的键控代码值(18)关联的常数。*/
+    Keyboard.ALTERNATE = 18;
+    /** 与 Backspace 的键控代码值(8)关联的常数。*/
+    Keyboard.BACKSPACE = 8;
+    /** 与 Caps Lock 的键控代码值(20)关联的常数。*/
+    Keyboard.CAPS_LOCK = 20;
+    /** 与 Mac 命令键(15)关联的常数。*/
+    Keyboard.COMMAND = 15;
+    /** 与 Ctrl 的键控代码值(17)关联的常数。*/
+    Keyboard.CONTROL = 17;
+    /** 与 Delete 的键控代码值(46)关联的常数。*/
+    Keyboard.DELETE = 46;
+    /** 与 Enter 的键控代码值(13)关联的常数。*/
+    Keyboard.ENTER = 13;
+    /** 与 Esc 的键控代码值(27)关联的常数。*/
+    Keyboard.ESCAPE = 27;
+    /** 与 Page Up 的键控代码值(33)关联的常数。*/
+    Keyboard.PAGE_UP = 33;
+    /** 与 Page Down 的键控代码值(34)关联的常数。*/
+    Keyboard.PAGE_DOWN = 34;
+    /** 与 End 的键控代码值(35)关联的常数。*/
+    Keyboard.END = 35;
+    /** 与 Home 的键控代码值(36)关联的常数。*/
+    Keyboard.HOME = 36;
+    /** 与向左箭头键的键控代码值(37)关联的常数。*/
+    Keyboard.LEFT = 37;
+    /** 与向上箭头键的键控代码值(38)关联的常数。*/
+    Keyboard.UP = 38;
+    /** 与向右箭头键的键控代码值(39)关联的常数。*/
+    Keyboard.RIGHT = 39;
+    /** 与向下箭头键的键控代码值(40)关联的常数。*/
+    Keyboard.DOWN = 40;
+    /** 与 Shift 的键控代码值(16)关联的常数。*/
+    Keyboard.SHIFT = 16;
+    /** 与空格键的键控代码值(32)关联的常数。*/
+    Keyboard.SPACE = 32;
+    /** 与 Tab 的键控代码值(9)关联的常数。*/
+    Keyboard.TAB = 9;
+    /** 与 Insert 的键控代码值(45)关联的常数。*/
+    Keyboard.INSERT = 45;
+    return Keyboard;
+}());
+var EventType;
+(function (EventType) {
+    /**< Unused (do not remove) */
+    EventType[EventType["FIRST_EVENT"] = 0] = "FIRST_EVENT";
+    /**< User-requested quit */
+    EventType[EventType["QUIT"] = 1] = "QUIT";
+    /* Display events */
+    EventType[EventType["DISPLAY"] = 2] = "DISPLAY";
+    /* Window events */
+    EventType[EventType["WINDOW_EVENT"] = 3] = "WINDOW_EVENT";
+    /* Keyboard events */
+    EventType[EventType["KEYBOARD_EVENT"] = 4] = "KEYBOARD_EVENT";
+    EventType[EventType["KEY_DOWN"] = 5] = "KEY_DOWN";
+    EventType[EventType["KEY_UP"] = 6] = "KEY_UP";
+    EventType[EventType["TEXT_EDITING"] = 7] = "TEXT_EDITING";
+    EventType[EventType["TEXT_INPUT"] = 8] = "TEXT_INPUT";
+    EventType[EventType["KEYMAP_CHANGED"] = 9] = "KEYMAP_CHANGED";
+    /* Mouse events */
+    EventType[EventType["MOUSE_MOTION"] = 10] = "MOUSE_MOTION";
+    EventType[EventType["MOUSE_BUTTON_DOWN"] = 11] = "MOUSE_BUTTON_DOWN";
+    EventType[EventType["MOUSE_BUTTON_UP"] = 12] = "MOUSE_BUTTON_UP";
+    EventType[EventType["MOUSE_WHEEL"] = 13] = "MOUSE_WHEEL";
+    /* Joystick events */
+    EventType[EventType["JOY_AXIS_MOTION"] = 14] = "JOY_AXIS_MOTION";
+    EventType[EventType["JOY_BALL_MOTION"] = 15] = "JOY_BALL_MOTION";
+    EventType[EventType["JOY_HAT_MOTION"] = 16] = "JOY_HAT_MOTION";
+    EventType[EventType["JOY_BUTTON_DOWN"] = 17] = "JOY_BUTTON_DOWN";
+    EventType[EventType["JOY_BUTTON_UP"] = 18] = "JOY_BUTTON_UP";
+    EventType[EventType["JOY_DEVICE_ADDED"] = 19] = "JOY_DEVICE_ADDED";
+    EventType[EventType["JOY_DEVICE_REMOVED"] = 20] = "JOY_DEVICE_REMOVED";
+    /* Touch events */
+    EventType[EventType["FINGER_DOWN"] = 21] = "FINGER_DOWN";
+    EventType[EventType["FINGER_UP"] = 22] = "FINGER_UP";
+    EventType[EventType["FINGER_MOTION"] = 23] = "FINGER_MOTION";
+    /* Audio hotplug events */
+    EventType[EventType["AUDIO_DEVICE_ADDED"] = 24] = "AUDIO_DEVICE_ADDED";
+    EventType[EventType["AUDIO_DEVICE_REMOVED"] = 25] = "AUDIO_DEVICE_REMOVED";
+    /* User events */
+    EventType[EventType["USER_EVENT"] = 26] = "USER_EVENT";
+})(EventType || (EventType = {}));
+var Queue = /** @class */ (function () {
+    function Queue() {
+        var _this = this;
+        this.data = new Array();
+        this.push = function (item) { return _this.data.push(item); };
+        this.pop = function () { return _this.data.shift(); };
+    }
+    return Queue;
+}());
+var EventManager = /** @class */ (function () {
+    function EventManager() {
+        this.type = EventType.FIRST_EVENT; //EventType
+        this.common_event = null; //
+        this.window_event = null; //
+        this.display_event = null; //
+        this.keyboard_event = null; //
+        this.mouse_motion_event = null; //
+        this.mouse_button_event = null; //
+        this.mouse_wheel_event = null; //
+        this.joy_axis_event = null; //
+        this.joy_ball_event = null; //
+        this.joy_hat_event = null; //
+        this.joy_button_event = null; //
+        this.joy_device_event = null; //
+        this.finger_touch_event = null; //
+        this.user_event = null; //用户事件
+        this.queue = new Queue();
+        this.queue_event = new Queue();
+    }
+    /**
+     *
+     * @param event 要送入事件队列的事件
+     */
+    EventManager.AddEvent = function (event) {
+        EventManager.Event.queue.push(event.type);
+        switch (event.type) {
+            case EventType.WINDOW_EVENT:
+                EventManager.Event.queue_event.push(event.window_event);
+                break;
+            case EventType.DISPLAY:
+                EventManager.Event.queue_event.push(event.display_event);
+                break;
+            case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+                EventManager.Event.queue_event.push(event.keyboard_event);
+                break;
+            case EventType.MOUSE_MOTION:
+                EventManager.Event.queue_event.push(event.mouse_motion_event);
+                break;
+            case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
+                EventManager.Event.queue_event.push(event.mouse_button_event);
+                break;
+            case EventType.MOUSE_WHEEL:
+                EventManager.Event.queue_event.push(event.mouse_wheel_event);
+                break;
+            case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
+                EventManager.Event.queue_event.push(event.finger_touch_event);
+                break;
+            case EventType.USER_EVENT:
+                EventManager.Event.queue_event.push(event.user_event);
+                break;
+            default:
+                EventManager.Event.queue_event.push(event.common_event);
+                break;
+        }
+    };
+    /**
+     * 送入用户事件，要把user_event设置好
+     *
+     * @param event 要送入事件队列的用户事件
+     */
+    EventManager.PushEvent = function (event) {
+        EventManager.Event.queue.push(EventType.USER_EVENT);
+        EventManager.Event.queue_event.push(event.user_event);
+    };
+    /**
+     * 等待事件，若有事件则返回真
+     */
+    EventManager.WaitEvent = function () {
+        var type = EventManager.Event.queue.pop();
+        if (type != undefined) {
+            switch (type) {
+                case EventType.WINDOW_EVENT:
+                    EventManager.Event.window_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.DISPLAY:
+                    EventManager.Event.display_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+                    EventManager.Event.keyboard_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.MOUSE_MOTION:
+                    EventManager.Event.mouse_motion_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
+                    EventManager.Event.mouse_button_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.MOUSE_WHEEL:
+                    EventManager.Event.mouse_wheel_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
+                    EventManager.Event.finger_touch_event = EventManager.Event.queue_event.pop();
+                    break;
+                case EventType.USER_EVENT:
+                    EventManager.Event.user_event = EventManager.Event.queue_event.pop();
+                    break;
+                default:
+                    EventManager.Event.common_event = EventManager.Event.queue_event.pop();
+                    break;
+            }
+            return true;
+        }
+        return false;
+    };
+    /*所有事件都会到这*/
+    EventManager.Event = new EventManager(); //
+    return EventManager;
+}());
+var CommonEvent = /** @class */ (function () {
+    function CommonEvent() {
+        this.type = EventType.FIRST_EVENT;
+    }
+    return CommonEvent;
+}());
+var WindowEvent = /** @class */ (function (_super) {
+    __extends(WindowEvent, _super);
+    function WindowEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< WINDOW_EVENT */
+        _this.event = null; /**< WindowEventID */
+        _this.data1 = null; /**< event dependent data */
+        _this.data2 = null; /**< event dependent data */
+        return _this;
+    }
+    return WindowEvent;
+}(CommonEvent));
+var DisplayEvent = /** @class */ (function (_super) {
+    __extends(DisplayEvent, _super);
+    function DisplayEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< DISPLAY_EVENT */
+        _this.diplay = null; /**< The display layer index */
+        _this.event = null; /**< DisplayEventID */
+        _this.data1 = null;
+        return _this;
+    }
+    return DisplayEvent;
+}(CommonEvent));
+var _KeyboardEvent_ = /** @class */ (function (_super) {
+    __extends(_KeyboardEvent_, _super);
+    function _KeyboardEvent_() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< KEY_DOWN or KEY_UP */
+        _this.state = null; /**< PRESSED or RELEASED */
+        _this.key_code = null; /**< The key that was pressed or released */
+        return _this;
+    }
+    return _KeyboardEvent_;
+}(CommonEvent));
+var MouseMotionEvent = /** @class */ (function (_super) {
+    __extends(MouseMotionEvent, _super);
+    function MouseMotionEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< MOUSE_MOTION */
+        _this.which = null; /**< The mouse instance id */
+        _this.state = null; /**< The current button state */
+        _this.x = null; /**< X coordinate, relative to window */
+        _this.y = null; /**< Y coordinate, relative to window */
+        _this.x_rel = null; /**< The relative motion in the X direction */
+        _this.y_rel = null; /**< The relative motion in the Y direction */
+        return _this;
+    }
+    return MouseMotionEvent;
+}(CommonEvent));
+var MouseButtonEvent = /** @class */ (function (_super) {
+    __extends(MouseButtonEvent, _super);
+    function MouseButtonEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< MOUSE_BUTTON_DOWN or MOUSE_BUTTON_UP */
+        _this.which = null; /**< The mouse instance id */
+        _this.button = null; /**< The mouse button index */
+        _this.state = null; /**< PRESSED or RELEASED */
+        _this.clicks = null; /**< 1 for single-click, 2 for double-click, etc. */
+        _this.x = null; /**< X coordinate, relative to window */
+        _this.y = null; /**< Y coordinate, relative to window */
+        return _this;
+    }
+    return MouseButtonEvent;
+}(CommonEvent));
+var _MouseWheelEvent_ = /** @class */ (function (_super) {
+    __extends(_MouseWheelEvent_, _super);
+    function _MouseWheelEvent_() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< MOUSE_WHEEL */
+        _this.which = null; /**< The mouse instance id */
+        _this.x = null; /**< The amount scrolled horizontally, positive to the right and negative to the left */
+        _this.y = null; /**< The amount scrolled vertically, positive away from the user and negative toward the user */
+        return _this;
+    }
+    return _MouseWheelEvent_;
+}(CommonEvent));
+var JoyAxisEvent = /** @class */ (function (_super) {
+    __extends(JoyAxisEvent, _super);
+    function JoyAxisEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_AXIS_MOTION */
+        _this.which = null; /**< The joystick instance id */
+        _this.axis = null; /**< The joystick axis index */
+        _this.value = null; /**< The axis value (range: -32768 to 32767) */
+        return _this;
+    }
+    return JoyAxisEvent;
+}(CommonEvent));
+var JoyBallEvent = /** @class */ (function (_super) {
+    __extends(JoyBallEvent, _super);
+    function JoyBallEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_BALL_MOTION */
+        _this.which = null; /**< The joystick instance id */
+        _this.ball = null; /**< The joystick trackball index */
+        _this.x_rel = null; /**< The relative motion in the X direction */
+        _this.y_rel = null; /**< The relative motion in the Y direction */
+        return _this;
+    }
+    return JoyBallEvent;
+}(CommonEvent));
+var JoyHatEvent = /** @class */ (function (_super) {
+    __extends(JoyHatEvent, _super);
+    function JoyHatEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_HAT_MOTION */
+        _this.which = null; /**< The joystick instance id */
+        _this.hat = null; /**< The joystick hat index */
+        _this.value = null; /**< The hat position value.
+                                                *   HAT_LEFTUP     HAT_UP          HAT_RIGHTUP
+                                                *   HAT_LEFT       HAT_CENTERED    HAT_RIGHT
+                                                *   HAT_LEFTDOWN   HAT_DOWN        HAT_RIGHTDOWN
+                                                *
+                                                *   Note that zero means the POV is centered.
+                                                */
+        return _this;
+    }
+    return JoyHatEvent;
+}(CommonEvent));
+var JoyButtonEvent = /** @class */ (function (_super) {
+    __extends(JoyButtonEvent, _super);
+    function JoyButtonEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_BUTTON_DOWN or JOY_BUTTON_UP */
+        _this.which = null; /**< The joystick instance id */
+        _this.button = null; /**< The joystick button index */
+        _this.state = null; /**< PRESSED or RELEASED */
+        return _this;
+    }
+    return JoyButtonEvent;
+}(CommonEvent));
+var JoyDeviceEvent = /** @class */ (function (_super) {
+    __extends(JoyDeviceEvent, _super);
+    function JoyDeviceEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT;
+        _this.which = null; /**< The joystick device index for the ADDED event, instance id for the REMOVED event */
+        return _this;
+    }
+    return JoyDeviceEvent;
+}(CommonEvent));
+//class ControllerAxisEvent
+//{
+//    type:number;        /**< CONTROLLER_AXIS_MOTION */
+//    axis:number;        /**< The controller axis (GameControllerAxis) */
+//    value:number;       /**< The axis value (range: -32768 to 32767) */
+//}
+var FingerTouchEvent = /** @class */ (function (_super) {
+    __extends(FingerTouchEvent, _super);
+    function FingerTouchEvent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT; /**< FINGER_MOTION or FINGER_DOWN or FINGER_UP */
+        _this.touch_id = null; /**< The touch device id */
+        _this.finger_id = null;
+        _this.x = null; /**< Normalized in the range 0...1 */
+        _this.y = null; /**< Normalized in the range 0...1 */
+        _this.dx = null; /**< Normalized in the range -1...1 */
+        _this.dy = null; /**< Normalized in the range -1...1 */
+        _this.pressure = null; /**< Normalized in the range 0...1 */
+        return _this;
+    }
+    return FingerTouchEvent;
+}(CommonEvent));
+var User_Event = /** @class */ (function (_super) {
+    __extends(User_Event, _super);
+    function User_Event() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.type = EventType.FIRST_EVENT;
+        _this.code = null;
+        _this.data1 = null;
+        _this.data2 = null;
+        return _this;
+    }
+    return User_Event;
+}(CommonEvent));
+var HAT_CENTERED = 0x00;
+var HAT_UP = 0x01;
+var HAT_RIGHT = 0x02;
+var HAT_DOWN = 0x04;
+var HAT_LEFT = 0x08;
+var HAT_RIGHTUP = (HAT_RIGHT | HAT_UP);
+var HAT_RIGHTDOWN = (HAT_RIGHT | HAT_DOWN);
+var HAT_LEFTUP = (HAT_LEFT | HAT_UP);
+var HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN);
+var JoystickType;
+(function (JoystickType) {
+    JoystickType[JoystickType["JOYSTICK_TYPE_UNKNOWN"] = 0] = "JOYSTICK_TYPE_UNKNOWN";
+    JoystickType[JoystickType["JOYSTICK_TYPE_GAMECONTROLLER"] = 1] = "JOYSTICK_TYPE_GAMECONTROLLER";
+    JoystickType[JoystickType["JOYSTICK_TYPE_WHEEL"] = 2] = "JOYSTICK_TYPE_WHEEL";
+    JoystickType[JoystickType["JOYSTICK_TYPE_ARCADE_STICK"] = 3] = "JOYSTICK_TYPE_ARCADE_STICK";
+    JoystickType[JoystickType["JOYSTICK_TYPE_FLIGHT_STICK"] = 4] = "JOYSTICK_TYPE_FLIGHT_STICK";
+    JoystickType[JoystickType["JOYSTICK_TYPE_DANCE_PAD"] = 5] = "JOYSTICK_TYPE_DANCE_PAD";
+    JoystickType[JoystickType["JOYSTICK_TYPE_GUITAR"] = 6] = "JOYSTICK_TYPE_GUITAR";
+    JoystickType[JoystickType["JOYSTICK_TYPE_DRUM_KIT"] = 7] = "JOYSTICK_TYPE_DRUM_KIT";
+    JoystickType[JoystickType["JOYSTICK_TYPE_ARCADE_PAD"] = 8] = "JOYSTICK_TYPE_ARCADE_PAD";
+    JoystickType[JoystickType["JOYSTICK_TYPE_THROTTLE"] = 9] = "JOYSTICK_TYPE_THROTTLE";
+})(JoystickType || (JoystickType = {}));
+var JoystickPowerLevel;
+(function (JoystickPowerLevel) {
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_UNKNOWN"] = -1] = "JOYSTICK_POWER_UNKNOWN";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_EMPTY"] = 0] = "JOYSTICK_POWER_EMPTY";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_LOW"] = 1] = "JOYSTICK_POWER_LOW";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MEDIUM"] = 2] = "JOYSTICK_POWER_MEDIUM";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_FULL"] = 3] = "JOYSTICK_POWER_FULL";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_WIRED"] = 4] = "JOYSTICK_POWER_WIRED";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MAX"] = 5] = "JOYSTICK_POWER_MAX";
+})(JoystickPowerLevel || (JoystickPowerLevel = {}));
+var TouchDeviceType;
+(function (TouchDeviceType) {
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INVALID"] = -1] = "TOUCH_DEVICE_INVALID";
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_DIRECT"] = 0] = "TOUCH_DEVICE_DIRECT";
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_ABSOLUTE"] = 1] = "TOUCH_DEVICE_INDIRECT_ABSOLUTE";
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_RELATIVE"] = 2] = "TOUCH_DEVICE_INDIRECT_RELATIVE"; /* trackpad with screen cursor-relative coordinates */
+})(TouchDeviceType || (TouchDeviceType = {}));
+var Finger = /** @class */ (function () {
+    function Finger() {
+    }
+    return Finger;
+}());
+function GetNumTouchDevices() {
+    return;
+}
+function GetTouchDevice(index) {
+    return;
+}
+function GetTouchDeviceType(touch_id) {
+    return;
+}
+function GetNumTouchFingers(touch_id) {
+    return;
+}
+function GetTouchFinger(touch_id, index) {
+    return;
+}
 var Layer = /** @class */ (function () {
     /**
      *
@@ -805,6 +1422,9 @@ var Game = /** @class */ (function () {
         this.MainLoop();
     };
     Game.prototype.MainLoop = function () {
+        var e = new EventManager();
+        e.type = EventType.DISPLAY;
+        EventManager.AddEvent(e);
         this.renderer.Clear();
         this.renderer.DrawFillRect(this.x, 10, 10, 10);
         this.x++;

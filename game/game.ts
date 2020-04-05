@@ -20,6 +20,10 @@ class Game
 
     private MainLoop()
     {
+        const e:EventManager = new EventManager();
+        e.type = EventType.DISPLAY;
+        EventManager.AddEvent(e);
+        
         this.renderer.Clear();
         this.renderer.DrawFillRect(this.x,10,10,10);
         this.x++;
