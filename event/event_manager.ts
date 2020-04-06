@@ -1,5 +1,6 @@
 
 
+
 enum EventType
 {
     /**< Unused (do not remove) */
@@ -15,7 +16,7 @@ enum EventType
     WINDOW_EVENT,               /**< Window state change */
 
     /* Keyboard events */
-    KEYBOARD_EVENT,
+    //KEYBOARD_EVENT,
     KEY_DOWN,                   /**< Key pressed */
     KEY_UP,                     /**< Key released */
     TEXT_EDITING,               /**< Keyboard text editing (composition) */
@@ -287,6 +288,7 @@ class User_Event extends CommonEvent
     }
 }
 
+
 class EventManager
 {
     /*所有事件都会到这*/
@@ -311,6 +313,20 @@ class EventManager
     private queue:Queue<EventType> = new Queue<EventType>();
     private queue_event:Queue<CommonEvent> = new Queue<CommonEvent>();
 
+    constructor()
+    {
+        addEventListener("mousemove",Mouse.Motion);
+        addEventListener("mousedown",Mouse.ButtonDwon);
+        addEventListener("mouseup",Mouse.ButtonUp);
+        addEventListener("mousewheel",Mouse.Wheel);
+        addEventListener("touchstart",FingerTouch.Start);
+        addEventListener("touchmove",FingerTouch.Motion);
+        addEventListener("touchend",FingerTouch.End);
+        addEventListener("keydown",Keyboard.KeyDown);
+        addEventListener("keyup",Keyboard.KeyUp);
+        addEventListener("keypress",Keyboard.KeyPress);
+    }
+
     /**
      * 
      * @param event 要送入事件队列的事件
@@ -328,7 +344,7 @@ class EventManager
                 EventManager.Event.queue_event.push(event.display_event);
                 break;
 
-            case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+            case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
                 EventManager.Event.queue_event.push(event.keyboard_event) ;
                 break
 
@@ -378,7 +394,7 @@ class EventManager
                 e.display_event = event;
                 break;
     
-            case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+            case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
                 e.keyboard_event = event;
                 break
     
@@ -422,6 +438,45 @@ class EventManager
 
     private ClearEvent()
     {
+        switch (this.type)
+        {
+        case EventType.WINDOW_EVENT:
+            this.window_event = new WindowEvent();
+            break;
+
+        case EventType.DISPLAY:
+            this.display_event = new DisplayEvent();
+            break;
+
+        case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+            this.keyboard_event = new _KeyboardEvent_();
+            break
+
+        case EventType.MOUSE_MOTION:
+            this.mouse_motion_event = new MouseMotionEvent();
+            break;
+
+        case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
+            this.mouse_button_event = new MouseButtonEvent();
+            break;
+
+        case EventType.MOUSE_WHEEL:
+            this.mouse_wheel_event = new _MouseWheelEvent_();
+            break;
+
+        case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
+            this.finger_touch_event = new FingerTouchEvent();
+            break;
+
+        case EventType.USER_EVENT:
+            this.user_event = new User_Event();
+            break;
+
+        default:
+            this.common_event = new CommonEvent();
+            break;
+        }
+        /*
         switch (EventManager.Event.type)
         {
         case EventType.WINDOW_EVENT:
@@ -460,6 +515,7 @@ class EventManager
             EventManager.Event.common_event = new CommonEvent();
             break;
         }
+        */
     }
 
     /**
@@ -482,7 +538,7 @@ class EventManager
                     EventManager.Event.display_event = EventManager.Event.queue_event.pop() as DisplayEvent;
                     break;
 
-                case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+                case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
                     EventManager.Event.keyboard_event = EventManager.Event.queue_event.pop() as _KeyboardEvent_;
                     break
 
@@ -516,7 +572,10 @@ class EventManager
 
         return false;
     }
+
+    
 }
+
 
 
 

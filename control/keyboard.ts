@@ -203,4 +203,18 @@ class Keyboard
     static TAB: number = 9;
     /** 与 Insert 的键控代码值(45)关联的常数。*/
     static INSERT: number = 45;
+
+    static KeyDown(this:Window,ev:KeyboardEvent)
+    {
+        const e = new _KeyboardEvent_(EventType.KEY_DOWN,null,ev.keyCode);
+        EventManager.AddEventB(EventType.KEY_DOWN,e);
+    }
+
+    static KeyPress(){}
+
+    static KeyUp(this:Window,ev:KeyboardEvent)
+    {
+        const e = new _KeyboardEvent_(EventType.KEY_UP,null,ev.keyCode);
+        EventManager.AddEventB(EventType.KEY_UP,e);
+    }
 }
