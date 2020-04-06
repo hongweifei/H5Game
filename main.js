@@ -266,23 +266,319 @@ var Queue = /** @class */ (function () {
     }
     return Queue;
 }());
+var CommonEvent = /** @class */ (function () {
+    function CommonEvent(type) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        this.type = EventType.FIRST_EVENT;
+        this.type = type;
+    }
+    return CommonEvent;
+}());
+var WindowEvent = /** @class */ (function (_super) {
+    __extends(WindowEvent, _super);
+    function WindowEvent(type, event, data1, data2) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (event === void 0) { event = null; }
+        if (data1 === void 0) { data1 = null; }
+        if (data2 === void 0) { data2 = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< WINDOW_EVENT */
+        _this.event = null; /**< WindowEventID */
+        _this.data1 = null; /**< event dependent data */
+        _this.data2 = null; /**< event dependent data */
+        _this.type = type;
+        _this.event = event;
+        _this.data1 = data1;
+        _this.data2 = data2;
+        return _this;
+    }
+    return WindowEvent;
+}(CommonEvent));
+var DisplayEvent = /** @class */ (function (_super) {
+    __extends(DisplayEvent, _super);
+    function DisplayEvent(type, display, event, data1) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (display === void 0) { display = null; }
+        if (event === void 0) { event = null; }
+        if (data1 === void 0) { data1 = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< DISPLAY_EVENT */
+        _this.diplay = null; /**< The display layer index */
+        _this.event = null; /**< DisplayEventID */
+        _this.data1 = null;
+        _this.type = type;
+        _this.diplay = display;
+        _this.event = event;
+        _this.data1 = data1;
+        return _this;
+    }
+    return DisplayEvent;
+}(CommonEvent));
+var _KeyboardEvent_ = /** @class */ (function (_super) {
+    __extends(_KeyboardEvent_, _super);
+    function _KeyboardEvent_(type, state, key_code) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (state === void 0) { state = null; }
+        if (key_code === void 0) { key_code = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< KEY_DOWN or KEY_UP */
+        _this.state = null; /**< PRESSED or RELEASED */
+        _this.key_code = null; /**< The key that was pressed or released */
+        _this.state = state;
+        _this.key_code = key_code;
+        return _this;
+    }
+    return _KeyboardEvent_;
+}(CommonEvent));
+var MouseMotionEvent = /** @class */ (function (_super) {
+    __extends(MouseMotionEvent, _super);
+    function MouseMotionEvent(type, which, state, x, y, x_rel, y_rel) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        if (state === void 0) { state = null; }
+        if (x === void 0) { x = null; }
+        if (y === void 0) { y = null; }
+        if (x_rel === void 0) { x_rel = null; }
+        if (y_rel === void 0) { y_rel = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< MOUSE_MOTION */
+        _this.which = null; /**< The mouse instance id */
+        _this.state = null; /**< The current button state */
+        _this.x = null; /**< X coordinate, relative to window */
+        _this.y = null; /**< Y coordinate, relative to window */
+        _this.x_rel = null; /**< The relative motion in the X direction */
+        _this.y_rel = null; /**< The relative motion in the Y direction */
+        _this.type = type;
+        _this.which = which;
+        _this.state = state;
+        _this.x = x;
+        _this.y = y;
+        _this.x_rel = x_rel;
+        _this.y_rel = y_rel;
+        return _this;
+    }
+    return MouseMotionEvent;
+}(CommonEvent));
+var MouseButtonEvent = /** @class */ (function (_super) {
+    __extends(MouseButtonEvent, _super);
+    function MouseButtonEvent(type, which, button, state, clicks, x, y) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        if (button === void 0) { button = null; }
+        if (state === void 0) { state = null; }
+        if (clicks === void 0) { clicks = null; }
+        if (x === void 0) { x = null; }
+        if (y === void 0) { y = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< MOUSE_BUTTON_DOWN or MOUSE_BUTTON_UP */
+        _this.which = null; /**< The mouse instance id */
+        _this.button = null; /**< The mouse button index */
+        _this.state = null; /**< PRESSED or RELEASED */
+        _this.clicks = null; /**< 1 for single-click, 2 for double-click, etc. */
+        _this.x = null; /**< X coordinate, relative to window */
+        _this.y = null; /**< Y coordinate, relative to window */
+        _this.type = type;
+        _this.which = which;
+        _this.button = button;
+        _this.state = state;
+        _this.clicks = clicks;
+        _this.x = x;
+        _this.y = y;
+        return _this;
+    }
+    return MouseButtonEvent;
+}(CommonEvent));
+var _MouseWheelEvent_ = /** @class */ (function (_super) {
+    __extends(_MouseWheelEvent_, _super);
+    function _MouseWheelEvent_(type) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< MOUSE_WHEEL */
+        _this.which = null; /**< The mouse instance id */
+        _this.x = null; /**< The amount scrolled horizontally, positive to the right and negative to the left */
+        _this.y = null; /**< The amount scrolled vertically, positive away from the user and negative toward the user */
+        return _this;
+    }
+    return _MouseWheelEvent_;
+}(CommonEvent));
+var JoyAxisEvent = /** @class */ (function (_super) {
+    __extends(JoyAxisEvent, _super);
+    function JoyAxisEvent(type, which, axis, value) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        if (axis === void 0) { axis = null; }
+        if (value === void 0) { value = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_AXIS_MOTION */
+        _this.which = null; /**< The joystick instance id */
+        _this.axis = null; /**< The joystick axis index */
+        _this.value = null; /**< The axis value (range: -32768 to 32767) */
+        _this.type = type;
+        _this.which = which;
+        _this.axis = axis;
+        _this.value = value;
+        return _this;
+    }
+    return JoyAxisEvent;
+}(CommonEvent));
+var JoyBallEvent = /** @class */ (function (_super) {
+    __extends(JoyBallEvent, _super);
+    function JoyBallEvent(type, which, ball, x_rel, y_rel) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        if (ball === void 0) { ball = null; }
+        if (x_rel === void 0) { x_rel = null; }
+        if (y_rel === void 0) { y_rel = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_BALL_MOTION */
+        _this.which = null; /**< The joystick instance id */
+        _this.ball = null; /**< The joystick trackball index */
+        _this.x_rel = null; /**< The relative motion in the X direction */
+        _this.y_rel = null; /**< The relative motion in the Y direction */
+        _this.type = type;
+        _this.which = which;
+        _this.ball = ball;
+        _this.x_rel = x_rel;
+        _this.y_rel = y_rel;
+        return _this;
+    }
+    return JoyBallEvent;
+}(CommonEvent));
+var JoyHatEvent = /** @class */ (function (_super) {
+    __extends(JoyHatEvent, _super);
+    function JoyHatEvent(type, which, hat, value) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        if (hat === void 0) { hat = null; }
+        if (value === void 0) { value = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_HAT_MOTION */
+        _this.which = null; /**< The joystick instance id */
+        _this.hat = null; /**< The joystick hat index */
+        _this.value = null; /**< The hat position value.
+                                                *   HAT_LEFTUP     HAT_UP          HAT_RIGHTUP
+                                                *   HAT_LEFT       HAT_CENTERED    HAT_RIGHT
+                                                *   HAT_LEFTDOWN   HAT_DOWN        HAT_RIGHTDOWN
+                                                *
+                                                *   Note that zero means the POV is centered.
+                                                */
+        _this.type = type;
+        _this.which = which;
+        _this.hat = hat;
+        _this.value = value;
+        return _this;
+    }
+    return JoyHatEvent;
+}(CommonEvent));
+var JoyButtonEvent = /** @class */ (function (_super) {
+    __extends(JoyButtonEvent, _super);
+    function JoyButtonEvent(type, which, button, state) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        if (button === void 0) { button = null; }
+        if (state === void 0) { state = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< JOY_BUTTON_DOWN or JOY_BUTTON_UP */
+        _this.which = null; /**< The joystick instance id */
+        _this.button = null; /**< The joystick button index */
+        _this.state = null; /**< PRESSED or RELEASED */
+        _this.type = type;
+        _this.which = which;
+        _this.button = button;
+        _this.state = state;
+        return _this;
+    }
+    return JoyButtonEvent;
+}(CommonEvent));
+var JoyDeviceEvent = /** @class */ (function (_super) {
+    __extends(JoyDeviceEvent, _super);
+    function JoyDeviceEvent(type, which) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (which === void 0) { which = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT;
+        _this.which = null; /**< The joystick device index for the ADDED event, instance id for the REMOVED event */
+        _this.type = type;
+        _this.which = which;
+        return _this;
+    }
+    return JoyDeviceEvent;
+}(CommonEvent));
+//class ControllerAxisEvent
+//{
+//    type:number;        /**< CONTROLLER_AXIS_MOTION */
+//    axis:number;        /**< The controller axis (GameControllerAxis) */
+//    value:number;       /**< The axis value (range: -32768 to 32767) */
+//}
+var FingerTouchEvent = /** @class */ (function (_super) {
+    __extends(FingerTouchEvent, _super);
+    function FingerTouchEvent(type, touch_id, finger_id, x, y, dx, dy, pressure) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (touch_id === void 0) { touch_id = null; }
+        if (finger_id === void 0) { finger_id = null; }
+        if (x === void 0) { x = null; }
+        if (y === void 0) { y = null; }
+        if (dx === void 0) { dx = null; }
+        if (dy === void 0) { dy = null; }
+        if (pressure === void 0) { pressure = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT; /**< FINGER_MOTION or FINGER_DOWN or FINGER_UP */
+        _this.touch_id = null; /**< The touch device id */
+        _this.finger_id = null;
+        _this.x = null; /**< Normalized in the range 0...1 */
+        _this.y = null; /**< Normalized in the range 0...1 */
+        _this.dx = null; /**< Normalized in the range -1...1 */
+        _this.dy = null; /**< Normalized in the range -1...1 */
+        _this.pressure = null; /**< Normalized in the range 0...1 */
+        _this.type = type;
+        _this.touch_id = touch_id;
+        _this.finger_id = finger_id;
+        _this.x = x;
+        _this.y = y;
+        _this.dx = dx;
+        _this.dy = dy;
+        _this.pressure = pressure;
+        return _this;
+    }
+    return FingerTouchEvent;
+}(CommonEvent));
+var User_Event = /** @class */ (function (_super) {
+    __extends(User_Event, _super);
+    function User_Event(type, code, data1, data2) {
+        if (type === void 0) { type = EventType.FIRST_EVENT; }
+        if (code === void 0) { code = null; }
+        if (data1 === void 0) { data1 = null; }
+        if (data2 === void 0) { data2 = null; }
+        var _this = _super.call(this, type) || this;
+        _this.type = EventType.FIRST_EVENT;
+        _this.code = null;
+        _this.data1 = null;
+        _this.data2 = null;
+        _this.type = type;
+        _this.code = code;
+        _this.data1 = data1;
+        _this.data2 = data2;
+        return _this;
+    }
+    return User_Event;
+}(CommonEvent));
 var EventManager = /** @class */ (function () {
     function EventManager() {
         this.type = EventType.FIRST_EVENT; //EventType
-        this.common_event = null; //
-        this.window_event = null; //
-        this.display_event = null; //
-        this.keyboard_event = null; //
-        this.mouse_motion_event = null; //
-        this.mouse_button_event = null; //
-        this.mouse_wheel_event = null; //
-        this.joy_axis_event = null; //
-        this.joy_ball_event = null; //
-        this.joy_hat_event = null; //
-        this.joy_button_event = null; //
-        this.joy_device_event = null; //
-        this.finger_touch_event = null; //
-        this.user_event = null; //用户事件
+        this.common_event = new CommonEvent(); //
+        this.window_event = new WindowEvent(); //
+        this.display_event = new DisplayEvent(); //
+        this.keyboard_event = new _KeyboardEvent_(); //
+        this.mouse_motion_event = new MouseMotionEvent(); //
+        this.mouse_button_event = new MouseButtonEvent(); //
+        this.mouse_wheel_event = new _MouseWheelEvent_(); //
+        this.joy_axis_event = new JoyAxisEvent(); //
+        this.joy_ball_event = new JoyBallEvent(); //
+        this.joy_hat_event = new JoyHatEvent(); //
+        this.joy_button_event = new JoyButtonEvent(); //
+        this.joy_device_event = new JoyDeviceEvent(); //
+        this.finger_touch_event = new FingerTouchEvent(); //
+        this.user_event = new User_Event(); //用户事件
         this.queue = new Queue();
         this.queue_event = new Queue();
     }
@@ -290,7 +586,7 @@ var EventManager = /** @class */ (function () {
      *
      * @param event 要送入事件队列的事件
      */
-    EventManager.AddEvent = function (event) {
+    EventManager.AddEventA = function (event) {
         EventManager.Event.queue.push(event.type);
         switch (event.type) {
             case EventType.WINDOW_EVENT:
@@ -323,6 +619,46 @@ var EventManager = /** @class */ (function () {
         }
     };
     /**
+     * 送事件入事件队列
+     *
+     * @param type 事件类型
+     * @param event 事件类型对应的事件
+     */
+    EventManager.AddEventB = function (type, event) {
+        var e = new EventManager();
+        e.type = type;
+        switch (e.type) {
+            case EventType.WINDOW_EVENT:
+                e.window_event = event;
+                break;
+            case EventType.DISPLAY:
+                e.display_event = event;
+                break;
+            case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+                e.keyboard_event = event;
+                break;
+            case EventType.MOUSE_MOTION:
+                e.mouse_motion_event = event;
+                break;
+            case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
+                e.mouse_button_event = event;
+                break;
+            case EventType.MOUSE_WHEEL:
+                e.mouse_wheel_event = event;
+                break;
+            case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
+                e.finger_touch_event = event;
+                break;
+            case EventType.USER_EVENT:
+                e.user_event = event;
+                break;
+            default:
+                e.common_event = event;
+                break;
+        }
+        EventManager.AddEventA(e);
+    };
+    /**
      * 送入用户事件，要把user_event设置好
      *
      * @param event 要送入事件队列的用户事件
@@ -331,12 +667,45 @@ var EventManager = /** @class */ (function () {
         EventManager.Event.queue.push(EventType.USER_EVENT);
         EventManager.Event.queue_event.push(event.user_event);
     };
+    EventManager.prototype.ClearEvent = function () {
+        switch (EventManager.Event.type) {
+            case EventType.WINDOW_EVENT:
+                EventManager.Event.window_event = new WindowEvent();
+                break;
+            case EventType.DISPLAY:
+                EventManager.Event.display_event = new DisplayEvent();
+                break;
+            case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+                EventManager.Event.keyboard_event = new _KeyboardEvent_();
+                break;
+            case EventType.MOUSE_MOTION:
+                EventManager.Event.mouse_motion_event = new MouseMotionEvent();
+                break;
+            case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
+                EventManager.Event.mouse_button_event = new MouseButtonEvent();
+                break;
+            case EventType.MOUSE_WHEEL:
+                EventManager.Event.mouse_wheel_event = new _MouseWheelEvent_();
+                break;
+            case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
+                EventManager.Event.finger_touch_event = new FingerTouchEvent();
+                break;
+            case EventType.USER_EVENT:
+                EventManager.Event.user_event = new User_Event();
+                break;
+            default:
+                EventManager.Event.common_event = new CommonEvent();
+                break;
+        }
+    };
     /**
      * 等待事件，若有事件则返回真
      */
     EventManager.WaitEvent = function () {
         var type = EventManager.Event.queue.pop();
         if (type != undefined) {
+            EventManager.Event.ClearEvent();
+            EventManager.Event.type = type;
             switch (type) {
                 case EventType.WINDOW_EVENT:
                     EventManager.Event.window_event = EventManager.Event.queue_event.pop();
@@ -374,188 +743,6 @@ var EventManager = /** @class */ (function () {
     EventManager.Event = new EventManager(); //
     return EventManager;
 }());
-var CommonEvent = /** @class */ (function () {
-    function CommonEvent() {
-        this.type = EventType.FIRST_EVENT;
-    }
-    return CommonEvent;
-}());
-var WindowEvent = /** @class */ (function (_super) {
-    __extends(WindowEvent, _super);
-    function WindowEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< WINDOW_EVENT */
-        _this.event = null; /**< WindowEventID */
-        _this.data1 = null; /**< event dependent data */
-        _this.data2 = null; /**< event dependent data */
-        return _this;
-    }
-    return WindowEvent;
-}(CommonEvent));
-var DisplayEvent = /** @class */ (function (_super) {
-    __extends(DisplayEvent, _super);
-    function DisplayEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< DISPLAY_EVENT */
-        _this.diplay = null; /**< The display layer index */
-        _this.event = null; /**< DisplayEventID */
-        _this.data1 = null;
-        return _this;
-    }
-    return DisplayEvent;
-}(CommonEvent));
-var _KeyboardEvent_ = /** @class */ (function (_super) {
-    __extends(_KeyboardEvent_, _super);
-    function _KeyboardEvent_() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< KEY_DOWN or KEY_UP */
-        _this.state = null; /**< PRESSED or RELEASED */
-        _this.key_code = null; /**< The key that was pressed or released */
-        return _this;
-    }
-    return _KeyboardEvent_;
-}(CommonEvent));
-var MouseMotionEvent = /** @class */ (function (_super) {
-    __extends(MouseMotionEvent, _super);
-    function MouseMotionEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< MOUSE_MOTION */
-        _this.which = null; /**< The mouse instance id */
-        _this.state = null; /**< The current button state */
-        _this.x = null; /**< X coordinate, relative to window */
-        _this.y = null; /**< Y coordinate, relative to window */
-        _this.x_rel = null; /**< The relative motion in the X direction */
-        _this.y_rel = null; /**< The relative motion in the Y direction */
-        return _this;
-    }
-    return MouseMotionEvent;
-}(CommonEvent));
-var MouseButtonEvent = /** @class */ (function (_super) {
-    __extends(MouseButtonEvent, _super);
-    function MouseButtonEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< MOUSE_BUTTON_DOWN or MOUSE_BUTTON_UP */
-        _this.which = null; /**< The mouse instance id */
-        _this.button = null; /**< The mouse button index */
-        _this.state = null; /**< PRESSED or RELEASED */
-        _this.clicks = null; /**< 1 for single-click, 2 for double-click, etc. */
-        _this.x = null; /**< X coordinate, relative to window */
-        _this.y = null; /**< Y coordinate, relative to window */
-        return _this;
-    }
-    return MouseButtonEvent;
-}(CommonEvent));
-var _MouseWheelEvent_ = /** @class */ (function (_super) {
-    __extends(_MouseWheelEvent_, _super);
-    function _MouseWheelEvent_() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< MOUSE_WHEEL */
-        _this.which = null; /**< The mouse instance id */
-        _this.x = null; /**< The amount scrolled horizontally, positive to the right and negative to the left */
-        _this.y = null; /**< The amount scrolled vertically, positive away from the user and negative toward the user */
-        return _this;
-    }
-    return _MouseWheelEvent_;
-}(CommonEvent));
-var JoyAxisEvent = /** @class */ (function (_super) {
-    __extends(JoyAxisEvent, _super);
-    function JoyAxisEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< JOY_AXIS_MOTION */
-        _this.which = null; /**< The joystick instance id */
-        _this.axis = null; /**< The joystick axis index */
-        _this.value = null; /**< The axis value (range: -32768 to 32767) */
-        return _this;
-    }
-    return JoyAxisEvent;
-}(CommonEvent));
-var JoyBallEvent = /** @class */ (function (_super) {
-    __extends(JoyBallEvent, _super);
-    function JoyBallEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< JOY_BALL_MOTION */
-        _this.which = null; /**< The joystick instance id */
-        _this.ball = null; /**< The joystick trackball index */
-        _this.x_rel = null; /**< The relative motion in the X direction */
-        _this.y_rel = null; /**< The relative motion in the Y direction */
-        return _this;
-    }
-    return JoyBallEvent;
-}(CommonEvent));
-var JoyHatEvent = /** @class */ (function (_super) {
-    __extends(JoyHatEvent, _super);
-    function JoyHatEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< JOY_HAT_MOTION */
-        _this.which = null; /**< The joystick instance id */
-        _this.hat = null; /**< The joystick hat index */
-        _this.value = null; /**< The hat position value.
-                                                *   HAT_LEFTUP     HAT_UP          HAT_RIGHTUP
-                                                *   HAT_LEFT       HAT_CENTERED    HAT_RIGHT
-                                                *   HAT_LEFTDOWN   HAT_DOWN        HAT_RIGHTDOWN
-                                                *
-                                                *   Note that zero means the POV is centered.
-                                                */
-        return _this;
-    }
-    return JoyHatEvent;
-}(CommonEvent));
-var JoyButtonEvent = /** @class */ (function (_super) {
-    __extends(JoyButtonEvent, _super);
-    function JoyButtonEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< JOY_BUTTON_DOWN or JOY_BUTTON_UP */
-        _this.which = null; /**< The joystick instance id */
-        _this.button = null; /**< The joystick button index */
-        _this.state = null; /**< PRESSED or RELEASED */
-        return _this;
-    }
-    return JoyButtonEvent;
-}(CommonEvent));
-var JoyDeviceEvent = /** @class */ (function (_super) {
-    __extends(JoyDeviceEvent, _super);
-    function JoyDeviceEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT;
-        _this.which = null; /**< The joystick device index for the ADDED event, instance id for the REMOVED event */
-        return _this;
-    }
-    return JoyDeviceEvent;
-}(CommonEvent));
-//class ControllerAxisEvent
-//{
-//    type:number;        /**< CONTROLLER_AXIS_MOTION */
-//    axis:number;        /**< The controller axis (GameControllerAxis) */
-//    value:number;       /**< The axis value (range: -32768 to 32767) */
-//}
-var FingerTouchEvent = /** @class */ (function (_super) {
-    __extends(FingerTouchEvent, _super);
-    function FingerTouchEvent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT; /**< FINGER_MOTION or FINGER_DOWN or FINGER_UP */
-        _this.touch_id = null; /**< The touch device id */
-        _this.finger_id = null;
-        _this.x = null; /**< Normalized in the range 0...1 */
-        _this.y = null; /**< Normalized in the range 0...1 */
-        _this.dx = null; /**< Normalized in the range -1...1 */
-        _this.dy = null; /**< Normalized in the range -1...1 */
-        _this.pressure = null; /**< Normalized in the range 0...1 */
-        return _this;
-    }
-    return FingerTouchEvent;
-}(CommonEvent));
-var User_Event = /** @class */ (function (_super) {
-    __extends(User_Event, _super);
-    function User_Event() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.type = EventType.FIRST_EVENT;
-        _this.code = null;
-        _this.data1 = null;
-        _this.data2 = null;
-        return _this;
-    }
-    return User_Event;
-}(CommonEvent));
 var HAT_CENTERED = 0x00;
 var HAT_UP = 0x01;
 var HAT_RIGHT = 0x02;
@@ -596,7 +783,19 @@ var TouchDeviceType;
     TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_RELATIVE"] = 2] = "TOUCH_DEVICE_INDIRECT_RELATIVE"; /* trackpad with screen cursor-relative coordinates */
 })(TouchDeviceType || (TouchDeviceType = {}));
 var Finger = /** @class */ (function () {
-    function Finger() {
+    function Finger(id, x, y, pressure) {
+        if (id === void 0) { id = null; }
+        if (x === void 0) { x = null; }
+        if (y === void 0) { y = null; }
+        if (pressure === void 0) { pressure = null; }
+        this.id = null;
+        this.x = null;
+        this.y = null;
+        this.pressure = null;
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.pressure = pressure;
     }
     return Finger;
 }());
@@ -1424,7 +1623,8 @@ var Game = /** @class */ (function () {
     Game.prototype.MainLoop = function () {
         var e = new EventManager();
         e.type = EventType.DISPLAY;
-        EventManager.AddEvent(e);
+        e.display_event.type = EventType.DISPLAY;
+        EventManager.AddEventA(e);
         this.renderer.Clear();
         this.renderer.DrawFillRect(this.x, 10, 10, 10);
         this.x++;

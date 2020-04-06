@@ -13,10 +13,17 @@ enum TouchDeviceType
 
 class Finger
 {
-    id:FingerID;
-    x:number;
-    y:number;
-    pressure:number;
+    id:FingerID = null;
+    x:number = null;
+    y:number = null;
+    pressure:number = null;
+    constructor(id:FingerID = null,x:number = null,y:number = null,pressure:number = null)
+    {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.pressure = pressure;
+    }
 }
 
 function GetNumTouchDevices() : number

@@ -57,7 +57,9 @@ class Renderer
      * @param index 图层索引,默认0
      */
     Clear(index:number = 0)
-    {this.context[index].clearRect(0,0,window.innerWidth,window.innerHeight);}
+    {
+        this.context[index].clearRect(0,0,window.innerWidth,window.innerHeight);
+    }
 
     /**
      * 清空所有图层

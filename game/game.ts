@@ -22,7 +22,8 @@ class Game
     {
         const e:EventManager = new EventManager();
         e.type = EventType.DISPLAY;
-        EventManager.AddEvent(e);
+        e.display_event.type = EventType.DISPLAY;
+        EventManager.AddEventA(e);
         
         this.renderer.Clear();
         this.renderer.DrawFillRect(this.x,10,10,10);
