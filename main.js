@@ -226,6 +226,155 @@ var Keyboard = /** @class */ (function () {
     Keyboard.INSERT = 45;
     return Keyboard;
 }());
+var Queue = /** @class */ (function () {
+    function Queue() {
+        this.prev = this;
+        this.next = this;
+    }
+    Queue.prototype.push = function (item) {
+        var q = new Queue();
+        q.data = item;
+        q.prev = this.prev;
+        q.next = this;
+        this.prev.next = q;
+        this.prev = q;
+    };
+    Queue.prototype.pop = function () {
+        var q = new Queue();
+        q = this.next;
+        this.next.next.prev = this;
+        this.next = this.next.next;
+        return q.data;
+    };
+    return Queue;
+}());
+var TouchDeviceType;
+(function (TouchDeviceType) {
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INVALID"] = -1] = "TOUCH_DEVICE_INVALID";
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_DIRECT"] = 0] = "TOUCH_DEVICE_DIRECT";
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_ABSOLUTE"] = 1] = "TOUCH_DEVICE_INDIRECT_ABSOLUTE";
+    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_RELATIVE"] = 2] = "TOUCH_DEVICE_INDIRECT_RELATIVE"; /* trackpad with screen cursor-relative coordinates */
+})(TouchDeviceType || (TouchDeviceType = {}));
+var Finger = /** @class */ (function () {
+    function Finger(id, x, y, pressure) {
+        if (id === void 0) { id = null; }
+        if (x === void 0) { x = null; }
+        if (y === void 0) { y = null; }
+        if (pressure === void 0) { pressure = null; }
+        this.id = null;
+        this.x = null;
+        this.y = null;
+        this.pressure = null;
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.pressure = pressure;
+    }
+    return Finger;
+}());
+var FingerTouch = /** @class */ (function () {
+    function FingerTouch() {
+    }
+    /**
+     *触摸开始
+     */
+    FingerTouch.Start = function (ev) {
+        var finger = ev.touches[ev.touches.length];
+        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, finger.pageX, finger.pageY, null, null, finger.force);
+        EventManager.AddEventB(EventType.FINGER_DOWN, e);
+    };
+    /**
+     * 移动
+     */
+    FingerTouch.Motion = function (ev) {
+        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
+        EventManager.AddEventB(EventType.FINGER_DOWN, e);
+    };
+    /**
+     * 结束
+     */
+    FingerTouch.End = function (ev) {
+        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
+        EventManager.AddEventB(EventType.FINGER_DOWN, e);
+    };
+    return FingerTouch;
+}());
+function GetNumTouchDevices() {
+    return;
+}
+function GetTouchDevice(index) {
+    return;
+}
+function GetTouchDeviceType(touch_id) {
+    return;
+}
+function GetNumTouchFingers(touch_id) {
+    return;
+}
+function GetTouchFinger(touch_id, index) {
+    return;
+}
+/**
+ * 0代表 按下 左键 ，1 代表按下 滚轮 ，2 代表按下 右键
+ */
+var MouseButton;
+(function (MouseButton) {
+    MouseButton[MouseButton["LEFT_BUTTON"] = 0] = "LEFT_BUTTON";
+    MouseButton[MouseButton["RIGHT_BUTTON"] = 2] = "RIGHT_BUTTON";
+})(MouseButton || (MouseButton = {}));
+var Mouse = /** @class */ (function () {
+    function Mouse() {
+    }
+    Mouse.Motion = function (ev) {
+        var e = new MouseMotionEvent(EventType.MOUSE_MOTION, ev.which, null, ev.pageX, ev.pageY, EventManager.Event.mouse_motion_event.x, EventManager.Event.mouse_motion_event.y);
+        EventManager.AddEventB(EventType.MOUSE_MOTION, e);
+    };
+    Mouse.ButtonDwon = function (ev) {
+        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
+        EventManager.AddEventB(EventType.MOUSE_BUTTON_DOWN, e);
+    };
+    Mouse.ButtonUp = function (ev) {
+        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
+        EventManager.AddEventB(EventType.MOUSE_BUTTON_UP, e);
+    };
+    Mouse.Wheel = function (ev) {
+        var e = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
+        EventManager.AddEventB(EventType.MOUSE_WHEEL, e);
+    };
+    return Mouse;
+}());
+var HAT_CENTERED = 0x00;
+var HAT_UP = 0x01;
+var HAT_RIGHT = 0x02;
+var HAT_DOWN = 0x04;
+var HAT_LEFT = 0x08;
+var HAT_RIGHTUP = (HAT_RIGHT | HAT_UP);
+var HAT_RIGHTDOWN = (HAT_RIGHT | HAT_DOWN);
+var HAT_LEFTUP = (HAT_LEFT | HAT_UP);
+var HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN);
+var JoystickType;
+(function (JoystickType) {
+    JoystickType[JoystickType["JOYSTICK_TYPE_UNKNOWN"] = 0] = "JOYSTICK_TYPE_UNKNOWN";
+    JoystickType[JoystickType["JOYSTICK_TYPE_GAMECONTROLLER"] = 1] = "JOYSTICK_TYPE_GAMECONTROLLER";
+    JoystickType[JoystickType["JOYSTICK_TYPE_WHEEL"] = 2] = "JOYSTICK_TYPE_WHEEL";
+    JoystickType[JoystickType["JOYSTICK_TYPE_ARCADE_STICK"] = 3] = "JOYSTICK_TYPE_ARCADE_STICK";
+    JoystickType[JoystickType["JOYSTICK_TYPE_FLIGHT_STICK"] = 4] = "JOYSTICK_TYPE_FLIGHT_STICK";
+    JoystickType[JoystickType["JOYSTICK_TYPE_DANCE_PAD"] = 5] = "JOYSTICK_TYPE_DANCE_PAD";
+    JoystickType[JoystickType["JOYSTICK_TYPE_GUITAR"] = 6] = "JOYSTICK_TYPE_GUITAR";
+    JoystickType[JoystickType["JOYSTICK_TYPE_DRUM_KIT"] = 7] = "JOYSTICK_TYPE_DRUM_KIT";
+    JoystickType[JoystickType["JOYSTICK_TYPE_ARCADE_PAD"] = 8] = "JOYSTICK_TYPE_ARCADE_PAD";
+    JoystickType[JoystickType["JOYSTICK_TYPE_THROTTLE"] = 9] = "JOYSTICK_TYPE_THROTTLE";
+})(JoystickType || (JoystickType = {}));
+var JoystickPowerLevel;
+(function (JoystickPowerLevel) {
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_UNKNOWN"] = -1] = "JOYSTICK_POWER_UNKNOWN";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_EMPTY"] = 0] = "JOYSTICK_POWER_EMPTY";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_LOW"] = 1] = "JOYSTICK_POWER_LOW";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MEDIUM"] = 2] = "JOYSTICK_POWER_MEDIUM";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_FULL"] = 3] = "JOYSTICK_POWER_FULL";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_WIRED"] = 4] = "JOYSTICK_POWER_WIRED";
+    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MAX"] = 5] = "JOYSTICK_POWER_MAX";
+})(JoystickPowerLevel || (JoystickPowerLevel = {}));
 var EventType;
 (function (EventType) {
     /**< Unused (do not remove) */
@@ -266,15 +415,6 @@ var EventType;
     /* User events */
     EventType[EventType["USER_EVENT"] = 25] = "USER_EVENT";
 })(EventType || (EventType = {}));
-var Queue = /** @class */ (function () {
-    function Queue() {
-        var _this = this;
-        this.data = new Array();
-        this.push = function (item) { return _this.data.push(item); };
-        this.pop = function () { return _this.data.shift(); };
-    }
-    return Queue;
-}());
 var CommonEvent = /** @class */ (function () {
     function CommonEvent(type) {
         if (type === void 0) { type = EventType.FIRST_EVENT; }
@@ -571,133 +711,6 @@ var User_Event = /** @class */ (function (_super) {
     }
     return User_Event;
 }(CommonEvent));
-var HAT_CENTERED = 0x00;
-var HAT_UP = 0x01;
-var HAT_RIGHT = 0x02;
-var HAT_DOWN = 0x04;
-var HAT_LEFT = 0x08;
-var HAT_RIGHTUP = (HAT_RIGHT | HAT_UP);
-var HAT_RIGHTDOWN = (HAT_RIGHT | HAT_DOWN);
-var HAT_LEFTUP = (HAT_LEFT | HAT_UP);
-var HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN);
-var JoystickType;
-(function (JoystickType) {
-    JoystickType[JoystickType["JOYSTICK_TYPE_UNKNOWN"] = 0] = "JOYSTICK_TYPE_UNKNOWN";
-    JoystickType[JoystickType["JOYSTICK_TYPE_GAMECONTROLLER"] = 1] = "JOYSTICK_TYPE_GAMECONTROLLER";
-    JoystickType[JoystickType["JOYSTICK_TYPE_WHEEL"] = 2] = "JOYSTICK_TYPE_WHEEL";
-    JoystickType[JoystickType["JOYSTICK_TYPE_ARCADE_STICK"] = 3] = "JOYSTICK_TYPE_ARCADE_STICK";
-    JoystickType[JoystickType["JOYSTICK_TYPE_FLIGHT_STICK"] = 4] = "JOYSTICK_TYPE_FLIGHT_STICK";
-    JoystickType[JoystickType["JOYSTICK_TYPE_DANCE_PAD"] = 5] = "JOYSTICK_TYPE_DANCE_PAD";
-    JoystickType[JoystickType["JOYSTICK_TYPE_GUITAR"] = 6] = "JOYSTICK_TYPE_GUITAR";
-    JoystickType[JoystickType["JOYSTICK_TYPE_DRUM_KIT"] = 7] = "JOYSTICK_TYPE_DRUM_KIT";
-    JoystickType[JoystickType["JOYSTICK_TYPE_ARCADE_PAD"] = 8] = "JOYSTICK_TYPE_ARCADE_PAD";
-    JoystickType[JoystickType["JOYSTICK_TYPE_THROTTLE"] = 9] = "JOYSTICK_TYPE_THROTTLE";
-})(JoystickType || (JoystickType = {}));
-var JoystickPowerLevel;
-(function (JoystickPowerLevel) {
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_UNKNOWN"] = -1] = "JOYSTICK_POWER_UNKNOWN";
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_EMPTY"] = 0] = "JOYSTICK_POWER_EMPTY";
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_LOW"] = 1] = "JOYSTICK_POWER_LOW";
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MEDIUM"] = 2] = "JOYSTICK_POWER_MEDIUM";
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_FULL"] = 3] = "JOYSTICK_POWER_FULL";
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_WIRED"] = 4] = "JOYSTICK_POWER_WIRED";
-    JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MAX"] = 5] = "JOYSTICK_POWER_MAX";
-})(JoystickPowerLevel || (JoystickPowerLevel = {}));
-/**
- * 0代表 按下 左键 ，1 代表按下 滚轮 ，2 代表按下 右键
- */
-var MouseButton;
-(function (MouseButton) {
-    MouseButton[MouseButton["LEFT_BUTTON"] = 0] = "LEFT_BUTTON";
-    MouseButton[MouseButton["RIGHT_BUTTON"] = 2] = "RIGHT_BUTTON";
-})(MouseButton || (MouseButton = {}));
-var Mouse = /** @class */ (function () {
-    function Mouse() {
-    }
-    Mouse.Motion = function (ev) {
-        var e = new MouseMotionEvent(EventType.MOUSE_MOTION, ev.which, null, ev.pageX, ev.pageY, EventManager.Event.mouse_motion_event.x, EventManager.Event.mouse_motion_event.y);
-        EventManager.AddEventB(EventType.MOUSE_MOTION, e);
-    };
-    Mouse.ButtonDwon = function (ev) {
-        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
-        EventManager.AddEventB(EventType.MOUSE_BUTTON_DOWN, e);
-    };
-    Mouse.ButtonUp = function (ev) {
-        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
-        EventManager.AddEventB(EventType.MOUSE_BUTTON_UP, e);
-    };
-    Mouse.Wheel = function (ev) {
-        var e = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
-        EventManager.AddEventB(EventType.MOUSE_WHEEL, e);
-    };
-    return Mouse;
-}());
-var TouchDeviceType;
-(function (TouchDeviceType) {
-    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INVALID"] = -1] = "TOUCH_DEVICE_INVALID";
-    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_DIRECT"] = 0] = "TOUCH_DEVICE_DIRECT";
-    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_ABSOLUTE"] = 1] = "TOUCH_DEVICE_INDIRECT_ABSOLUTE";
-    TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INDIRECT_RELATIVE"] = 2] = "TOUCH_DEVICE_INDIRECT_RELATIVE"; /* trackpad with screen cursor-relative coordinates */
-})(TouchDeviceType || (TouchDeviceType = {}));
-var Finger = /** @class */ (function () {
-    function Finger(id, x, y, pressure) {
-        if (id === void 0) { id = null; }
-        if (x === void 0) { x = null; }
-        if (y === void 0) { y = null; }
-        if (pressure === void 0) { pressure = null; }
-        this.id = null;
-        this.x = null;
-        this.y = null;
-        this.pressure = null;
-        this.id = id;
-        this.x = x;
-        this.y = y;
-        this.pressure = pressure;
-    }
-    return Finger;
-}());
-var FingerTouch = /** @class */ (function () {
-    function FingerTouch() {
-    }
-    /**
-     *触摸开始
-     */
-    FingerTouch.Start = function (ev) {
-        var finger = ev.touches[ev.touches.length];
-        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, finger.pageX, finger.pageY, null, null, finger.force);
-        EventManager.AddEventB(EventType.FINGER_DOWN, e);
-    };
-    /**
-     * 移动
-     */
-    FingerTouch.Motion = function (ev) {
-        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
-        EventManager.AddEventB(EventType.FINGER_DOWN, e);
-    };
-    /**
-     * 结束
-     */
-    FingerTouch.End = function (ev) {
-        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
-        EventManager.AddEventB(EventType.FINGER_DOWN, e);
-    };
-    return FingerTouch;
-}());
-function GetNumTouchDevices() {
-    return;
-}
-function GetTouchDevice(index) {
-    return;
-}
-function GetTouchDeviceType(touch_id) {
-    return;
-}
-function GetNumTouchFingers(touch_id) {
-    return;
-}
-function GetTouchFinger(touch_id, index) {
-    return;
-}
 var EventManager = /** @class */ (function () {
     function EventManager() {
         this.type = EventType.FIRST_EVENT; //EventType
@@ -929,41 +942,18 @@ var EventManager = /** @class */ (function () {
     EventManager.Event = new EventManager(); //
     return EventManager;
 }());
-var Layer = /** @class */ (function () {
-    /**
-     *
-     * @param scene 图层所在场景，默认null
-     * @param layer_id 图层id
-     * @param width 图层宽
-     * @param height 图层高
-     */
-    function Layer(scene, layer_id, width, height) {
-        if (scene === void 0) { scene = null; }
-        if (layer_id === void 0) { layer_id = "layer"; }
-        if (width === void 0) { width = window.innerWidth; }
-        if (height === void 0) { height = window.innerHeight; }
-        this.canvas = document.createElement("canvas");
-        this.canvas.setAttribute("id", layer_id);
-        this.canvas.setAttribute("width", width.toString());
-        this.canvas.setAttribute("height", height.toString());
-        this.canvas.setAttribute("style", "position: absolute");
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
-        if (scene) {
-            this.canvas.setAttribute("id", "layer" + scene.GetLayerNumber().toString());
-            scene.AddLayer(this);
-        }
+var Rect = /** @class */ (function () {
+    function Rect(x, y, w, h) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
+        if (w === void 0) { w = 0; }
+        if (h === void 0) { h = 0; }
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
     }
-    /**
-     *
-     * @param id 设置图层的id
-     */
-    Layer.prototype.SetLayerId = function (id) { this.canvas.setAttribute("id", id); };
-    /**
-     * 获取图层的画布
-     */
-    Layer.prototype.GetCanvas = function () { return this.canvas; };
-    return Layer;
+    return Rect;
 }());
 var Path = /** @class */ (function () {
     function Path(parameters) {
@@ -1036,19 +1026,121 @@ var Path = /** @class */ (function () {
     Path.prototype.DeletePoint = function (index) { this.x.splice(index, 1); this.y.splice(index, 1); };
     return Path;
 }());
-var Rect = /** @class */ (function () {
-    function Rect(x, y, w, h) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        if (w === void 0) { w = 0; }
-        if (h === void 0) { h = 0; }
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+var Layer = /** @class */ (function () {
+    /**
+     *
+     * @param scene 图层所在场景，默认null
+     * @param layer_id 图层id
+     * @param width 图层宽
+     * @param height 图层高
+     */
+    function Layer(scene, layer_id, width, height) {
+        if (scene === void 0) { scene = null; }
+        if (layer_id === void 0) { layer_id = "layer"; }
+        if (width === void 0) { width = window.innerWidth; }
+        if (height === void 0) { height = window.innerHeight; }
+        this.canvas = document.createElement("canvas");
+        this.canvas.setAttribute("id", layer_id);
+        this.canvas.setAttribute("width", width.toString());
+        this.canvas.setAttribute("height", height.toString());
+        this.canvas.setAttribute("style", "position: absolute");
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+        if (scene) {
+            this.canvas.setAttribute("id", "layer" + scene.GetLayerNumber().toString());
+            scene.AddLayer(this);
+        }
     }
-    return Rect;
+    /**
+     *
+     * @param id 设置图层的id
+     */
+    Layer.prototype.SetLayerId = function (id) { this.canvas.setAttribute("id", id); };
+    /**
+     * 获取图层的画布
+     */
+    Layer.prototype.GetCanvas = function () { return this.canvas; };
+    return Layer;
 }());
+var Scene = /** @class */ (function () {
+    function Scene(scene_id) {
+        if (scene_id === void 0) { scene_id = "scene"; }
+        this.layers = [];
+        this.div = document.createElement("div");
+        this.div.setAttribute("id", scene_id);
+        //document.body.insertBefore(this.div,document.body.lastChild);
+        document.body.appendChild(this.div);
+    }
+    /**
+     * 获取场景div
+     */
+    Scene.prototype.GetDiv = function () { return this.div; };
+    /**
+     * 获取场景图层中的画布
+     *
+     * @param index 索引，要获取的图层画布索引
+     */
+    Scene.prototype.GetCanvas = function (index) {
+        if (index === void 0) { index = 0; }
+        return this.layers[index].GetCanvas();
+    };
+    /**
+     * 获取图层数量
+     */
+    Scene.prototype.GetLayerNumber = function () { return this.layers.length; };
+    /**
+     * 获取图层
+     *
+     * @param index 图层索引
+     */
+    Scene.prototype.GetLayer = function (index) {
+        if (index === void 0) { index = 0; }
+        return this.layers[index];
+    };
+    /**
+     * 获取所有图层
+     */
+    Scene.prototype.GetLayers = function () { return this.layers; };
+    /**
+     * 给场景添加图层
+     *
+     * @param layer 要添加的图层
+     */
+    Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
+    return Scene;
+}());
+var GL;
+(function (GL) {
+    var Scene = /** @class */ (function () {
+        function Scene(scene_id, width, height) {
+            if (scene_id === void 0) { scene_id = "scene"; }
+            if (width === void 0) { width = window.innerWidth; }
+            if (height === void 0) { height = window.innerHeight; }
+            this.div = document.createElement("div");
+            this.div.setAttribute("id", scene_id);
+            //document.body.insertBefore(this.div,document.body.lastChild);
+            document.body.appendChild(this.div);
+            this.canvas = document.createElement("canvas");
+            this.canvas.setAttribute("id", "glcanvas");
+            this.canvas.setAttribute("width", width.toString());
+            this.canvas.setAttribute("height", height.toString());
+            this.canvas.setAttribute("style", "position: absolute");
+            this.div.appendChild(this.canvas);
+        }
+        /**
+         * 获取场景div
+         */
+        Scene.prototype.GetDiv = function () { return this.div; };
+        /**
+         * 获取场景图层中的画布
+         *
+         * @param index 索引，要获取的图层画布索引
+         */
+        Scene.prototype.GetCanvas = function () { return this.canvas; };
+        return Scene;
+    }());
+    GL.Scene = Scene;
+})(GL || (GL = {}));
 var Renderer = /** @class */ (function () {
     /**
      *
@@ -1579,85 +1671,6 @@ var GL;
         return Shader;
     }());
 })(GL || (GL = {}));
-var Scene = /** @class */ (function () {
-    function Scene(scene_id) {
-        if (scene_id === void 0) { scene_id = "scene"; }
-        this.layers = [];
-        this.div = document.createElement("div");
-        this.div.setAttribute("id", scene_id);
-        //document.body.insertBefore(this.div,document.body.lastChild);
-        document.body.appendChild(this.div);
-    }
-    /**
-     * 获取场景div
-     */
-    Scene.prototype.GetDiv = function () { return this.div; };
-    /**
-     * 获取场景图层中的画布
-     *
-     * @param index 索引，要获取的图层画布索引
-     */
-    Scene.prototype.GetCanvas = function (index) {
-        if (index === void 0) { index = 0; }
-        return this.layers[index].GetCanvas();
-    };
-    /**
-     * 获取图层数量
-     */
-    Scene.prototype.GetLayerNumber = function () { return this.layers.length; };
-    /**
-     * 获取图层
-     *
-     * @param index 图层索引
-     */
-    Scene.prototype.GetLayer = function (index) {
-        if (index === void 0) { index = 0; }
-        return this.layers[index];
-    };
-    /**
-     * 获取所有图层
-     */
-    Scene.prototype.GetLayers = function () { return this.layers; };
-    /**
-     * 给场景添加图层
-     *
-     * @param layer 要添加的图层
-     */
-    Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
-    return Scene;
-}());
-var GL;
-(function (GL) {
-    var Scene = /** @class */ (function () {
-        function Scene(scene_id, width, height) {
-            if (scene_id === void 0) { scene_id = "scene"; }
-            if (width === void 0) { width = window.innerWidth; }
-            if (height === void 0) { height = window.innerHeight; }
-            this.div = document.createElement("div");
-            this.div.setAttribute("id", scene_id);
-            //document.body.insertBefore(this.div,document.body.lastChild);
-            document.body.appendChild(this.div);
-            this.canvas = document.createElement("canvas");
-            this.canvas.setAttribute("id", "glcanvas");
-            this.canvas.setAttribute("width", width.toString());
-            this.canvas.setAttribute("height", height.toString());
-            this.canvas.setAttribute("style", "position: absolute");
-            this.div.appendChild(this.canvas);
-        }
-        /**
-         * 获取场景div
-         */
-        Scene.prototype.GetDiv = function () { return this.div; };
-        /**
-         * 获取场景图层中的画布
-         *
-         * @param index 索引，要获取的图层画布索引
-         */
-        Scene.prototype.GetCanvas = function () { return this.canvas; };
-        return Scene;
-    }());
-    GL.Scene = Scene;
-})(GL || (GL = {}));
 var Sprite = /** @class */ (function () {
     function Sprite(sprite_path) {
         this.image = new Image();
@@ -1740,7 +1753,7 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.MainLoop = function () {
         this.renderer.Clear();
-        this.renderer.DrawImageA(this.img, this.x, this.y,0);
+        this.renderer.DrawImageA(this.img, this.x, this.y);
         //console.log("mainloop");
         if (EventManager.WaitEvent()) {
             switch (EventManager.Event.type) {

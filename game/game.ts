@@ -17,7 +17,7 @@ class Game
 
     Start()
     {
-        this.img.src = "./asset/avatar/男剑士/待机、走路/右侧1.png";
+        this.img.src = "./asset/image/avatar/男剑士/待机、走路/右侧1.png";
         this.MainLoop();
     }
 
