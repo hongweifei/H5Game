@@ -281,21 +281,33 @@ var FingerTouch = /** @class */ (function () {
     FingerTouch.Start = function (ev) {
         var finger = ev.touches[ev.touches.length];
         var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, finger.pageX, finger.pageY, null, null, finger.force);
+<<<<<<< HEAD
         EventManager.Event.AddEventB(EventType.FINGER_DOWN, e);
+=======
+        EventManager.AddEventB(EventType.FINGER_DOWN, e);
+>>>>>>> 468af74d7185a94437e1fb72a3358d624478f4ef
     };
     /**
      * 移动
      */
     FingerTouch.Motion = function (ev) {
         var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
+<<<<<<< HEAD
         EventManager.Event.AddEventB(EventType.FINGER_DOWN, e);
+=======
+        EventManager.AddEventB(EventType.FINGER_DOWN, e);
+>>>>>>> 468af74d7185a94437e1fb72a3358d624478f4ef
     };
     /**
      * 结束
      */
     FingerTouch.End = function (ev) {
         var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
+<<<<<<< HEAD
         EventManager.Event.AddEventB(EventType.FINGER_DOWN, e);
+=======
+        EventManager.AddEventB(EventType.FINGER_DOWN, e);
+>>>>>>> 468af74d7185a94437e1fb72a3358d624478f4ef
     };
     return FingerTouch;
 }());
@@ -327,6 +339,7 @@ var Mouse = /** @class */ (function () {
     }
     Mouse.Motion = function (ev) {
         var e = new MouseMotionEvent(EventType.MOUSE_MOTION, ev.which, null, ev.pageX, ev.pageY, EventManager.Event.mouse_motion_event.x, EventManager.Event.mouse_motion_event.y);
+<<<<<<< HEAD
         EventManager.Event.AddEventB(EventType.MOUSE_MOTION, e);
     };
     Mouse.ButtonDwon = function (ev) {
@@ -340,6 +353,21 @@ var Mouse = /** @class */ (function () {
     Mouse.Wheel = function (ev) {
         var e = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
         EventManager.Event.AddEventB(EventType.MOUSE_WHEEL, e);
+=======
+        EventManager.AddEventB(EventType.MOUSE_MOTION, e);
+    };
+    Mouse.ButtonDwon = function (ev) {
+        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
+        EventManager.AddEventB(EventType.MOUSE_BUTTON_DOWN, e);
+    };
+    Mouse.ButtonUp = function (ev) {
+        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
+        EventManager.AddEventB(EventType.MOUSE_BUTTON_UP, e);
+    };
+    Mouse.Wheel = function (ev) {
+        var e = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
+        EventManager.AddEventB(EventType.MOUSE_WHEEL, e);
+>>>>>>> 468af74d7185a94437e1fb72a3358d624478f4ef
     };
     return Mouse;
 }());
