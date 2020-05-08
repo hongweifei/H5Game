@@ -207,7 +207,7 @@ class Keyboard
     static KeyDown(this:Window,ev:KeyboardEvent)
     {
         const e = new _KeyboardEvent_(EventType.KEY_DOWN,null,ev.keyCode);
-        EventManager.AddEventB(EventType.KEY_DOWN,e);
+        EventManager.Event.AddEventB(EventType.KEY_DOWN,e);
     }
 
     static KeyPress(){}
@@ -215,6 +215,6 @@ class Keyboard
     static KeyUp(this:Window,ev:KeyboardEvent)
     {
         const e = new _KeyboardEvent_(EventType.KEY_UP,null,ev.keyCode);
-        EventManager.AddEventB(EventType.KEY_UP,e);
+        EventManager.Event.AddEventB(EventType.KEY_UP,e);
     }
 }

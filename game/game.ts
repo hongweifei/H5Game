@@ -4,6 +4,7 @@ class Game
 {
     scene:Scene;
     renderer:Renderer;
+    event:EventManaget;
     img = new Image()
     x = 0;
     y = 0;
@@ -13,11 +14,12 @@ class Game
         this.scene = new Scene("scened");
         this.scene.AddLayer(new Layer(null,"layer1"));
         this.renderer = new Renderer(this.scene);
+        this.event = new EventManager();
     }
 
     Start()
     {
-        this.img.src = "./asset/avatar/男剑士/待机、走路/右侧1.png";
+        this.img.src = "./asset/image/avatar/男剑士/待机、走路/右侧1.png";
         this.MainLoop();
     }
 
@@ -27,23 +29,23 @@ class Game
         this.renderer.DrawImageA(this.img,this.x,this.y);
 
         //console.log("mainloop");
-        if (EventManager.WaitEvent())
+        if (this.event.WaitEvent())
         {
-            switch (EventManager.Event.type)
+            switch (this.event.type)
             {
                 case EventType.MOUSE_MOTION:
-                    console.log(EventManager.Event.mouse_motion_event.x);
-                    console.log(EventManager.Event.mouse_motion_event.y);
+                    console.log(this.event.mouse_motion_event.x);
+                    console.log(this.event.mouse_motion_event.y);
                     break;
                 
                 case EventType.KEY_DOWN:
-                    if (EventManager.Event.keyboard_event.key_code == Keyboard.W)
+                    if (this.event.keyboard_event.key_code == Keyboard.W)
                         this.y -= 10;
-                    if (EventManager.Event.keyboard_event.key_code == Keyboard.S)
+                    if (this.event.keyboard_event.key_code == Keyboard.S)
                         this.y += 10;
-                    if (EventManager.Event.keyboard_event.key_code == Keyboard.A)
+                    if (this.event.keyboard_event.key_code == Keyboard.A)
                         this.x -= 10;
-                    if (EventManager.Event.keyboard_event.key_code == Keyboard.D)
+                    if (this.event.keyboard_event.key_code == Keyboard.D)
                         this.x += 10;
                     break;
                 

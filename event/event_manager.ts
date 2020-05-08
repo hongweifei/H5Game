@@ -51,12 +51,6 @@ enum EventType
     USER_EVENT
 }
 
-class Queue<T>
-{
-	private data:Array<T> = new Array<T>();
-	push = (item:T) => this.data.push(item);
-	pop = (): T | undefined => this.data.shift();
-}
 
 class CommonEvent
 {
@@ -313,6 +307,7 @@ class EventManager
     private queue:Queue<EventType> = new Queue<EventType>();
     private queue_event:Queue<CommonEvent> = new Queue<CommonEvent>();
 
+    
     constructor()
     {
         addEventListener("mousemove",Mouse.Motion);
@@ -327,49 +322,50 @@ class EventManager
         addEventListener("keypress",Keyboard.KeyPress);
     }
 
+
     /**
      * 
      * @param event 要送入事件队列的事件
      */
-    static AddEventA(event:EventManager)
+    AddEventA(event:EventManager)
     {
-        EventManager.Event.queue.push(event.type);
+        this.queue.push(event.type);
         switch (event.type)
         {
             case EventType.WINDOW_EVENT:
-                EventManager.Event.queue_event.push(event.window_event);
+                this.queue_event.push(event.window_event);
                 break;
 
             case EventType.DISPLAY:
-                EventManager.Event.queue_event.push(event.display_event);
+                this.queue_event.push(event.display_event);
                 break;
 
             case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
-                EventManager.Event.queue_event.push(event.keyboard_event) ;
+                this.queue_event.push(event.keyboard_event) ;
                 break
 
             case EventType.MOUSE_MOTION:
-                EventManager.Event.queue_event.push(event.mouse_motion_event);
+                this.queue_event.push(event.mouse_motion_event);
                 break;
 
             case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
-                EventManager.Event.queue_event.push(event.mouse_button_event);
+                this.queue_event.push(event.mouse_button_event);
                 break;
 
             case EventType.MOUSE_WHEEL:
-                EventManager.Event.queue_event.push(event.mouse_wheel_event);
+                this.queue_event.push(event.mouse_wheel_event);
                 break;
 
             case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
-                EventManager.Event.queue_event.push(event.finger_touch_event);
+                this.queue_event.push(event.finger_touch_event);
                 break;
 
             case EventType.USER_EVENT:
-                EventManager.Event.queue_event.push(event.user_event);
+                this.queue_event.push(event.user_event);
                 break;
 
             default:
-                EventManager.Event.queue_event.push(event.common_event);
+                this.queue_event.push(event.common_event);
                 break;
         }
     }
@@ -380,7 +376,7 @@ class EventManager
      * @param type 事件类型
      * @param event 事件类型对应的事件
      */
-    static AddEventB(type:EventType,event)
+    AddEventB(type:EventType,event)
     {
         const e = new EventManager();
         e.type = type;
@@ -422,7 +418,7 @@ class EventManager
                 e.common_event = event;
                 break;
         }
-        EventManager.AddEventA(e);
+        this.AddEventA(e);
     }
 
     /**
@@ -430,10 +426,10 @@ class EventManager
      * 
      * @param event 要送入事件队列的用户事件
      */
-    static PushEvent(event:EventManager)
+    PushEvent(event:EventManager)
     {
-        EventManager.Event.queue.push(EventType.USER_EVENT);
-        EventManager.Event.queue_event.push(event.user_event);
+        this.queue.push(EventType.USER_EVENT);
+        this.queue_event.push(event.user_event);
     }
 
     private ClearEvent()
@@ -521,54 +517,104 @@ class EventManager
     /**
      * 等待事件，若有事件则返回真
      */
-    static WaitEvent() : boolean
+    WaitEvent() : boolean
     {
         const type = EventManager.Event.queue.pop();
         if (type != undefined)
         {
-            EventManager.Event.ClearEvent();
-            EventManager.Event.type = type;
+            this.ClearEvent();
+            this.type = type;
             switch (type)
             {
                 case EventType.WINDOW_EVENT:
-                    EventManager.Event.window_event = EventManager.Event.queue_event.pop() as WindowEvent;
+                    this.window_event = EventManager.Event.queue_event.pop() as WindowEvent;
                     break;
 
                 case EventType.DISPLAY:
-                    EventManager.Event.display_event = EventManager.Event.queue_event.pop() as DisplayEvent;
+                    this.display_event = EventManager.Event.queue_event.pop() as DisplayEvent;
                     break;
 
                 case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
-                    EventManager.Event.keyboard_event = EventManager.Event.queue_event.pop() as _KeyboardEvent_;
+                    this.keyboard_event = EventManager.Event.queue_event.pop() as _KeyboardEvent_;
                     break
 
                 case EventType.MOUSE_MOTION:
-                    EventManager.Event.mouse_motion_event = EventManager.Event.queue_event.pop() as MouseMotionEvent;
+                    this.mouse_motion_event = EventManager.Event.queue_event.pop() as MouseMotionEvent;
                     break;
 
                 case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
-                    EventManager.Event.mouse_button_event = EventManager.Event.queue_event.pop() as MouseButtonEvent;
+                    this.mouse_button_event = EventManager.Event.queue_event.pop() as MouseButtonEvent;
                     break;
 
                 case EventType.MOUSE_WHEEL:
-                    EventManager.Event.mouse_wheel_event = EventManager.Event.queue_event.pop() as _MouseWheelEvent_;
+                    this.mouse_wheel_event = EventManager.Event.queue_event.pop() as _MouseWheelEvent_;
                     break;
 
                 case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
-                    EventManager.Event.finger_touch_event = EventManager.Event.queue_event.pop() as FingerTouchEvent;
+                    this.finger_touch_event = EventManager.Event.queue_event.pop() as FingerTouchEvent;
                     break;
 
                 case EventType.USER_EVENT:
-                    EventManager.Event.user_event = EventManager.Event.queue_event.pop() as User_Event;
+                    this.user_event = EventManager.Event.queue_event.pop() as User_Event;
                     break;
 
                 default:
-                    EventManager.Event.common_event = EventManager.Event.queue_event.pop();
+                    this.common_event = EventManager.Event.queue_event.pop();
                     break;
             }
 
             return true;
         }
+
+
+        /*
+        const type = this.queue.pop();
+        if (type != undefined)
+        {
+            this.ClearEvent();
+            this.type = type;
+            switch (type)
+            {
+                case EventType.WINDOW_EVENT:
+                    this.window_event = this.queue_event.pop() as WindowEvent;
+                    break;
+
+                case EventType.DISPLAY:
+                    this.display_event = this.queue_event.pop() as DisplayEvent;
+                    break;
+
+                case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
+                    this.keyboard_event = this.queue_event.pop() as _KeyboardEvent_;
+                    break
+
+                case EventType.MOUSE_MOTION:
+                    this.mouse_motion_event = this.queue_event.pop() as MouseMotionEvent;
+                    break;
+
+                case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
+                    this.mouse_button_event = this.queue_event.pop() as MouseButtonEvent;
+                    break;
+
+                case EventType.MOUSE_WHEEL:
+                    this.mouse_wheel_event = this.queue_event.pop() as _MouseWheelEvent_;
+                    break;
+
+                case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
+                    this.finger_touch_event = this.queue_event.pop() as FingerTouchEvent;
+                    break;
+
+                case EventType.USER_EVENT:
+                    this.user_event = this.queue_event.pop() as User_Event;
+                    break;
+
+                default:
+                    this.common_event = this.queue_event.pop();
+                    break;
+            }
+
+            return true;
+        }
+        */
 
         return false;
     }
