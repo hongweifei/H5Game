@@ -278,6 +278,7 @@ var QueueB = /** @class */ (function () {
 var ArrayQueue = /** @class */ (function () {
     function ArrayQueue() {
         var _this = this;
+        this.data = new Array();
         this.push = function (item) { return _this.data.push(item); };
         this.pop = function () { return _this.data.shift(); };
     }

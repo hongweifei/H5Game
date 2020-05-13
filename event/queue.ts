@@ -84,7 +84,7 @@ class QueueB<T>
 
 class ArrayQueue<T>
 {
-	private data: Array<T>;
+	private data: Array<T> = new Array<T>();
 	push = (item: T) => this.data.push(item);
 	pop = (): T | undefined => this.data.shift();
 }
