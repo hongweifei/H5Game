@@ -248,6 +248,41 @@ var Queue = /** @class */ (function () {
     };
     return Queue;
 }());
+var QueueB = /** @class */ (function () {
+    function QueueB() {
+        this.next = this;
+        this.count = 0;
+    }
+    QueueB.prototype.push = function (item) {
+        var q = new QueueB();
+        q.data = item;
+        q.next = this;
+        if (this.count == 0)
+            this.next = q;
+        else {
+            var last_one = this;
+            for (var i = 0; i < this.count; i++) {
+                last_one = last_one.next;
+            }
+            last_one.next = q;
+        }
+    };
+    QueueB.prototype.pop = function () {
+        var q = new QueueB();
+        q = this.next;
+        this.next = this.next.next;
+        return q.data;
+    };
+    return QueueB;
+}());
+var ArrayQueue = /** @class */ (function () {
+    function ArrayQueue() {
+        var _this = this;
+        this.push = function (item) { return _this.data.push(item); };
+        this.pop = function () { return _this.data.shift(); };
+    }
+    return ArrayQueue;
+}());
 var TouchDeviceType;
 (function (TouchDeviceType) {
     TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INVALID"] = -1] = "TOUCH_DEVICE_INVALID";
