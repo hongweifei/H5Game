@@ -232,12 +232,20 @@ var Queue = /** @class */ (function () {
         this.next = this;
     }
     Queue.prototype.push = function (item) {
-        var q = new Queue();
+        /*
+        let q:Queue<T> = new Queue<T>();
         q.data = item;
+
         q.prev = this.prev;
         q.next = this;
+
         this.prev.next = q;
         this.prev = q;
+        */
+        this.prev.next = new Queue();
+        this.prev.next.data = item;
+        this.prev = this.prev.next;
+        this.prev.prev = null;
     };
     Queue.prototype.pop = function () {
         var q = new Queue();

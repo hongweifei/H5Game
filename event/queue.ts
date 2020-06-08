@@ -15,6 +15,7 @@ class Queue<T>
 
 	push(item:T)
 	{
+		/*
 		let q:Queue<T> = new Queue<T>();
 		q.data = item;
 
@@ -23,6 +24,13 @@ class Queue<T>
 
 		this.prev.next = q;
 		this.prev = q;
+		*/
+
+		this.prev.next = new Queue<T>();
+		this.prev.next.data = item;
+
+		this.prev = this.prev.next;
+		this.prev.prev = null;
 	}
 
 	pop() : T
