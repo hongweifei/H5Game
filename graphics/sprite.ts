@@ -5,14 +5,14 @@ class Sprite
     protected width:number
     protected height:number
 
-    protected rect:Rect[] = []
+    protected rect:Rect[] = null;
 
     constructor(sprite_path:string)
     {
         this.image.src = sprite_path;
         this.width = this.image.width;
         this.height = this.image.height;
-        this.rect.push(new Rect(0,0,this.width,this.height));
+        //this.rect.push(new Rect(0,0,this.width,this.height));
     }
 
     /**
@@ -53,6 +53,7 @@ class Sprite
     InitRect(start_x:number,start_y:number,w:number,h:number,
         horizontal:number,vertical:number)
     {
+        this.rect = [];
         this.width = w;
         this.height = h;
 
@@ -60,7 +61,7 @@ class Sprite
         {
             for (let j = 0; j < horizontal; j++)
             {
-                this.rect[i * horizontal + j] = new Rect(start_x + w * j,start_y + h * j,w,h);
+                this.rect.push(new Rect(start_x + w * j,start_y + h * i,w,h));
             }
         }
     }
@@ -78,7 +79,14 @@ class Sprite
     Render(renderer:Renderer,x:number,y:number,
     w:number = this.width,h:number = this.height,index:number = 0)
     {
-        renderer.DrawImageC(this.image,this.rect[index].x,this.rect[index].y,
-        this.rect[index].w,this.rect[index].h,x,y,w,h);
+        if (this.rect != null)
+        {
+            renderer.DrawImageC(this.image,this.rect[index].x,this.rect[index].y,
+            this.rect[index].w,this.rect[index].h,x,y,w,h);
+        }
+        else
+        {
+            renderer.DrawImageB(this.imgae,x,y,this.width,this.height,index);
+        }
     }
 }
