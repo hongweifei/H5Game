@@ -65,6 +65,10 @@ class Game
                         case Keyboard_KaiOS.ArrowRight:
                             this.x += 10;
                             break;
+                        case Keyboard_KaiOS.BACKSPACE:
+                            if (confirm('是否退出游戏?'))
+                                window.close();
+                            break;
 
                         default:
                             console.log("KeyDown");

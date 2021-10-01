@@ -2,10 +2,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -225,6 +227,41 @@ var Keyboard = /** @class */ (function () {
     /** 与 Insert 的键控代码值(45)关联的常数。*/
     Keyboard.INSERT = 45;
     return Keyboard;
+}());
+var Keyboard_KaiOS = /** @class */ (function () {
+    function Keyboard_KaiOS() {
+    }
+    Keyboard_KaiOS.KeyDown = function (ev) {
+        var e = new _KeyboardEvent_(EventType.KEY_DOWN, null, ev.key);
+        EventManager.Event.AddEventB(EventType.KEY_DOWN, e);
+    };
+    Keyboard_KaiOS.KeyPress = function () { };
+    Keyboard_KaiOS.KeyUp = function (ev) {
+        var e = new _KeyboardEvent_(EventType.KEY_UP, null, ev.key);
+        EventManager.Event.AddEventB(EventType.KEY_UP, e);
+    };
+    Keyboard_KaiOS.ArrowUp = "ArrowUp";
+    Keyboard_KaiOS.ArrowDown = "ArrowDown";
+    Keyboard_KaiOS.ArrowLeft = "ArrowLeft";
+    Keyboard_KaiOS.ArrowRight = "ArrowRight";
+    Keyboard_KaiOS.SoftLeft = "SoftLeft";
+    Keyboard_KaiOS.SoftRight = "SoftRight";
+    Keyboard_KaiOS.EndCall = "EndCall";
+    Keyboard_KaiOS.ENTER = "Enter";
+    Keyboard_KaiOS.BACKSPACE = "Backspace";
+    Keyboard_KaiOS.NUMBER_0 = "0";
+    Keyboard_KaiOS.NUMBER_1 = "1";
+    Keyboard_KaiOS.NUMBER_2 = "2";
+    Keyboard_KaiOS.NUMBER_3 = "3";
+    Keyboard_KaiOS.NUMBER_4 = "4";
+    Keyboard_KaiOS.NUMBER_5 = "5";
+    Keyboard_KaiOS.NUMBER_6 = "6";
+    Keyboard_KaiOS.NUMBER_7 = "7";
+    Keyboard_KaiOS.NUMBER_8 = "8";
+    Keyboard_KaiOS.NUMBER_9 = "9";
+    Keyboard_KaiOS.MULTIPLY = "*";
+    Keyboard_KaiOS.SHARP = "#";
+    return Keyboard_KaiOS;
 }());
 var Queue = /** @class */ (function () {
     function Queue() {
@@ -784,8 +821,13 @@ var EventManager = /** @class */ (function () {
         addEventListener("keydown", Keyboard.KeyDown);
         addEventListener("keyup", Keyboard.KeyUp);
         addEventListener("keypress", Keyboard.KeyPress);
+        //kaios
+        addEventListener("keydown", Keyboard_KaiOS.KeyDown);
+        addEventListener("keyup", Keyboard_KaiOS.KeyUp);
+        addEventListener("keypress", Keyboard_KaiOS.KeyPress);
     }
     /**
+     * 需创建EventManager对象
      *
      * @param event 要送入事件队列的事件
      */
@@ -823,6 +865,7 @@ var EventManager = /** @class */ (function () {
     };
     /**
      * 送事件入事件队列
+     * 不需创建EventManager对象
      *
      * @param type 事件类型
      * @param event 事件类型对应的事件
@@ -1766,11 +1809,11 @@ var GL;
 var Sprite = /** @class */ (function () {
     function Sprite(sprite_path) {
         this.image = new Image();
-        this.rect = [];
+        this.rect = null;
         this.image.src = sprite_path;
         this.width = this.image.width;
         this.height = this.image.height;
-        this.rect.push(new Rect(0, 0, this.width, this.height));
+        //this.rect.push(new Rect(0,0,this.width,this.height));
     }
     /**
      *
@@ -1804,11 +1847,12 @@ var Sprite = /** @class */ (function () {
      * @param vertical 列数
      */
     Sprite.prototype.InitRect = function (start_x, start_y, w, h, horizontal, vertical) {
+        this.rect = [];
         this.width = w;
         this.height = h;
         for (var i = 0; i < vertical; i++) {
             for (var j = 0; j < horizontal; j++) {
-                this.rect[i * horizontal + j] = new Rect(start_x + w * j, start_y + h * j, w, h);
+                this.rect.push(new Rect(start_x + w * j, start_y + h * i, w, h));
             }
         }
     };
@@ -1826,7 +1870,12 @@ var Sprite = /** @class */ (function () {
         if (w === void 0) { w = this.width; }
         if (h === void 0) { h = this.height; }
         if (index === void 0) { index = 0; }
-        renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
+        if (this.rect != null) {
+            renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
+        }
+        else {
+            renderer.DrawImageB(this.imgae, x, y, this.width, this.height, index);
+        }
     };
     return Sprite;
 }());
@@ -1835,7 +1884,7 @@ var Game = /** @class */ (function () {
         this.img = new Image();
         this.x = 0;
         this.y = 0;
-        this.scene = new Scene("scened");
+        this.scene = new Scene("scene");
         this.scene.AddLayer(new Layer(null, "layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
@@ -1851,18 +1900,44 @@ var Game = /** @class */ (function () {
         if (this.event.WaitEvent()) {
             switch (this.event.type) {
                 case EventType.MOUSE_MOTION:
-                    console.log(this.event.mouse_motion_event.x);
-                    console.log(this.event.mouse_motion_event.y);
+                    //console.log(this.event.mouse_motion_event.x);
+                    //console.log(this.event.mouse_motion_event.y);
                     break;
                 case EventType.KEY_DOWN:
-                    if (this.event.keyboard_event.key_code == Keyboard.W)
-                        this.y -= 10;
-                    if (this.event.keyboard_event.key_code == Keyboard.S)
-                        this.y += 10;
-                    if (this.event.keyboard_event.key_code == Keyboard.A)
-                        this.x -= 10;
-                    if (this.event.keyboard_event.key_code == Keyboard.D)
-                        this.x += 10;
+                    switch (this.event.keyboard_event.key_code) {
+                        case Keyboard.W:
+                            this.y -= 10;
+                            break;
+                        case Keyboard.S:
+                            this.y += 10;
+                            break;
+                        case Keyboard.A:
+                            this.x -= 10;
+                            break;
+                        case Keyboard.D:
+                            this.x += 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowUp:
+                            this.y -= 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowDown:
+                            this.y += 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowLeft:
+                            this.x -= 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowRight:
+                            this.x += 10;
+                            break;
+                        case Keyboard_KaiOS.BACKSPACE:
+                            if (confirm('是否退出游戏?'))
+                                window.close();
+                            break;
+                        default:
+                            console.log("KeyDown");
+                            console.log("KeyCode:" + this.event.keyboard_event.key_code);
+                            break;
+                    }
                     break;
                 default:
                     break;
