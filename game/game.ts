@@ -11,7 +11,7 @@ class Game
 
     constructor()
     {
-        this.scene = new Scene("scened");
+        this.scene = new Scene("scene");
         this.scene.AddLayer(new Layer(null,"layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
@@ -34,19 +34,43 @@ class Game
             switch (this.event.type)
             {
                 case EventType.MOUSE_MOTION:
-                    console.log(this.event.mouse_motion_event.x);
-                    console.log(this.event.mouse_motion_event.y);
+                    //console.log(this.event.mouse_motion_event.x);
+                    //console.log(this.event.mouse_motion_event.y);
                     break;
                 
                 case EventType.KEY_DOWN:
-                    if (this.event.keyboard_event.key_code == Keyboard.W)
-                        this.y -= 10;
-                    if (this.event.keyboard_event.key_code == Keyboard.S)
-                        this.y += 10;
-                    if (this.event.keyboard_event.key_code == Keyboard.A)
-                        this.x -= 10;
-                    if (this.event.keyboard_event.key_code == Keyboard.D)
-                        this.x += 10;
+                    switch (this.event.keyboard_event.key_code)
+                    {
+                        case Keyboard.W:
+                            this.y -= 10;
+                            break;
+                        case Keyboard.S:
+                            this.y += 10;
+                            break;
+                        case Keyboard.A:
+                            this.x -= 10;
+                            break;
+                        case Keyboard.D:
+                            this.x += 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowUp:
+                            this.y -= 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowDown:
+                            this.y += 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowLeft:
+                            this.x -= 10;
+                            break;
+                        case Keyboard_KaiOS.ArrowRight:
+                            this.x += 10;
+                            break;
+
+                        default:
+                            console.log("KeyDown");
+                            console.log("KeyCode:" + this.event.keyboard_event.key_code);
+                            break;
+                    }
                     break;
                 
                 default:
@@ -57,3 +81,16 @@ class Game
         requestAnimationFrame(this.MainLoop.bind(this));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
