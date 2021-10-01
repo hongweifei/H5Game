@@ -320,10 +320,16 @@ class EventManager
         addEventListener("keydown",Keyboard.KeyDown);
         addEventListener("keyup",Keyboard.KeyUp);
         addEventListener("keypress",Keyboard.KeyPress);
+
+        //KaiOS
+        addEventListener("keydown",Keyboard_KaiOS.KeyDown);
+        addEventListener("keyup",Keyboard_KaiOS.KeyUp);
+        addEventListener("keypress",Keyboard_KaiOS.KeyPress);
     }
 
 
     /**
+     * 需创建EventManager对象
      * 
      * @param event 要送入事件队列的事件
      */
@@ -372,6 +378,7 @@ class EventManager
 
     /**
      * 送事件入事件队列
+     * 不需创建EventManager对象
      * 
      * @param type 事件类型
      * @param event 事件类型对应的事件
