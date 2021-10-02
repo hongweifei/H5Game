@@ -662,6 +662,12 @@ var JoystickPowerLevel;
     JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_WIRED"] = 4] = "JOYSTICK_POWER_WIRED";
     JoystickPowerLevel[JoystickPowerLevel["JOYSTICK_POWER_MAX"] = 5] = "JOYSTICK_POWER_MAX";
 })(JoystickPowerLevel || (JoystickPowerLevel = {}));
+/// <reference path="queue.ts" />
+/// <reference path="mouse.ts" />
+/// <reference path="keyboard.ts" />
+/// <reference path="keyboard_kaios.ts" />
+/// <reference path="touch.ts" />
+/// <reference path="joy_stick.ts" />
 var EventType;
 (function (EventType) {
     /**< Unused (do not remove) */
@@ -1313,218 +1319,151 @@ var EventManager = /** @class */ (function () {
     EventManager.EVENT = new EventManager(); //
     return EventManager;
 }());
-var Rect = /** @class */ (function () {
-    function Rect(x, y, w, h) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        if (w === void 0) { w = 0; }
-        if (h === void 0) { h = 0; }
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-    }
-    return Rect;
-}());
-var Path = /** @class */ (function () {
-    function Path(parameters) {
-        this.start_x = 0;
-        this.start_y = 0;
-    }
-    /**
-     * 设置路径开始坐标
-     *
-     * @param x 路径起点横坐标
-     * @param y 路径起点纵坐标
-     */
-    Path.prototype.SetStartPoint = function (x, y) { this.start_x = x; this.start_y = y; };
-    /**
-     * 给路径添加点
-     *
-     * @param x 要添加的点的横坐标
-     * @param y 要添加的点的纵坐标
-     */
-    Path.prototype.AddPoint = function (x, y) { this.x.push(x); this.y.push(y); };
-    /**
-     * 在起点后插入一点
-     *
-     * @param x
-     * @param y
-     */
-    Path.prototype.UnshiftPoint = function (x, y) { this.x.unshift(x); this.y.unshift(y); };
-    /**
-     * 给路径插入点
-     *
-     * @param x 要插入的点的横坐标
-     * @param y 要插入的点的纵坐标
-     * @param index 要插入的索引
-     */
-    Path.prototype.InsertPoint = function (x, y, index) {
-        var points_x;
-        var points_y;
-        for (var i = index; i < this.x.length - index; i++) {
-            points_x.push(this.x[i]);
-            points_y.push(this.y[i]);
+var Flown;
+(function (Flown) {
+    var Rect = /** @class */ (function () {
+        function Rect(x, y, w, h) {
+            if (x === void 0) { x = 0; }
+            if (y === void 0) { y = 0; }
+            if (w === void 0) { w = 0; }
+            if (h === void 0) { h = 0; }
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
         }
-        this.x[index] = x;
-        this.y[index] = y;
-        for (var i = index + 1; i < this.x.length - index; i++) {
-            this.x[i] = points_x[i - (index + 1)];
-            this.y[i] = points_y[i - (index + 1)];
+        return Rect;
+    }());
+    Flown.Rect = Rect;
+})(Flown || (Flown = {}));
+var Flown;
+(function (Flown) {
+    var Path = /** @class */ (function () {
+        function Path(parameters) {
+            this.start_x = 0;
+            this.start_y = 0;
         }
-        this.x.push(points_x.pop());
-        this.y.push(points_y.pop());
-    };
-    /**
-     * 获取路径起点
-     */
-    Path.prototype.GetStartPoint = function () { var point = [this.start_x, this.start_y]; return point; };
-    /**
-     * 获取路径中的点，不包含起点
-     *
-     * @param index 索引
-     */
-    Path.prototype.GetPoint = function (index) { var point = [this.x[index], this.y[index]]; return point; };
-    /**
-     * 获取路径中点的数量
-     */
-    Path.prototype.GetSize = function () { return this.x.length + 1; };
-    /**
-     * 删除路径中的一个点
-     *
-     * @param index 要删除的点索引
-     */
-    Path.prototype.DeletePoint = function (index) { this.x.splice(index, 1); this.y.splice(index, 1); };
-    return Path;
-}());
-var Layer = /** @class */ (function () {
-    /**
-     *
-     * 网页可见区域宽： document.body.clientWidth
-     * 网页可见区域高： document.body.clientHeight
-     * 网页可见区域宽： document.body.offsetWidth (包括边线的宽)
-     * 网页可见区域高： document.body.offsetHeight (包括边线的高)
-     * 网页正文全文宽： document.body.scrollWidth
-     * 网页正文全文高： document.body.scrollHeight
-     * 网页被卷去的高： document.body.scrollTop
-     * 网页被卷去的左： document.body.scrollLeft
-     * 网页正文部分上： window.screenTop
-     * 网页正文部分左： window.screenLeft
-     * 屏幕分辨率的高： window.screen.height
-     * 屏幕分辨率的宽： window.screen.width
-     * 屏幕可用工作区高度： window.screen.availHeight
-     * 屏幕可用工作区宽度： window.screen.availWidth
-     *
-     *
-     * @param scene 图层所在场景，默认null
-     * @param layer_id 图层id
-     * @param width 图层宽
-     * @param height 图层高
-     */
-    function Layer(scene, layer_id, width, height) {
-        if (scene === void 0) { scene = null; }
-        if (layer_id === void 0) { layer_id = "layer"; }
-        if (width === void 0) { width = document.body.offsetWidth.toString(); }
-        if (height === void 0) { height = document.body.offsetHeight.toString(); }
-        if (height == document.body.offsetHeight.toString() && document.body.offsetHeight == 0)
-            height = document.body.clientHeight.toString();
-        this.canvas = document.createElement("canvas");
-        this.canvas.setAttribute("id", layer_id);
-        this.canvas.setAttribute("width", width);
-        this.canvas.setAttribute("height", height);
-        this.canvas.setAttribute("style", "position: absolute");
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
-        if (scene) {
-            this.canvas.setAttribute("id", "layer" + scene.GetLayerNumber().toString());
-            scene.AddLayer(this);
+        /**
+         * 设置路径开始坐标
+         *
+         * @param x 路径起点横坐标
+         * @param y 路径起点纵坐标
+         */
+        Path.prototype.SetStartPoint = function (x, y) { this.start_x = x; this.start_y = y; };
+        /**
+         * 给路径添加点
+         *
+         * @param x 要添加的点的横坐标
+         * @param y 要添加的点的纵坐标
+         */
+        Path.prototype.AddPoint = function (x, y) { this.x.push(x); this.y.push(y); };
+        /**
+         * 在起点后插入一点
+         *
+         * @param x
+         * @param y
+         */
+        Path.prototype.UnshiftPoint = function (x, y) { this.x.unshift(x); this.y.unshift(y); };
+        /**
+         * 给路径插入点
+         *
+         * @param x 要插入的点的横坐标
+         * @param y 要插入的点的纵坐标
+         * @param index 要插入的索引
+         */
+        Path.prototype.InsertPoint = function (x, y, index) {
+            var points_x;
+            var points_y;
+            for (var i = index; i < this.x.length - index; i++) {
+                points_x.push(this.x[i]);
+                points_y.push(this.y[i]);
+            }
+            this.x[index] = x;
+            this.y[index] = y;
+            for (var i = index + 1; i < this.x.length - index; i++) {
+                this.x[i] = points_x[i - (index + 1)];
+                this.y[i] = points_y[i - (index + 1)];
+            }
+            this.x.push(points_x.pop());
+            this.y.push(points_y.pop());
+        };
+        /**
+         * 获取路径起点
+         */
+        Path.prototype.GetStartPoint = function () { var point = [this.start_x, this.start_y]; return point; };
+        /**
+         * 获取路径中的点，不包含起点
+         *
+         * @param index 索引
+         */
+        Path.prototype.GetPoint = function (index) { var point = [this.x[index], this.y[index]]; return point; };
+        /**
+         * 获取路径中点的数量
+         */
+        Path.prototype.GetSize = function () { return this.x.length + 1; };
+        /**
+         * 删除路径中的一个点
+         *
+         * @param index 要删除的点索引
+         */
+        Path.prototype.DeletePoint = function (index) { this.x.splice(index, 1); this.y.splice(index, 1); };
+        return Path;
+    }());
+    Flown.Path = Path;
+})(Flown || (Flown = {}));
+/// <reference path="layer.ts" />
+var Flown;
+(function (Flown) {
+    var Scene = /** @class */ (function () {
+        function Scene(scene_id) {
+            if (scene_id === void 0) { scene_id = "scene"; }
+            this.layers = [];
+            this.div = document.createElement("div");
+            this.div.setAttribute("id", scene_id);
+            //this.div.setAttribute("style","clear:both");
+            //document.body.insertBefore(this.div,document.body.lastChild);
+            document.body.appendChild(this.div);
         }
-        /*
-        if(this.canvas.requestFullscreen)
-            this.canvas.requestFullscreen();
-        else if(this.canvas.webkitRequestFullScreen)
-            this.canvas.webkitRequestFullScreen();
-        else if(this.canvas.mozRequestFullScreen)
-            this.canvas.mozRequestFullScreen();
-        */
-    }
-    /**
-     *
-     * @param id 设置图层的id
-     */
-    Layer.prototype.SetLayerId = function (id) { this.canvas.setAttribute("id", id); };
-    /**
-     *
-     *
-     * @param width 要设置的width（宽度）
-     */
-    Layer.prototype.SetWidth = function (width) {
-        this.canvas.setAttribute("width", width);
-        this.width = this.canvas.width;
-    };
-    /**
-     *
-     *
-     * @param height 要设置的height（高度）
-     */
-    Layer.prototype.SetHeight = function (height) {
-        this.canvas.setAttribute("height", height);
-        this.height = this.canvas.height;
-    };
-    /**
-     * 获取图层的画布
-     */
-    Layer.prototype.GetCanvas = function () { return this.canvas; };
-    return Layer;
-}());
-var Scene = /** @class */ (function () {
-    function Scene(scene_id) {
-        if (scene_id === void 0) { scene_id = "scene"; }
-        this.layers = [];
-        this.div = document.createElement("div");
-        this.div.setAttribute("id", scene_id);
-        //this.div.setAttribute("style","clear:both");
-        //document.body.insertBefore(this.div,document.body.lastChild);
-        document.body.appendChild(this.div);
-    }
-    /**
-     * 获取场景div
-     */
-    Scene.prototype.GetDiv = function () { return this.div; };
-    /**
-     * 获取场景图层中的画布
-     *
-     * @param index 索引，要获取的图层画布索引
-     */
-    Scene.prototype.GetCanvas = function (index) {
-        if (index === void 0) { index = 0; }
-        return this.layers[index].GetCanvas();
-    };
-    /**
-     * 获取图层数量
-     */
-    Scene.prototype.GetLayerNumber = function () { return this.layers.length; };
-    /**
-     * 获取图层
-     *
-     * @param index 图层索引
-     */
-    Scene.prototype.GetLayer = function (index) {
-        if (index === void 0) { index = 0; }
-        return this.layers[index];
-    };
-    /**
-     * 获取所有图层
-     */
-    Scene.prototype.GetLayers = function () { return this.layers; };
-    /**
-     * 给场景添加图层
-     *
-     * @param layer 要添加的图层
-     */
-    Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
-    return Scene;
-}());
+        /**
+         * 获取场景div
+         */
+        Scene.prototype.GetDiv = function () { return this.div; };
+        /**
+         * 获取场景图层中的画布
+         *
+         * @param index 索引，要获取的图层画布索引
+         */
+        Scene.prototype.GetCanvas = function (index) {
+            if (index === void 0) { index = 0; }
+            return this.layers[index].GetCanvas();
+        };
+        /**
+         * 获取图层数量
+         */
+        Scene.prototype.GetLayerNumber = function () { return this.layers.length; };
+        /**
+         * 获取图层
+         *
+         * @param index 图层索引
+         */
+        Scene.prototype.GetLayer = function (index) {
+            if (index === void 0) { index = 0; }
+            return this.layers[index];
+        };
+        /**
+         * 获取所有图层
+         */
+        Scene.prototype.GetLayers = function () { return this.layers; };
+        /**
+         * 给场景添加图层
+         *
+         * @param layer 要添加的图层
+         */
+        Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
+        return Scene;
+    }());
+    Flown.Scene = Scene;
+})(Flown || (Flown = {}));
 var GL;
 (function (GL) {
     var Scene = /** @class */ (function () {
@@ -1557,286 +1496,386 @@ var GL;
     }());
     GL.Scene = Scene;
 })(GL || (GL = {}));
-var Renderer = /** @class */ (function () {
-    /**
-     *
-     * @param scene 渲染器所渲染的场景，默认null
-     */
-    function Renderer(scene) {
-        if (scene === void 0) { scene = null; }
-        this.context = [];
-        if (scene)
-            this.SetScene(scene);
-    }
-    /**
-     * 获取上下文
-     *
-     * @param index 索引，默认0
-     */
-    Renderer.prototype.GetContext = function (index) {
-        if (index === void 0) { index = 0; }
-        return this.context[index];
-    };
-    /**
-     * 获取所有上下文
-     */
-    Renderer.prototype.GetContests = function () { return this.context; };
-    /**
-     * 设置字体
-     *
-     * @param font 字体
-     * @param index 字体适用图层
-     */
-    Renderer.prototype.SetFont = function (font, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].font = font;
-    };
-    /**
-     * 设置场景
-     *
-     * @param scene 渲染器所渲染的场景
-     */
-    Renderer.prototype.SetScene = function (scene) {
-        for (var i = 0; i < scene.GetLayerNumber(); i++) {
-            this.context.push(scene.GetCanvas(i).getContext("2d"));
-            this.context[i].font = "15px Arial";
-            //this.context[i].fillStyle = "";
+var Three;
+(function (Three) {
+    var Scene = /** @class */ (function () {
+        function Scene() {
         }
-    };
-    /**
-     * 清空某一图层
-     *
-     * @param index 图层索引,默认0
-     */
-    Renderer.prototype.Clear = function (index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].clearRect(0, 0, window.innerWidth, window.innerHeight);
-    };
-    /**
-     * 清空所有图层
-     */
-    Renderer.prototype.ClearAll = function () {
-        for (var i = 0; i < this.context.length; i++)
-            this.context[i].clearRect(0, 0, window.innerWidth, window.innerHeight);
-    };
-    /**
-     * 删除某一图层上的部分内容
-     *
-     * @param x 要删除部分的横坐标
-     * @param y 要删除部分的纵坐标
-     * @param width 要删除部分的宽
-     * @param height 要删除部分的高
-     * @param index 要删除部分内容的图层索引，默认0
-     */
-    Renderer.prototype.ClearRect = function (x, y, width, height, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].clearRect(x, y, width, height);
-    };
-    /**
-     * 删除某所有图层上的部分内容
-     *
-     * @param x 要删除部分的横坐标
-     * @param y 要删除部分的纵坐标
-     * @param width 要删除部分的宽
-     * @param height 要删除部分的高
-     */
-    Renderer.prototype.ClearAllRect = function (x, y, width, height) {
-        for (var i = 0; i < this.context.length; i++)
-            this.context[i].clearRect(x, y, width, height);
-    };
-    /**
-     * 用某一颜色覆盖图层
-     *
-     * @param color 要覆盖的颜色
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.ClearColor = function (color, index) {
-        if (color === void 0) { color = "#FFFFFF"; }
-        if (index === void 0) { index = 0; }
-        var last_style = this.context[index].fillStyle;
-        this.context[index].fillStyle = color;
-        this.context[index].fillRect(0, 0, window.innerWidth, window.innerHeight);
-        this.context[index].fillStyle = last_style;
-    };
-    /**
-     * 用某一颜色覆盖所有图层
-     *
-     * @param color 要覆盖的颜色
-     */
-    Renderer.prototype.ClearAllColor = function (color) {
-        if (color === void 0) { color = "#FFFFFF"; }
-        for (var i = 0; i < this.context.length; i++)
-            this.ClearColor(color, i);
-    };
-    /**
-     * 画实心矩形
-     *
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param width 宽
-     * @param height 高
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawFillRect = function (x, y, width, height, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].fillRect(x, y, width, height);
-    };
-    /**
-     * 画空心矩形
-     *
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param width 宽
-     * @param height 高
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawStrokeRect = function (x, y, width, height, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].strokeRect(x, y, width, height);
-    };
-    /**
-     * 画实心圆
-     *
-     * @param x 圆的中心的 x 坐标
-     * @param y 圆的中心的 y 坐标
-     * @param r 圆的半径
-     * @param start_angle 起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
-     * @param end_angle 结束角，以弧度计
-     * @param anticlockwise 可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawFillCircle = function (x, y, r, start_angle, end_angle, anticlockwise, index) {
-        if (anticlockwise === void 0) { anticlockwise = false; }
-        if (index === void 0) { index = 0; }
-        this.context[index].arc(x, y, r, start_angle, end_angle);
-        this.context[index].fill();
-    };
-    /**
-     * 画空心圆
-     *
-     * @param x 圆的中心的 x 坐标
-     * @param y 圆的中心的 y 坐标
-     * @param r 圆的半径
-     * @param start_angle 起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
-     * @param end_angle 结束角，以弧度计
-     * @param anticlockwise 可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawSrtokeCircle = function (x, y, r, start_angle, end_angle, anticlockwise, index) {
-        if (anticlockwise === void 0) { anticlockwise = false; }
-        if (index === void 0) { index = 0; }
-        this.context[index].arc(x, y, r, start_angle, end_angle);
-        this.context[index].stroke();
-    };
-    /**
-     * 画实心路径
-     *
-     * @param path 路径
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawFillPath = function (path, index) {
-        if (index === void 0) { index = 0; }
-        this.DrawPath(path, "fill", index);
-    };
-    /**
-     * 画空心路径
-     *
-     * @param path 路径
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawStrokePath = function (path, index) {
-        if (index === void 0) { index = 0; }
-        this.DrawPath(path, "stroke", index);
-    };
-    /**
-     * 画路径
-     *
-     * @param path 路径
-     * @param style 样式，实心或空心
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawPath = function (path, style, index) {
-        if (index === void 0) { index = 0; }
-        var start_point = path.GetStartPoint();
-        this.context[index].moveTo(start_point[0], start_point[1]);
-        for (var i = 0; i < path.GetSize() - 1; i++) {
-            this.context[index].lineTo(path.GetPoint(i)[0], path.GetPoint(i)[1]);
+        return Scene;
+    }());
+    Three.Scene = Scene;
+})(Three || (Three = {}));
+/// <reference path="scene.ts" />
+var Flown;
+(function (Flown) {
+    var Layer = /** @class */ (function () {
+        /**
+         *
+         * 网页可见区域宽： document.body.clientWidth
+         * 网页可见区域高： document.body.clientHeight
+         * 网页可见区域宽： document.body.offsetWidth (包括边线的宽)
+         * 网页可见区域高： document.body.offsetHeight (包括边线的高)
+         * 网页正文全文宽： document.body.scrollWidth
+         * 网页正文全文高： document.body.scrollHeight
+         * 网页被卷去的高： document.body.scrollTop
+         * 网页被卷去的左： document.body.scrollLeft
+         * 网页正文部分上： window.screenTop
+         * 网页正文部分左： window.screenLeft
+         * 屏幕分辨率的高： window.screen.height
+         * 屏幕分辨率的宽： window.screen.width
+         * 屏幕可用工作区高度： window.screen.availHeight
+         * 屏幕可用工作区宽度： window.screen.availWidth
+         *
+         *
+         * @param scene 图层所在场景，默认null
+         * @param layer_id 图层id
+         * @param width 图层宽
+         * @param height 图层高
+         */
+        function Layer(scene, layer_id, width, height) {
+            if (scene === void 0) { scene = null; }
+            if (layer_id === void 0) { layer_id = "layer"; }
+            if (width === void 0) { width = document.body.offsetWidth.toString(); }
+            if (height === void 0) { height = document.body.offsetHeight.toString(); }
+            if (height == document.body.offsetHeight.toString() && document.body.offsetHeight == 0)
+                height = document.body.clientHeight.toString();
+            this.canvas = document.createElement("canvas");
+            this.canvas.setAttribute("id", layer_id);
+            this.canvas.setAttribute("width", width);
+            this.canvas.setAttribute("height", height);
+            this.canvas.setAttribute("style", "position: absolute");
+            this.width = this.canvas.width;
+            this.height = this.canvas.height;
+            if (scene) {
+                this.canvas.setAttribute("id", "layer" + scene.GetLayerNumber().toString());
+                scene.AddLayer(this);
+            }
+            /*
+            if(this.canvas.requestFullscreen)
+                this.canvas.requestFullscreen();
+            else if(this.canvas.webkitRequestFullScreen)
+                this.canvas.webkitRequestFullScreen();
+            else if(this.canvas.mozRequestFullScreen)
+                this.canvas.mozRequestFullScreen();
+            */
         }
-        if (style == "fill" || style == "Fill" || style == "FILL")
+        /**
+         *
+         * @param id 设置图层的id
+         */
+        Layer.prototype.SetLayerId = function (id) { this.canvas.setAttribute("id", id); };
+        /**
+         *
+         *
+         * @param width 要设置的width（宽度）
+         */
+        Layer.prototype.SetWidth = function (width) {
+            this.canvas.setAttribute("width", width);
+            this.width = this.canvas.width;
+        };
+        /**
+         *
+         *
+         * @param height 要设置的height（高度）
+         */
+        Layer.prototype.SetHeight = function (height) {
+            this.canvas.setAttribute("height", height);
+            this.height = this.canvas.height;
+        };
+        /**
+         * 获取图层的画布
+         */
+        Layer.prototype.GetCanvas = function () { return this.canvas; };
+        return Layer;
+    }());
+    Flown.Layer = Layer;
+})(Flown || (Flown = {}));
+/// <reference path="scene.ts" />
+/// <reference path="path.ts" />
+var Flown;
+(function (Flown) {
+    var Renderer = /** @class */ (function () {
+        /**
+         *
+         * @param scene 渲染器所渲染的场景，默认null
+         */
+        function Renderer(scene) {
+            if (scene === void 0) { scene = null; }
+            this.context = [];
+            if (scene)
+                this.SetScene(scene);
+        }
+        /**
+         * 获取上下文
+         *
+         * @param index 索引，默认0
+         */
+        Renderer.prototype.GetContext = function (index) {
+            if (index === void 0) { index = 0; }
+            return this.context[index];
+        };
+        /**
+         * 获取所有上下文
+         */
+        Renderer.prototype.GetContests = function () { return this.context; };
+        /**
+         * 设置字体
+         *
+         * @param font 字体
+         * @param index 字体适用图层
+         */
+        Renderer.prototype.SetFont = function (font, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].font = font;
+        };
+        /**
+         * 设置场景
+         *
+         * @param scene 渲染器所渲染的场景
+         */
+        Renderer.prototype.SetScene = function (scene) {
+            for (var i = 0; i < scene.GetLayerNumber(); i++) {
+                this.context.push(scene.GetCanvas(i).getContext("2d"));
+                this.context[i].font = "15px Arial";
+                //this.context[i].fillStyle = "";
+            }
+        };
+        /**
+         * 清空某一图层
+         *
+         * @param index 图层索引,默认0
+         */
+        Renderer.prototype.Clear = function (index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].clearRect(0, 0, window.innerWidth, window.innerHeight);
+        };
+        /**
+         * 清空所有图层
+         */
+        Renderer.prototype.ClearAll = function () {
+            for (var i = 0; i < this.context.length; i++)
+                this.context[i].clearRect(0, 0, window.innerWidth, window.innerHeight);
+        };
+        /**
+         * 删除某一图层上的部分内容
+         *
+         * @param x 要删除部分的横坐标
+         * @param y 要删除部分的纵坐标
+         * @param width 要删除部分的宽
+         * @param height 要删除部分的高
+         * @param index 要删除部分内容的图层索引，默认0
+         */
+        Renderer.prototype.ClearRect = function (x, y, width, height, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].clearRect(x, y, width, height);
+        };
+        /**
+         * 删除某所有图层上的部分内容
+         *
+         * @param x 要删除部分的横坐标
+         * @param y 要删除部分的纵坐标
+         * @param width 要删除部分的宽
+         * @param height 要删除部分的高
+         */
+        Renderer.prototype.ClearAllRect = function (x, y, width, height) {
+            for (var i = 0; i < this.context.length; i++)
+                this.context[i].clearRect(x, y, width, height);
+        };
+        /**
+         * 用某一颜色覆盖图层
+         *
+         * @param color 要覆盖的颜色
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.ClearColor = function (color, index) {
+            if (color === void 0) { color = "#FFFFFF"; }
+            if (index === void 0) { index = 0; }
+            var last_style = this.context[index].fillStyle;
+            this.context[index].fillStyle = color;
+            this.context[index].fillRect(0, 0, window.innerWidth, window.innerHeight);
+            this.context[index].fillStyle = last_style;
+        };
+        /**
+         * 用某一颜色覆盖所有图层
+         *
+         * @param color 要覆盖的颜色
+         */
+        Renderer.prototype.ClearAllColor = function (color) {
+            if (color === void 0) { color = "#FFFFFF"; }
+            for (var i = 0; i < this.context.length; i++)
+                this.ClearColor(color, i);
+        };
+        /**
+         * 画实心矩形
+         *
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param width 宽
+         * @param height 高
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawFillRect = function (x, y, width, height, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].fillRect(x, y, width, height);
+        };
+        /**
+         * 画空心矩形
+         *
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param width 宽
+         * @param height 高
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawStrokeRect = function (x, y, width, height, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].strokeRect(x, y, width, height);
+        };
+        /**
+         * 画实心圆
+         *
+         * @param x 圆的中心的 x 坐标
+         * @param y 圆的中心的 y 坐标
+         * @param r 圆的半径
+         * @param start_angle 起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
+         * @param end_angle 结束角，以弧度计
+         * @param anticlockwise 可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawFillCircle = function (x, y, r, start_angle, end_angle, anticlockwise, index) {
+            if (anticlockwise === void 0) { anticlockwise = false; }
+            if (index === void 0) { index = 0; }
+            this.context[index].arc(x, y, r, start_angle, end_angle);
             this.context[index].fill();
-        else if (style == "stroke" || style == "Stroke" || style == "STROKE")
+        };
+        /**
+         * 画空心圆
+         *
+         * @param x 圆的中心的 x 坐标
+         * @param y 圆的中心的 y 坐标
+         * @param r 圆的半径
+         * @param start_angle 起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
+         * @param end_angle 结束角，以弧度计
+         * @param anticlockwise 可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawSrtokeCircle = function (x, y, r, start_angle, end_angle, anticlockwise, index) {
+            if (anticlockwise === void 0) { anticlockwise = false; }
+            if (index === void 0) { index = 0; }
+            this.context[index].arc(x, y, r, start_angle, end_angle);
             this.context[index].stroke();
-    };
-    /**
-     * 画实心文本
-     *
-     * @param text 要画的文本
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawFillText = function (text, x, y, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].fillText(text, x, y);
-    };
-    /**
-     * 画空心文本
-     *
-     * @param text 要画的文本
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawStrokeText = function (text, x, y, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].strokeText(text, x, y);
-    };
-    /**
-     * 画图片,不支持设置宽高
-     *
-     * @param image 要画的图片
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawImageA = function (image, x, y, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].drawImage(image, x, y);
-    };
-    /**
-     * 画图片，可设置宽高
-     *
-     * @param image 要画的图片
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param width 要画的宽
-     * @param height 要画的高
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawImageB = function (image, x, y, width, height, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].drawImage(image, x, y, width, height);
-    };
-    /**
-     * 画图片，可设置宽高，可画裁剪后的图片
-     *
-     * @param image 要画的图片
-     * @param sx 开始剪切的 x 坐标位置
-     * @param sy 开始剪切的 y 坐标位置
-     * @param swidth 被剪切图像的宽度
-     * @param sheight 被剪切图像的高度
-     * @param dx 横坐标
-     * @param dy 纵坐标
-     * @param dw 要画的宽
-     * @param dh 要画的高
-     * @param index 图层索引，默认0
-     */
-    Renderer.prototype.DrawImageC = function (image, sx, sy, swidth, sheight, dx, dy, dw, dh, index) {
-        if (index === void 0) { index = 0; }
-        this.context[index].drawImage(image, sx, sy, swidth, sheight, dx, dy, dw, dh);
-    };
-    return Renderer;
-}());
+        };
+        /**
+         * 画实心路径
+         *
+         * @param path 路径
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawFillPath = function (path, index) {
+            if (index === void 0) { index = 0; }
+            this.DrawPath(path, "fill", index);
+        };
+        /**
+         * 画空心路径
+         *
+         * @param path 路径
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawStrokePath = function (path, index) {
+            if (index === void 0) { index = 0; }
+            this.DrawPath(path, "stroke", index);
+        };
+        /**
+         * 画路径
+         *
+         * @param path 路径
+         * @param style 样式，实心或空心
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawPath = function (path, style, index) {
+            if (index === void 0) { index = 0; }
+            var start_point = path.GetStartPoint();
+            this.context[index].moveTo(start_point[0], start_point[1]);
+            for (var i = 0; i < path.GetSize() - 1; i++) {
+                this.context[index].lineTo(path.GetPoint(i)[0], path.GetPoint(i)[1]);
+            }
+            if (style == "fill" || style == "Fill" || style == "FILL")
+                this.context[index].fill();
+            else if (style == "stroke" || style == "Stroke" || style == "STROKE")
+                this.context[index].stroke();
+        };
+        /**
+         * 画实心文本
+         *
+         * @param text 要画的文本
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawFillText = function (text, x, y, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].fillText(text, x, y);
+        };
+        /**
+         * 画空心文本
+         *
+         * @param text 要画的文本
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawStrokeText = function (text, x, y, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].strokeText(text, x, y);
+        };
+        /**
+         * 画图片,不支持设置宽高
+         *
+         * @param image 要画的图片
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawImageA = function (image, x, y, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].drawImage(image, x, y);
+        };
+        /**
+         * 画图片，可设置宽高
+         *
+         * @param image 要画的图片
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param width 要画的宽
+         * @param height 要画的高
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawImageB = function (image, x, y, width, height, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].drawImage(image, x, y, width, height);
+        };
+        /**
+         * 画图片，可设置宽高，可画裁剪后的图片
+         *
+         * @param image 要画的图片
+         * @param sx 开始剪切的 x 坐标位置
+         * @param sy 开始剪切的 y 坐标位置
+         * @param swidth 被剪切图像的宽度
+         * @param sheight 被剪切图像的高度
+         * @param dx 横坐标
+         * @param dy 纵坐标
+         * @param dw 要画的宽
+         * @param dh 要画的高
+         * @param index 图层索引，默认0
+         */
+        Renderer.prototype.DrawImageC = function (image, sx, sy, swidth, sheight, dx, dy, dw, dh, index) {
+            if (index === void 0) { index = 0; }
+            this.context[index].drawImage(image, sx, sy, swidth, sheight, dx, dy, dw, dh);
+        };
+        return Renderer;
+    }());
+    Flown.Renderer = Renderer;
+})(Flown || (Flown = {}));
 var GL;
 (function (GL) {
     GL.COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
@@ -2087,119 +2126,126 @@ var GL;
         return Shader;
     }());
 })(GL || (GL = {}));
-var Sprite = /** @class */ (function () {
-    function Sprite(sprite_path, width, height) {
-        if (sprite_path === void 0) { sprite_path = ""; }
-        if (width === void 0) { width = 0; }
-        if (height === void 0) { height = 0; }
-        this.rect = new Array();
-        var that = this;
-        this.image = new Image();
-        this.image.src = sprite_path;
-        this.image.onload = function () {
-            if (width == 0 && height == 0) {
-                that.width = this.width;
-                that.height = this.height;
-            }
-            else {
-                that.width = width;
-                that.height = height;
-            }
-            that.rect.push(new Rect(0, 0, this.width, this.height));
-        };
-        //this.rect.push(new Rect(0,0,this.width,this.height));
-    }
-    /**
-     *
-     * @param path 图片路径
-     */
-    Sprite.prototype.SetImage = function (path, width, height) {
-        if (width === void 0) { width = 0; }
-        if (height === void 0) { height = 0; }
-        var that = this;
-        this.image.src = path;
-        this.image.onload = function () {
-            if (width == 0 && height == 0) {
-                that.SetWidth(this.width);
-                that.SetHeight(this.height);
-            }
-            else {
-                that.SetWidth(width);
-                that.SetHeight(height);
-            }
-        };
-    };
-    /**
-     *
-     * @param w 要设置的宽
-     */
-    Sprite.prototype.SetWidth = function (w) {
-        this.width = w;
-        if (this.rect.length == 1)
-            this.rect[0].w = this.width;
-    };
-    /**
-     *
-     * @param h 要设置的高
-     */
-    Sprite.prototype.SetHeight = function (h) {
-        this.height = h;
-        if (this.rect.length == 1)
-            this.rect[0].h = this.height;
-    };
-    /**
-     * 获取精灵图片，宽高
-     */
-    Sprite.prototype.GetImage = function () { return this.image; };
-    Sprite.prototype.GetWidth = function () { return this.width; };
-    Sprite.prototype.GetHeight = function () { return this.height; };
-    /**
-     * 分割精灵图片
-     *
-     * @param start_x 水平偏移
-     * @param start_y 垂直偏移
-     * @param w 宽
-     * @param h 高
-     * @param horizontal 行数
-     * @param vertical 列数
-     */
-    Sprite.prototype.InitRect = function (start_x, start_y, w, h, horizontal, vertical) {
-        this.rect = [];
-        this.width = w;
-        this.height = h;
-        for (var i = 0; i < vertical; i++) {
-            for (var j = 0; j < horizontal; j++) {
-                this.rect.push(new Rect(start_x + w * j, start_y + h * i, w, h));
-            }
+/// <reference path="renderer.ts" />
+/// <reference path="rect.ts" />
+var Flown;
+(function (Flown) {
+    var Sprite = /** @class */ (function () {
+        function Sprite(sprite_path, width, height) {
+            if (sprite_path === void 0) { sprite_path = ""; }
+            if (width === void 0) { width = 0; }
+            if (height === void 0) { height = 0; }
+            this.rect = new Array();
+            var that = this;
+            this.image = new Image();
+            this.image.src = sprite_path;
+            this.image.onload = function () {
+                if (width == 0 && height == 0) {
+                    that.width = this.width;
+                    that.height = this.height;
+                }
+                else {
+                    that.width = width;
+                    that.height = height;
+                }
+                that.rect.push(new Flown.Rect(0, 0, this.width, this.height));
+            };
+            //this.rect.push(new Rect(0,0,this.width,this.height));
         }
-    };
-    /**
-     * 渲染精灵
-     *
-     * @param renderer 渲染器
-     * @param x 横坐标
-     * @param y 纵坐标
-     * @param w 宽，默认精灵宽
-     * @param h 高，默认精灵高
-     * @param index rect索引，默认0
-     */
-    Sprite.prototype.Render = function (renderer, x, y, w, h, index) {
-        if (w === void 0) { w = this.width; }
-        if (h === void 0) { h = this.height; }
-        if (index === void 0) { index = 0; }
-        renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
-        /*
-        if (this.rect != null)
-        {
-            renderer.DrawImageC(this.image,this.rect[index].x,this.rect[index].y,
-            this.rect[index].w,this.rect[index].h,x,y,w,h);
-        }
-        else
-            renderer.DrawImageB(this.image,x,y,this.width,this.height,0);
-        */
-    };
-    return Sprite;
-}());
+        /**
+         *
+         * @param path 图片路径
+         */
+        Sprite.prototype.SetImage = function (path, width, height) {
+            if (width === void 0) { width = 0; }
+            if (height === void 0) { height = 0; }
+            var that = this;
+            this.image.src = path;
+            this.image.onload = function () {
+                if (width == 0 && height == 0) {
+                    that.SetWidth(this.width);
+                    that.SetHeight(this.height);
+                }
+                else {
+                    that.SetWidth(width);
+                    that.SetHeight(height);
+                }
+            };
+        };
+        /**
+         *
+         * @param w 要设置的宽
+         */
+        Sprite.prototype.SetWidth = function (w) {
+            this.width = w;
+            if (this.rect.length == 1)
+                this.rect[0].w = this.width;
+        };
+        /**
+         *
+         * @param h 要设置的高
+         */
+        Sprite.prototype.SetHeight = function (h) {
+            this.height = h;
+            if (this.rect.length == 1)
+                this.rect[0].h = this.height;
+        };
+        /**
+         * 获取精灵图片，宽高
+         */
+        Sprite.prototype.GetImage = function () { return this.image; };
+        Sprite.prototype.GetWidth = function () { return this.width; };
+        Sprite.prototype.GetHeight = function () { return this.height; };
+        /**
+         * 分割精灵图片
+         *
+         * @param start_x 水平偏移
+         * @param start_y 垂直偏移
+         * @param w 宽
+         * @param h 高
+         * @param horizontal 行数
+         * @param vertical 列数
+         */
+        Sprite.prototype.InitRect = function (start_x, start_y, w, h, horizontal, vertical) {
+            this.rect = [];
+            this.width = w;
+            this.height = h;
+            for (var i = 0; i < vertical; i++) {
+                for (var j = 0; j < horizontal; j++) {
+                    this.rect.push(new Flown.Rect(start_x + w * j, start_y + h * i, w, h));
+                }
+            }
+        };
+        /**
+         * 渲染精灵
+         *
+         * @param renderer 渲染器
+         * @param x 横坐标
+         * @param y 纵坐标
+         * @param w 宽，默认精灵宽
+         * @param h 高，默认精灵高
+         * @param index rect索引，默认0
+         */
+        Sprite.prototype.Render = function (renderer, x, y, w, h, index) {
+            if (w === void 0) { w = this.width; }
+            if (h === void 0) { h = this.height; }
+            if (index === void 0) { index = 0; }
+            renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
+            /*
+            if (this.rect != null)
+            {
+                renderer.DrawImageC(this.image,this.rect[index].x,this.rect[index].y,
+                this.rect[index].w,this.rect[index].h,x,y,w,h);
+            }
+            else
+                renderer.DrawImageB(this.image,x,y,this.width,this.height,0);
+            */
+        };
+        return Sprite;
+    }());
+    Flown.Sprite = Sprite;
+})(Flown || (Flown = {}));
+/// <reference path="../graphics/sprite.ts" />
 var Character = /** @class */ (function (_super) {
     __extends(Character, _super);
     function Character(name, img_path) {
@@ -2215,15 +2261,19 @@ var Character = /** @class */ (function (_super) {
         renderer.DrawFillText(this.name, this.x, this.y);
     };
     return Character;
-}(Sprite));
+}(Flown.Sprite));
+/// <reference path="../graphics/scene.ts" />
+/// <reference path="../graphics/layer.ts" />
+/// <reference path="../graphics/renderer.ts" />
+/// <reference path="character.ts" />
 var Game = /** @class */ (function () {
     function Game() {
         this.FPS = 30;
         this.interval = 1000 / this.FPS;
         this.time_start = Date.now();
-        this.scene = new Scene("scene");
-        this.scene.AddLayer(new Layer(null, "layer1"));
-        this.renderer = new Renderer(this.scene);
+        this.scene = new Flown.Scene("scene");
+        this.scene.AddLayer(new Flown.Layer(null, "layer1"));
+        this.renderer = new Flown.Renderer(this.scene);
         this.event = new EventManager();
         this.event.Enable(EventManagerMOD.KEYBOARD, EventManagerMOD.KEYBOARD_KAIOS);
         this.player = new Character("player", "./img/avatar/man/stand_or_walk/right1.png");

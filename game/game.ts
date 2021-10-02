@@ -1,9 +1,14 @@
 
 
+/// <reference path="../graphics/scene.ts" />
+/// <reference path="../graphics/layer.ts" />
+/// <reference path="../graphics/renderer.ts" />
+/// <reference path="character.ts" />
+
 class Game
 {
-    scene:Scene;
-    renderer:Renderer;
+    scene:Flown.Scene;
+    renderer:Flown.Renderer;
     event:EventManager;
     player:Character;
 
@@ -13,9 +18,9 @@ class Game
 
     constructor()
     {
-        this.scene = new Scene("scene");
-        this.scene.AddLayer(new Layer(null,"layer1"));
-        this.renderer = new Renderer(this.scene);
+        this.scene = new Flown.Scene("scene");
+        this.scene.AddLayer(new Flown.Layer(null,"layer1"));
+        this.renderer = new Flown.Renderer(this.scene);
         this.event = new EventManager();
         this.event.Enable(EventManagerMOD.KEYBOARD,EventManagerMOD.KEYBOARD_KAIOS);
         this.player = new Character("player","./img/avatar/man/stand_or_walk/right1.png");
@@ -97,7 +102,7 @@ class Game
         let fps = 1000 / delta;
         if (fps > this.FPS)
             fps = this.FPS;
-        
+
         if (delta > this.interval)
         {
             this.time_start = now - (delta % this.interval);

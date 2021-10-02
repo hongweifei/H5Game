@@ -1,5 +1,12 @@
 
 
+/// <reference path="queue.ts" />
+/// <reference path="mouse.ts" />
+/// <reference path="keyboard.ts" />
+/// <reference path="keyboard_kaios.ts" />
+/// <reference path="touch.ts" />
+/// <reference path="joy_stick.ts" />
+
 
 enum EventType
 {
