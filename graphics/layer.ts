@@ -10,8 +10,8 @@ namespace flown
     export class Layer
     {
         protected canvas:HTMLCanvasElement;
-        protected width:Number
-        protected height:Number
+        protected width:number
+        protected height:number
 
         /**
          * 
@@ -98,6 +98,21 @@ namespace flown
             this.height = this.canvas.height;
         }
 
+
+        /**
+         * 
+         * 获取图层宽度
+         * 
+        */
+        GetWidth():number { return this.width; }
+
+
+        /**
+         * 
+         * 获取图层高度
+         * 
+        */
+        GetHeight():number { return this.height; }
 
         /**
          * 获取图层的画布

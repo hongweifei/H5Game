@@ -1583,6 +1583,18 @@ var flown;
             this.height = this.canvas.height;
         };
         /**
+         *
+         * 获取图层宽度
+         *
+        */
+        Layer.prototype.GetWidth = function () { return this.width; };
+        /**
+         *
+         * 获取图层高度
+         *
+        */
+        Layer.prototype.GetHeight = function () { return this.height; };
+        /**
          * 获取图层的画布
          */
         Layer.prototype.GetCanvas = function () { return this.canvas; };
@@ -2262,12 +2274,225 @@ var Character = /** @class */ (function (_super) {
     };
     return Character;
 }(flown.Sprite));
+var BulletDirection;
+(function (BulletDirection) {
+    BulletDirection[BulletDirection["UP"] = 0] = "UP";
+    BulletDirection[BulletDirection["DOWN"] = 1] = "DOWN";
+    BulletDirection[BulletDirection["LEFT"] = 2] = "LEFT";
+    BulletDirection[BulletDirection["RIGHT"] = 3] = "RIGHT";
+})(BulletDirection || (BulletDirection = {}));
+var Bullet = /** @class */ (function () {
+    function Bullet(x, y, width, height, speed) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
+        if (width === void 0) { width = 0; }
+        if (height === void 0) { height = 0; }
+        if (speed === void 0) { speed = 10; }
+        this.dx = 0;
+        this.dy = 0;
+        this.speed = 10;
+        this.direction = BulletDirection.UP; //< BulletDirection.*
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+    }
+    Bullet.prototype.SetX = function (x) { this.x = x; };
+    Bullet.prototype.SetY = function (y) { this.y = y; };
+    Bullet.prototype.GetX = function () { return this.x; };
+    Bullet.prototype.GetY = function () { return this.y; };
+    Bullet.prototype.SetWidth = function (width) { this.width = width; };
+    Bullet.prototype.SetHeight = function (height) { this.height = height; };
+    Bullet.prototype.GetWidth = function () { return this.width; };
+    Bullet.prototype.GetHeight = function () { return this.height; };
+    Bullet.prototype.IsCollision = function (left, right, top, bottom) {
+        /*java swidthing 使用
+        if(this.x <= right && this.x >= left &&
+            ((this.y >= top && this.y <= bottom) ||
+            (this.y + this.height >= top && this.y + this.height <= bottom)))
+            return true;
+        
+        if(this.x + this.width >= left && this.x + this.width <= right &&
+            ((this.y >= top && this.y <= bottom) ||
+            (this.y + this.height >= top && this.y + this.height <= bottom)))
+            return true;
+        */
+        /*libgdx 使用*/
+        if (this.x < right && this.x > left &&
+            ((this.y < top && this.y > bottom) ||
+                (this.y + this.height < top && this.y + this.height > bottom)))
+            return true;
+        if (this.x + this.width > left && this.x + this.width < right &&
+            ((this.y < top && this.y > bottom) ||
+                (this.y + this.height < top && this.y + this.height > bottom)))
+            return true;
+        return false;
+    };
+    Bullet.prototype.GetSpeed = function () { return this.speed; };
+    /**
+     *
+     * @param direction BulletDirection.*
+     */
+    Bullet.prototype.SetDirection = function (direction) { this.direction = direction; };
+    Bullet.prototype.GetDirection = function () { return this.direction; };
+    Bullet.prototype.updata = function () {
+        /*
+        switch(this.direction)
+        {
+        case BulletDirection.UP:
+            this.y += this.speed;
+            break;
+        case BulletDirection.DOWN:
+            this.y -= this.speed;
+            break;
+        case BulletDirection.LEFT:
+            this.x -= this.speed;
+            break;
+        case BulletDirection.RIGHT:
+            this.x += this.speed;
+            break;
+        }
+        */
+        this.x += this.dx;
+        this.y += this.dy;
+        this.dx = 0;
+        this.dy = 0;
+    };
+    return Bullet;
+}());
+var PlaneType;
+(function (PlaneType) {
+    PlaneType[PlaneType["TYPE_NONE"] = 0] = "TYPE_NONE";
+    PlaneType[PlaneType["TYPE_PLAYER"] = 1] = "TYPE_PLAYER";
+    PlaneType[PlaneType["TYPE_ENEMY"] = 2] = "TYPE_ENEMY";
+})(PlaneType || (PlaneType = {}));
+var PlaneState;
+(function (PlaneState) {
+    PlaneState[PlaneState["MOVE"] = 0] = "MOVE";
+    PlaneState[PlaneState["DEAD"] = 1] = "DEAD";
+    PlaneState[PlaneState["VISIBLE"] = 2] = "VISIBLE";
+})(PlaneState || (PlaneState = {}));
+var Plane = /** @class */ (function () {
+    function Plane(x, y, w, h) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
+        if (w === void 0) { w = 0; }
+        if (h === void 0) { h = 0; }
+        this.type = PlaneType.TYPE_NONE;
+        this.dx = 0;
+        this.dy = 0;
+        this.speed = 5;
+        this.move = false; //< 移动
+        this.dead = false; //< 死亡
+        this.visible = true; //< 可视
+        this.x = x;
+        this.y = y;
+        this.width = w;
+        this.height = h;
+    }
+    /**
+     *
+     * @param state_type Plane.State.*
+     * @param state true or false
+     */
+    Plane.prototype.SetState = function (state_type, state) {
+        switch (state_type) {
+            case PlaneState.MOVE:
+                this.move = state;
+                break;
+            case PlaneState.DEAD:
+                this.dead = state;
+                break;
+            case PlaneState.VISIBLE:
+                this.visible = state;
+                break;
+        }
+    };
+    /**
+     *
+     * @param state_type Plane.State.*
+     * @return
+     */
+    Plane.prototype.GetState = function (state_type) {
+        switch (state_type) {
+            case PlaneState.MOVE:
+                return this.move;
+            case PlaneState.DEAD:
+                return this.dead;
+            case PlaneState.VISIBLE:
+                return this.visible;
+        }
+        return false;
+    };
+    Plane.prototype.SetX = function (x) { this.x = x; };
+    Plane.prototype.SetY = function (y) { this.y = y; };
+    Plane.prototype.GetX = function () { return this.x; };
+    Plane.prototype.GetY = function () { return this.y; };
+    Plane.prototype.SetWidth = function (w) { this.width = w; };
+    Plane.prototype.SetHeight = function (h) { this.height = h; };
+    Plane.prototype.GetWidth = function () { return this.width; };
+    Plane.prototype.GetHeight = function () { return this.height; };
+    Plane.prototype.SetSpeed = function (speed) { this.speed = speed; };
+    Plane.prototype.GetSpeed = function () { return this.speed; };
+    Plane.prototype.IsCollision = function (left, right, top, bottom) {
+        /*java swing 使用
+        if(this.x <= right && this.x >= left &&
+            ((this.y >= top && this.y <= bottom) ||
+            (this.y + this.height >= top && this.y + this.height <= bottom)))
+            return true;
+        
+        if(this.x + this.width >= left && this.x + this.width <= right &&
+            ((this.y >= top && this.y <= bottom) ||
+            (this.y + this.height >= top && this.y + this.height <= bottom)))
+            return true;
+        */
+        /*libgdx 使用*/
+        if (this.x <= right && this.x >= left &&
+            ((this.y <= top && this.y >= bottom) ||
+                (this.y + this.height <= top && this.y + this.height >= bottom)))
+            return true;
+        if (this.x + this.width >= left && this.x + this.width <= right &&
+            ((this.y <= top && this.y >= bottom) ||
+                (this.y + this.height <= top && this.y + this.height >= bottom)))
+            return true;
+        return false;
+    };
+    Plane.prototype.updata = function () {
+        if (this.dx != 0 || this.dy != 0)
+            this.move = true;
+        else
+            this.move = false;
+        this.x += this.dx;
+        this.y += this.dy;
+        this.dx = 0;
+        this.dy = 0;
+    };
+    return Plane;
+}());
+var Enemy = /** @class */ (function (_super) {
+    __extends(Enemy, _super);
+    function Enemy(x, y, w, h) {
+        var _this = _super.call(this, x, y, w, h) || this;
+        _this.type = PlaneType.TYPE_ENEMY;
+        return _this;
+    }
+    return Enemy;
+}(Plane));
 /// <reference path="../graphics/scene.ts" />
 /// <reference path="../graphics/layer.ts" />
 /// <reference path="../graphics/renderer.ts" />
 /// <reference path="character.ts" />
+/// <reference path="plane.ts" />
 var Game = /** @class */ (function () {
     function Game() {
+        this.img = [];
+        this.plane_bullet = [];
+        this.enemy = [];
+        this.enemy_bullet = [];
+        this.point = 0;
+        this.game_pause = false; //< 暂停
+        this.game_over = false;
         this.FPS = 30;
         this.interval = 1000 / this.FPS;
         this.time_start = Date.now();
@@ -2279,15 +2504,34 @@ var Game = /** @class */ (function () {
         this.player = new Character("player", "./img/avatar/man/stand_or_walk/right1.png");
         if (window.screen.height == 320)
             this.scene.GetLayer().SetHeight("280");
+        this.width = this.scene.GetLayer().GetWidth();
+        this.height = this.scene.GetLayer().GetHeight();
     }
     Game.prototype.Start = function () {
         //this.player = new Character("player","./img/avatar/man/stand_or_walk/right1.png");
+        this.plane = new Plane(0, 0, this.width / 10, this.height / 10);
+        this.img.push(new Image());
+        this.img.push(new Image());
+        this.img.push(new Image());
+        this.img[0].src = "img/bullet/bullet1.png";
+        this.img[1].src = "img/plane/player.png";
+        this.img[2].src = "img/plane/enemy1.png";
+        this.DataInit();
         this.MainLoop();
     };
+    Game.prototype.DataInit = function () {
+        this.plane.SetX(this.width / 2 - this.plane.GetWidth() / 2);
+        this.plane.SetY(this.height / 10 * 9);
+        this.plane.SetState(PlaneState.DEAD, false);
+        this.plane_bullet = [];
+        this.enemy = [];
+        this.enemy_bullet = [];
+        this.game_over = false;
+        this.point = 0;
+    };
+    Game.prototype.Fail = function () {
+    };
     Game.prototype.Render = function (fps) {
-        this.renderer.Clear();
-        this.renderer.DrawFillText("FPS:" + fps, 100, 100);
-        this.player.Render(this.renderer);
         if (this.event.WaitEvent()) {
             switch (this.event.type) {
                 case EventType.MOUSE_MOTION:
@@ -2297,28 +2541,31 @@ var Game = /** @class */ (function () {
                 case EventType.KEY_DOWN:
                     switch (this.event.keyboard_event.key_code) {
                         case Keyboard.W:
-                            this.player.y -= this.player.speed;
+                        case Keyboard_KaiOS.ARROW_UP:
+                            //this.player.y -= this.player.speed;
+                            this.plane.dy -= this.plane.GetSpeed();
                             break;
                         case Keyboard.S:
-                            this.player.y += this.player.speed;
+                        case Keyboard_KaiOS.ARROW_DOWN:
+                            //this.player.y += this.player.speed;
+                            this.plane.dy += this.plane.GetSpeed();
                             break;
                         case Keyboard.A:
-                            this.player.x -= this.player.speed;
+                        case Keyboard_KaiOS.ARROW_LEFT:
+                            //this.player.x -= this.player.speed;
+                            this.plane.dx -= this.plane.GetSpeed();
                             break;
                         case Keyboard.D:
-                            this.player.x += this.player.speed;
-                            break;
-                        case Keyboard_KaiOS.ARROW_UP:
-                            this.player.y -= this.player.speed;
-                            break;
-                        case Keyboard_KaiOS.ARROW_DOWN:
-                            this.player.y += this.player.speed;
-                            break;
-                        case Keyboard_KaiOS.ARROW_LEFT:
-                            this.player.x -= this.player.speed;
-                            break;
                         case Keyboard_KaiOS.ARROW_RIGHT:
-                            this.player.x += this.player.speed;
+                            //this.player.x += this.player.speed;
+                            this.plane.dx += this.plane.GetSpeed();
+                            break;
+                        case Keyboard_KaiOS.NUMBER_5:
+                        case Keyboard_KaiOS.ENTER:
+                            if (!this.plane.GetState(PlaneState.DEAD))
+                                this.plane_bullet.push(new Bullet(this.plane.GetX() + this.plane.GetWidth() / 2 - this.width / 32, this.plane.GetY(), this.width / 16, this.height / 6, this.height / 30));
+                            else
+                                this.DataInit();
                             break;
                         default:
                             //console.log("KeyDown");
@@ -2329,6 +2576,69 @@ var Game = /** @class */ (function () {
                 default:
                     break;
             }
+        }
+        if (this.game_over || this.game_pause)
+            return;
+        this.renderer.Clear();
+        this.renderer.DrawFillText("FPS:" + fps, 100, 100);
+        //this.player.Render(this.renderer);
+        //render
+        var that = this;
+        this.plane.updata();
+        this.enemy.forEach(function (e, index) {
+            that.renderer.DrawImageB(that.img[2], e.GetX(), e.GetY(), e.GetWidth(), e.GetHeight());
+            e.dy += e.GetSpeed();
+            e.updata();
+            var collision = false;
+            that.plane_bullet.forEach(function (pb, index) {
+                collision =
+                    pb.IsCollision(e.GetX(), e.GetX() + e.GetWidth(), e.GetY() + e.GetHeight(), e.GetY());
+                if (collision) {
+                    e.SetState(PlaneState.DEAD, true);
+                    that.plane_bullet.splice(index, 1);
+                    this.point++;
+                }
+            });
+            collision = that.plane.IsCollision(e.GetX(), e.GetX() + e.GetWidth(), e.GetY() + e.GetHeight(), e.GetY());
+            if (collision)
+                that.plane.SetState(PlaneState.DEAD, true);
+            if (e.GetY() > that.height)
+                e.SetState(PlaneState.DEAD, true);
+            if (e.GetState(PlaneState.DEAD))
+                that.enemy.splice(index, 1);
+        });
+        this.plane_bullet.forEach(function (pb, index) {
+            that.renderer.DrawImageB(that.img[0], pb.GetX(), pb.GetY(), pb.GetWidth(), pb.GetHeight());
+            if (pb != null) {
+                pb.dy -= pb.GetSpeed();
+                pb.updata();
+            }
+            /**子弹销毁*/
+            if (pb != null && pb.GetY() > this.height) {
+                that.plane_bullet.splice(index, 1);
+            }
+        });
+        this.renderer.DrawImageB(this.img[1], this.plane.GetX(), this.plane.GetY(), this.plane.GetWidth(), this.plane.GetHeight());
+        this.renderer.DrawFillText("分数:" + this.point, 10, this.height - 10);
+        this.renderer.DrawFillText("Points:" + this.point, 10, 20);
+        //游戏逻辑相关
+        /**敌机刷新*/
+        if (this.enemy.length < 3 && this.width != 0) {
+            var x = Math.random() * this.width;
+            var y = 0;
+            this.enemy.push(new Enemy(x, y, this.width / 10, this.height / 10));
+        }
+        if (this.plane.GetState(PlaneState.DEAD)) {
+            this.game_over = true;
+            this.Fail();
+        }
+        if (this.game_over && !this.game_pause) {
+            this.renderer.DrawFillText("GAME OVER", this.width / 2 - 5 * 9, this.height / 2 + 20);
+            this.renderer.DrawFillText("请按Enter以重新开始游戏", this.width / 2 - 7 * 12, this.height / 2);
+        }
+        else if (!this.game_over && this.game_pause) {
+            this.renderer.DrawFillText("游戏暂停中", this.width / 2 - 7 * 5, this.height / 2 + 20);
+            this.renderer.DrawFillText("请按Enter键以继续游戏", this.width / 2 - 7 * 8 - 5 * 3, this.height / 2);
         }
     };
     Game.prototype.MainLoop = function () {

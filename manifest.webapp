@@ -5,7 +5,7 @@
   "description": "H5Game",
   "launch_path": "/index.html",
   "origin": "app://flown.h5game",
-  "version": "1624444801",
+  "version": "1.0",
   "icons": {
     "128": "/img/icons/icon-128.png"
   }
