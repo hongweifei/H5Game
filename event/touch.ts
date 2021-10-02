@@ -35,7 +35,7 @@ class FingerTouch
     {
         const finger = e.touches[e.touches.length];
         const te = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,finger.pageX,finger.pageY,null,null,finger.force);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN,te);
+        EventManager.EVENT.AddEventB(EventType.FINGER_DOWN,te);
     }
 
     /**
@@ -44,7 +44,7 @@ class FingerTouch
     static Motion(this:Window,e:TouchEvent)
     {
         const te = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,null,null,null,null,null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN,te);
+        EventManager.EVENT.AddEventB(EventType.FINGER_DOWN,te);
     }
 
     /**
@@ -53,7 +53,7 @@ class FingerTouch
     static End(this:Window,e:TouchEvent)
     {
         const te = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,null,null,null,null,null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN,te);
+        EventManager.EVENT.AddEventB(EventType.FINGER_DOWN,te);
     }
 }
 

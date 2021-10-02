@@ -5,13 +5,13 @@
 
 class Keyboard_KaiOS
 {
-	static ArrowUp = "ArrowUp";
-	static ArrowDown = "ArrowDown";
-	static ArrowLeft = "ArrowLeft";
-	static ArrowRight = "ArrowRight";
-	static SoftLeft = "SoftLeft";
-	static SoftRight = "SoftRight";
-	static EndCall = "EndCall";
+	static ARROW_UP = "ArrowUp";
+	static ARROW_DOWN = "ArrowDown";
+	static ARROW_LEFT = "ArrowLeft";
+	static ARROW_RIGHT = "ArrowRight";
+	static SOFT_LEFT = "SoftLeft";
+	static SOFT_RIGHT = "SoftRight";
+	static END_CALL = "EndCall";
 	static ENTER = "Enter";
 	static BACKSPACE = "Backspace";
     static NUMBER_0 = "0";
@@ -38,7 +38,7 @@ class Keyboard_KaiOS
         }
 
         const ke = new _KeyboardEvent_(EventType.KEY_DOWN,null,e.key);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN,ke);
+        EventManager.EVENT.AddEventB(EventType.KEY_DOWN,ke);
     }
 
     static KeyPress(){}
@@ -46,7 +46,7 @@ class Keyboard_KaiOS
     static KeyUp(this:Window,e:KeyboardEvent)
     {
         const ke = new _KeyboardEvent_(EventType.KEY_UP,null,e.key);
-        EventManager.Event.AddEventB(EventType.KEY_UP,ke);
+        EventManager.EVENT.AddEventB(EventType.KEY_UP,ke);
     }
 }
 

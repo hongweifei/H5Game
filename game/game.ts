@@ -18,6 +18,7 @@ class Game
         this.scene.AddLayer(new Layer(null,"layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
+        this.event.Enable(EventManagerMOD.KEYBOARD,EventManagerMOD.KEYBOARD_KAIOS);
 
         if (window.screen.height == 320)
             this.scene.GetLayer().SetHeight("280");
@@ -77,22 +78,22 @@ class Game
                         case Keyboard.D:
                             this.x += 10;
                             break;
-                        case Keyboard_KaiOS.ArrowUp:
+                        case Keyboard_KaiOS.ARROW_UP:
                             this.y -= 10;
                             break;
-                        case Keyboard_KaiOS.ArrowDown:
+                        case Keyboard_KaiOS.ARROW_DOWN:
                             this.y += 10;
                             break;
-                        case Keyboard_KaiOS.ArrowLeft:
+                        case Keyboard_KaiOS.ARROW_LEFT:
                             this.x -= 10;
                             break;
-                        case Keyboard_KaiOS.ArrowRight:
+                        case Keyboard_KaiOS.ARROW_RIGHT:
                             this.x += 10;
                             break;
 
                         default:
-                            console.log("KeyDown");
-                            console.log("KeyCode:" + this.event.keyboard_event.key_code);
+                            //console.log("KeyDown");
+                            //console.log("KeyCode:" + this.event.keyboard_event.key_code);
                             break;
                     }
                     break;

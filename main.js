@@ -13,6 +13,207 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var KeyCode;
+(function (KeyCode) {
+    /** 与 Backspace 的键控代码值(8)关联的常数。*/
+    KeyCode[KeyCode["BACKSPACE"] = 8] = "BACKSPACE";
+    /** 与 Tab 的键控代码值(9)关联的常数。*/
+    KeyCode[KeyCode["TAB"] = 9] = "TAB";
+    /** 与 Enter 的键控代码值(13)关联的常数。*/
+    KeyCode[KeyCode["ENTER"] = 13] = "ENTER";
+    /** 与 Mac 命令键(15)关联的常数。*/
+    KeyCode[KeyCode["COMMAND"] = 15] = "COMMAND";
+    /** 与 Shift 的键控代码值(16)关联的常数。*/
+    KeyCode[KeyCode["SHIFT"] = 16] = "SHIFT";
+    /** 与 Ctrl 的键控代码值(17)关联的常数。*/
+    KeyCode[KeyCode["CONTROL"] = 17] = "CONTROL";
+    /** 与 Alternate(Option)键的键控代码值(18)关联的常数。*/
+    KeyCode[KeyCode["ALTERNATE"] = 18] = "ALTERNATE";
+    /** 与 Caps Lock 的键控代码值(20)关联的常数。*/
+    KeyCode[KeyCode["CAPS_LOCK"] = 20] = "CAPS_LOCK";
+    /** 与数字键盘的伪键控代码(21)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD"] = 21] = "NUMPAD";
+    /** 与 Esc 的键控代码值(27)关联的常数。*/
+    KeyCode[KeyCode["ESCAPE"] = 27] = "ESCAPE";
+    /** 与空格键的键控代码值(32)关联的常数。*/
+    KeyCode[KeyCode["SPACE"] = 32] = "SPACE";
+    /** 与 Page Up 的键控代码值(33)关联的常数。*/
+    KeyCode[KeyCode["PAGE_UP"] = 33] = "PAGE_UP";
+    /** 与 Page Down 的键控代码值(34)关联的常数。*/
+    KeyCode[KeyCode["PAGE_DOWN"] = 34] = "PAGE_DOWN";
+    /** 与 End 的键控代码值(35)关联的常数。*/
+    KeyCode[KeyCode["END"] = 35] = "END";
+    /** 与 Home 的键控代码值(36)关联的常数。*/
+    KeyCode[KeyCode["HOME"] = 36] = "HOME";
+    /** 与向左箭头键的键控代码值(37)关联的常数。*/
+    KeyCode[KeyCode["LEFT"] = 37] = "LEFT";
+    /** 与向上箭头键的键控代码值(38)关联的常数。*/
+    KeyCode[KeyCode["UP"] = 38] = "UP";
+    /** 与向右箭头键的键控代码值(39)关联的常数。*/
+    KeyCode[KeyCode["RIGHT"] = 39] = "RIGHT";
+    /** 与向下箭头键的键控代码值(40)关联的常数。*/
+    KeyCode[KeyCode["DOWN"] = 40] = "DOWN";
+    /** 与 Insert 的键控代码值(45)关联的常数。*/
+    KeyCode[KeyCode["INSERT"] = 41] = "INSERT";
+    /** 与 Delete 的键控代码值(46)关联的常数。*/
+    KeyCode[KeyCode["DELETE"] = 42] = "DELETE";
+    /** 与 0 的键控代码值(48)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_0"] = 48] = "NUMBER_0";
+    /** 与 1 的键控代码值(49)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_1"] = 49] = "NUMBER_1";
+    /** 与 2 的键控代码值(50)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_2"] = 50] = "NUMBER_2";
+    /** 与 3 的键控代码值(51)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_3"] = 51] = "NUMBER_3";
+    /** 与 4 的键控代码值(52)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_4"] = 52] = "NUMBER_4";
+    /** 与 5 的键控代码值(53)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_5"] = 53] = "NUMBER_5";
+    /** 与 6 的键控代码值(54)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_6"] = 54] = "NUMBER_6";
+    /** 与 7 的键控代码值(55)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_7"] = 55] = "NUMBER_7";
+    /** 与 8 的键控代码值(56)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_8"] = 56] = "NUMBER_8";
+    /** 与 9 的键控代码值(57)关联的常数。*/
+    KeyCode[KeyCode["NUMBER_9"] = 57] = "NUMBER_9";
+    /** 与 A 键的键控代码值(65)关联的常数。*/
+    KeyCode[KeyCode["A"] = 65] = "A";
+    /** 与 B 键的键控代码值(66)关联的常数。*/
+    KeyCode[KeyCode["B"] = 66] = "B";
+    /** 与 C 键的键控代码值(67)关联的常数。*/
+    KeyCode[KeyCode["C"] = 67] = "C";
+    /** 与 D 键的键控代码值(68)关联的常数。*/
+    KeyCode[KeyCode["D"] = 68] = "D";
+    /** 与 E 键的键控代码值(69)关联的常数。*/
+    KeyCode[KeyCode["E"] = 69] = "E";
+    /** 与 F 键的键控代码值(70)关联的常数。*/
+    KeyCode[KeyCode["F"] = 70] = "F";
+    /** 与 G 键的键控代码值(71)关联的常数。*/
+    KeyCode[KeyCode["G"] = 71] = "G";
+    /** 与 H 键的键控代码值(72)关联的常数。*/
+    KeyCode[KeyCode["H"] = 72] = "H";
+    /** 与 I 键的键控代码值(73)关联的常数。*/
+    KeyCode[KeyCode["I"] = 73] = "I";
+    /** 与 J 键的键控代码值(74)关联的常数。*/
+    KeyCode[KeyCode["J"] = 74] = "J";
+    /** 与 K 键的键控代码值(75)关联的常数。*/
+    KeyCode[KeyCode["K"] = 75] = "K";
+    /** 与 L 键的键控代码值(76)关联的常数。*/
+    KeyCode[KeyCode["L"] = 76] = "L";
+    /** 与 M 键的键控代码值(77)关联的常数。*/
+    KeyCode[KeyCode["M"] = 77] = "M";
+    /** 与 N 键的键控代码值(78)关联的常数。*/
+    KeyCode[KeyCode["N"] = 78] = "N";
+    /** 与 O 键的键控代码值(79)关联的常数。*/
+    KeyCode[KeyCode["O"] = 79] = "O";
+    /** 与 P 键的键控代码值(80)关联的常数。*/
+    KeyCode[KeyCode["P"] = 80] = "P";
+    /** 与 Q 键的键控代码值(81)关联的常数。*/
+    KeyCode[KeyCode["Q"] = 81] = "Q";
+    /** 与 R 键的键控代码值(82)关联的常数。*/
+    KeyCode[KeyCode["R"] = 82] = "R";
+    /** 与 S 键的键控代码值(83)关联的常数。*/
+    KeyCode[KeyCode["S"] = 83] = "S";
+    /** 与 T 键的键控代码值(84)关联的常数。*/
+    KeyCode[KeyCode["T"] = 84] = "T";
+    /** 与 U 键的键控代码值(85)关联的常数。*/
+    KeyCode[KeyCode["U"] = 85] = "U";
+    /** 与 V 键的键控代码值(86)关联的常数。*/
+    KeyCode[KeyCode["V"] = 86] = "V";
+    /** 与 W 键的键控代码值(87)关联的常数。*/
+    KeyCode[KeyCode["W"] = 87] = "W";
+    /** 与 X 键的键控代码值(88)关联的常数。*/
+    KeyCode[KeyCode["X"] = 88] = "X";
+    /** 与 Y 键的键控代码值(89)关联的常数。*/
+    KeyCode[KeyCode["Y"] = 89] = "Y";
+    /** 与 Z 键的键控代码值(90)关联的常数。*/
+    KeyCode[KeyCode["Z"] = 90] = "Z";
+    /** 与数字键盘上的数字 0 的键控代码值(96)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_0"] = 96] = "NUMPAD_0";
+    /** 与数字键盘上的数字 1 的键控代码值(97)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_1"] = 97] = "NUMPAD_1";
+    /** 与数字键盘上的数字 2 的键控代码值(98)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_2"] = 98] = "NUMPAD_2";
+    /** 与数字键盘上的数字 3 的键控代码值(99)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_3"] = 99] = "NUMPAD_3";
+    /** 与数字键盘上的数字 4 的键控代码值(100)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_4"] = 100] = "NUMPAD_4";
+    /** 与数字键盘上的数字 5 的键控代码值(101)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_5"] = 101] = "NUMPAD_5";
+    /** 与数字键盘上的数字 6 的键控代码值(102)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_6"] = 102] = "NUMPAD_6";
+    /** 与数字键盘上的数字 7 的键控代码值(103)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_7"] = 103] = "NUMPAD_7";
+    /** 与数字键盘上的数字 8 的键控代码值(104)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_8"] = 104] = "NUMPAD_8";
+    /** 与数字键盘上的数字 9 的键控代码值(105)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_9"] = 105] = "NUMPAD_9";
+    /** 与数字键盘上的乘号(*)的键控代码值(106)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_MULTIPLY"] = 106] = "NUMPAD_MULTIPLY";
+    /** 与数字键盘上的加号(+)的键控代码值(107)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_ADD"] = 107] = "NUMPAD_ADD";
+    /** 与数字键盘上的 Enter 的键控代码值(108)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_ENTER"] = 108] = "NUMPAD_ENTER";
+    /** 与数字键盘上的减号(-)的键控代码值(109)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_SUBTRACT"] = 109] = "NUMPAD_SUBTRACT";
+    /** 与数字键盘上的小数点(.)的键控代码值(110)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_DECIMAL"] = 110] = "NUMPAD_DECIMAL";
+    /** 与数字键盘上的除号(/)的键控代码值(111)关联的常数。*/
+    KeyCode[KeyCode["NUMPAD_DIVIDE"] = 111] = "NUMPAD_DIVIDE";
+    /** 与 F1 的键控代码值(112)关联的常数。*/
+    KeyCode[KeyCode["F1"] = 112] = "F1";
+    /** 与 F2 的键控代码值(113)关联的常数。*/
+    KeyCode[KeyCode["F2"] = 113] = "F2";
+    /** 与 F3 的键控代码值(114)关联的常数。*/
+    KeyCode[KeyCode["F3"] = 114] = "F3";
+    /** 与 F4 的键控代码值(115)关联的常数。*/
+    KeyCode[KeyCode["F4"] = 115] = "F4";
+    /** 与 F5 的键控代码值(116)关联的常数。*/
+    KeyCode[KeyCode["F5"] = 116] = "F5";
+    /** 与 F6 的键控代码值(117)关联的常数。*/
+    KeyCode[KeyCode["F6"] = 117] = "F6";
+    /** 与 F7 的键控代码值(118)关联的常数。*/
+    KeyCode[KeyCode["F7"] = 118] = "F7";
+    /** 与 F8 的键控代码值(119)关联的常数。*/
+    KeyCode[KeyCode["F8"] = 119] = "F8";
+    /** 与 F9 的键控代码值(120)关联的常数。*/
+    KeyCode[KeyCode["F9"] = 120] = "F9";
+    /** 与 F10 的键控代码值(121)关联的常数。*/
+    KeyCode[KeyCode["F10"] = 121] = "F10";
+    /** 与 F11 的键控代码值(122)关联的常数。*/
+    KeyCode[KeyCode["F11"] = 122] = "F11";
+    /** 与 F12 的键控代码值(123)关联的常数。*/
+    KeyCode[KeyCode["F12"] = 123] = "F12";
+    /** 与 F13 的键控代码值(124)关联的常数。*/
+    KeyCode[KeyCode["F13"] = 124] = "F13";
+    /** 与 F14 的键控代码值(125)关联的常数。*/
+    KeyCode[KeyCode["F14"] = 125] = "F14";
+    /** 与 F15 的键控代码值(126)关联的常数。*/
+    KeyCode[KeyCode["F15"] = 126] = "F15";
+    /** 与 ; 键的键控代码值(186)关联的常数。*/
+    KeyCode[KeyCode["SEMICOLON"] = 186] = "SEMICOLON";
+    /** 与=键的键控代码值(187)关联的常数。*/
+    KeyCode[KeyCode["EQUAL"] = 187] = "EQUAL";
+    /** 与 F15 的键控代码值(188)关联的常数。*/
+    KeyCode[KeyCode["COMMA"] = 188] = "COMMA";
+    /** 与 - 键的键控代码值(189)关联的常数。*/
+    KeyCode[KeyCode["MINUS"] = 189] = "MINUS";
+    /** 与 . 键的键控代码值(190)关联的常数。*/
+    KeyCode[KeyCode["PERIOD"] = 190] = "PERIOD";
+    /** 与 / 键的键控代码值(191)关联的常数。*/
+    KeyCode[KeyCode["SLASH"] = 191] = "SLASH";
+    /** 与 ` 键的键控代码值(192)关联的常数。*/
+    KeyCode[KeyCode["BACKQUOTE"] = 192] = "BACKQUOTE";
+    /** 与 [ 键的键控代码值(219)关联的常数。*/
+    KeyCode[KeyCode["LEFTBRACKET"] = 219] = "LEFTBRACKET";
+    /** 与 \ 键的键控代码值(220)关联的常数。*/
+    KeyCode[KeyCode["BACKSLASH"] = 220] = "BACKSLASH";
+    /** 与 ] 键的键控代码值(221)关联的常数。*/
+    KeyCode[KeyCode["RIGHTBRACKET"] = 221] = "RIGHTBRACKET";
+    /** 与 ' 键的键控代码值(222)关联的常数。*/
+    KeyCode[KeyCode["QUOTE"] = 222] = "QUOTE";
+})(KeyCode || (KeyCode = {}));
 /**
 * <code>Keyboard</code> 类的属性是一些常数，这些常数表示控制游戏时最常用的键。
 */
@@ -21,12 +222,12 @@ var Keyboard = /** @class */ (function () {
     }
     Keyboard.KeyDown = function (e) {
         var ke = new _KeyboardEvent_(EventType.KEY_DOWN, null, e.keyCode);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN, ke);
+        EventManager.EVENT.AddEventB(EventType.KEY_DOWN, ke);
     };
     Keyboard.KeyPress = function () { };
     Keyboard.KeyUp = function (e) {
         var ke = new _KeyboardEvent_(EventType.KEY_UP, null, e.keyCode);
-        EventManager.Event.AddEventB(EventType.KEY_UP, ke);
+        EventManager.EVENT.AddEventB(EventType.KEY_UP, ke);
     };
     /** 与 0 的键控代码值(48)关联的常数。*/
     Keyboard.NUMBER_0 = 48;
@@ -238,20 +439,20 @@ var Keyboard_KaiOS = /** @class */ (function () {
             return;
         }
         var ke = new _KeyboardEvent_(EventType.KEY_DOWN, null, e.key);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN, ke);
+        EventManager.EVENT.AddEventB(EventType.KEY_DOWN, ke);
     };
     Keyboard_KaiOS.KeyPress = function () { };
     Keyboard_KaiOS.KeyUp = function (e) {
         var ke = new _KeyboardEvent_(EventType.KEY_UP, null, e.key);
-        EventManager.Event.AddEventB(EventType.KEY_UP, ke);
+        EventManager.EVENT.AddEventB(EventType.KEY_UP, ke);
     };
-    Keyboard_KaiOS.ArrowUp = "ArrowUp";
-    Keyboard_KaiOS.ArrowDown = "ArrowDown";
-    Keyboard_KaiOS.ArrowLeft = "ArrowLeft";
-    Keyboard_KaiOS.ArrowRight = "ArrowRight";
-    Keyboard_KaiOS.SoftLeft = "SoftLeft";
-    Keyboard_KaiOS.SoftRight = "SoftRight";
-    Keyboard_KaiOS.EndCall = "EndCall";
+    Keyboard_KaiOS.ARROW_UP = "ArrowUp";
+    Keyboard_KaiOS.ARROW_DOWN = "ArrowDown";
+    Keyboard_KaiOS.ARROW_LEFT = "ArrowLeft";
+    Keyboard_KaiOS.ARROW_RIGHT = "ArrowRight";
+    Keyboard_KaiOS.SOFT_LEFT = "SoftLeft";
+    Keyboard_KaiOS.SOFT_RIGHT = "SoftRight";
+    Keyboard_KaiOS.END_CALL = "EndCall";
     Keyboard_KaiOS.ENTER = "Enter";
     Keyboard_KaiOS.BACKSPACE = "Backspace";
     Keyboard_KaiOS.NUMBER_0 = "0";
@@ -367,21 +568,21 @@ var FingerTouch = /** @class */ (function () {
     FingerTouch.Start = function (e) {
         var finger = e.touches[e.touches.length];
         var te = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, finger.pageX, finger.pageY, null, null, finger.force);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN, te);
+        EventManager.EVENT.AddEventB(EventType.FINGER_DOWN, te);
     };
     /**
      * 移动
      */
     FingerTouch.Motion = function (e) {
         var te = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN, te);
+        EventManager.EVENT.AddEventB(EventType.FINGER_DOWN, te);
     };
     /**
      * 结束
      */
     FingerTouch.End = function (e) {
         var te = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN, te);
+        EventManager.EVENT.AddEventB(EventType.FINGER_DOWN, te);
     };
     return FingerTouch;
 }());
@@ -412,20 +613,20 @@ var Mouse = /** @class */ (function () {
     function Mouse() {
     }
     Mouse.Motion = function (e) {
-        var me = new MouseMotionEvent(EventType.MOUSE_MOTION, e.which, null, e.pageX, e.pageY, EventManager.Event.mouse_motion_event.x, EventManager.Event.mouse_motion_event.y);
-        EventManager.Event.AddEventB(EventType.MOUSE_MOTION, me);
+        var me = new MouseMotionEvent(EventType.MOUSE_MOTION, e.which, null, e.pageX, e.pageY, EventManager.EVENT.mouse_motion_event.x, EventManager.EVENT.mouse_motion_event.y);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_MOTION, me);
     };
     Mouse.ButtonDwon = function (e) {
         var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, e.which, e.button, null, 1, e.pageX, e.pageY);
-        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_DOWN, me);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_BUTTON_DOWN, me);
     };
     Mouse.ButtonUp = function (e) {
         var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, e.which, e.button, null, 1, e.pageX, e.pageY);
-        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_UP, me);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_BUTTON_UP, me);
     };
     Mouse.Wheel = function (e) {
         var me = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
-        EventManager.Event.AddEventB(EventType.MOUSE_WHEEL, me);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_WHEEL, me);
     };
     return Mouse;
 }());
@@ -797,6 +998,15 @@ var User_Event = /** @class */ (function (_super) {
     }
     return User_Event;
 }(CommonEvent));
+var EventManagerMOD;
+(function (EventManagerMOD) {
+    EventManagerMOD[EventManagerMOD["ALL"] = 0] = "ALL";
+    EventManagerMOD[EventManagerMOD["MOUSE"] = 1] = "MOUSE";
+    EventManagerMOD[EventManagerMOD["KEYBOARD"] = 2] = "KEYBOARD";
+    EventManagerMOD[EventManagerMOD["KEYBOARD_KAIOS"] = 3] = "KEYBOARD_KAIOS";
+    EventManagerMOD[EventManagerMOD["TOUCH"] = 4] = "TOUCH";
+    EventManagerMOD[EventManagerMOD["JOY_STICK"] = 5] = "JOY_STICK";
+})(EventManagerMOD || (EventManagerMOD = {}));
 var EventManager = /** @class */ (function () {
     function EventManager() {
         this.type = EventType.FIRST_EVENT; //EventType
@@ -816,21 +1026,42 @@ var EventManager = /** @class */ (function () {
         this.user_event = new User_Event(); //用户事件
         this.queue = new Queue();
         this.queue_event = new Queue();
-        addEventListener("mousemove", Mouse.Motion);
-        addEventListener("mousedown", Mouse.ButtonDwon);
-        addEventListener("mouseup", Mouse.ButtonUp);
-        addEventListener("mousewheel", Mouse.Wheel);
-        addEventListener("touchstart", FingerTouch.Start);
-        addEventListener("touchmove", FingerTouch.Motion);
-        addEventListener("touchend", FingerTouch.End);
-        addEventListener("keydown", Keyboard.KeyDown);
-        addEventListener("keyup", Keyboard.KeyUp);
-        addEventListener("keypress", Keyboard.KeyPress);
-        //KaiOS
-        addEventListener("keydown", Keyboard_KaiOS.KeyDown);
-        addEventListener("keyup", Keyboard_KaiOS.KeyUp);
-        addEventListener("keypress", Keyboard_KaiOS.KeyPress);
     }
+    EventManager.prototype.Enable = function () {
+        var MOD = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            MOD[_i] = arguments[_i];
+        }
+        MOD.forEach(function (mod) {
+            switch (mod) {
+                case EventManagerMOD.ALL:
+                    break;
+                case EventManagerMOD.MOUSE:
+                    addEventListener("mousemove", Mouse.Motion);
+                    addEventListener("mousedown", Mouse.ButtonDwon);
+                    addEventListener("mouseup", Mouse.ButtonUp);
+                    addEventListener("mousewheel", Mouse.Wheel);
+                    break;
+                case EventManagerMOD.KEYBOARD:
+                    addEventListener("keydown", Keyboard.KeyDown);
+                    addEventListener("keyup", Keyboard.KeyUp);
+                    addEventListener("keypress", Keyboard.KeyPress);
+                    break;
+                case EventManagerMOD.KEYBOARD_KAIOS:
+                    addEventListener("keydown", Keyboard_KaiOS.KeyDown);
+                    addEventListener("keyup", Keyboard_KaiOS.KeyUp);
+                    addEventListener("keypress", Keyboard_KaiOS.KeyPress);
+                    break;
+                case EventManagerMOD.TOUCH:
+                    addEventListener("touchstart", FingerTouch.Start);
+                    addEventListener("touchmove", FingerTouch.Motion);
+                    addEventListener("touchend", FingerTouch.End);
+                    break;
+                case EventManagerMOD.JOY_STICK:
+                    break;
+            }
+        });
+    };
     /**
      * 需创建EventManager对象
      *
@@ -949,42 +1180,42 @@ var EventManager = /** @class */ (function () {
                 break;
         }
         /*
-        switch (EventManager.Event.type)
+        switch (EventManager.EVENT.type)
         {
         case EventType.WINDOW_EVENT:
-            EventManager.Event.window_event = new WindowEvent();
+            EventManager.EVENT.window_event = new WindowEvent();
             break;
 
         case EventType.DISPLAY:
-            EventManager.Event.display_event = new DisplayEvent();
+            EventManager.EVENT.display_event = new DisplayEvent();
             break;
 
         case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
-            EventManager.Event.keyboard_event = new _KeyboardEvent_();
+            EventManager.EVENT.keyboard_event = new _KeyboardEvent_();
             break
 
         case EventType.MOUSE_MOTION:
-            EventManager.Event.mouse_motion_event = new MouseMotionEvent();
+            EventManager.EVENT.mouse_motion_event = new MouseMotionEvent();
             break;
 
         case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
-            EventManager.Event.mouse_button_event = new MouseButtonEvent();
+            EventManager.EVENT.mouse_button_event = new MouseButtonEvent();
             break;
 
         case EventType.MOUSE_WHEEL:
-            EventManager.Event.mouse_wheel_event = new _MouseWheelEvent_();
+            EventManager.EVENT.mouse_wheel_event = new _MouseWheelEvent_();
             break;
 
         case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
-            EventManager.Event.finger_touch_event = new FingerTouchEvent();
+            EventManager.EVENT.finger_touch_event = new FingerTouchEvent();
             break;
 
         case EventType.USER_EVENT:
-            EventManager.Event.user_event = new User_Event();
+            EventManager.EVENT.user_event = new User_Event();
             break;
 
         default:
-            EventManager.Event.common_event = new CommonEvent();
+            EventManager.EVENT.common_event = new CommonEvent();
             break;
         }
         */
@@ -993,37 +1224,37 @@ var EventManager = /** @class */ (function () {
      * 等待事件，若有事件则返回真
      */
     EventManager.prototype.WaitEvent = function () {
-        var type = EventManager.Event.queue.pop();
+        var type = EventManager.EVENT.queue.pop();
         if (type != undefined) {
             this.ClearEvent();
             this.type = type;
             switch (type) {
                 case EventType.WINDOW_EVENT:
-                    this.window_event = EventManager.Event.queue_event.pop();
+                    this.window_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.DISPLAY:
-                    this.display_event = EventManager.Event.queue_event.pop();
+                    this.display_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
-                    this.keyboard_event = EventManager.Event.queue_event.pop();
+                    this.keyboard_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.MOUSE_MOTION:
-                    this.mouse_motion_event = EventManager.Event.queue_event.pop();
+                    this.mouse_motion_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
-                    this.mouse_button_event = EventManager.Event.queue_event.pop();
+                    this.mouse_button_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.MOUSE_WHEEL:
-                    this.mouse_wheel_event = EventManager.Event.queue_event.pop();
+                    this.mouse_wheel_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
-                    this.finger_touch_event = EventManager.Event.queue_event.pop();
+                    this.finger_touch_event = EventManager.EVENT.queue_event.pop();
                     break;
                 case EventType.USER_EVENT:
-                    this.user_event = EventManager.Event.queue_event.pop();
+                    this.user_event = EventManager.EVENT.queue_event.pop();
                     break;
                 default:
-                    this.common_event = EventManager.Event.queue_event.pop();
+                    this.common_event = EventManager.EVENT.queue_event.pop();
                     break;
             }
             return true;
@@ -1079,7 +1310,7 @@ var EventManager = /** @class */ (function () {
         return false;
     };
     /*所有事件都会到这*/
-    EventManager.Event = new EventManager(); //
+    EventManager.EVENT = new EventManager(); //
     return EventManager;
 }());
 var Rect = /** @class */ (function () {
@@ -1941,6 +2172,7 @@ var Game = /** @class */ (function () {
         this.scene.AddLayer(new Layer(null, "layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
+        this.event.Enable(EventManagerMOD.KEYBOARD, EventManagerMOD.KEYBOARD_KAIOS);
         if (window.screen.height == 320)
             this.scene.GetLayer().SetHeight("280");
     }
@@ -1985,21 +2217,21 @@ var Game = /** @class */ (function () {
                         case Keyboard.D:
                             this.x += 10;
                             break;
-                        case Keyboard_KaiOS.ArrowUp:
+                        case Keyboard_KaiOS.ARROW_UP:
                             this.y -= 10;
                             break;
-                        case Keyboard_KaiOS.ArrowDown:
+                        case Keyboard_KaiOS.ARROW_DOWN:
                             this.y += 10;
                             break;
-                        case Keyboard_KaiOS.ArrowLeft:
+                        case Keyboard_KaiOS.ARROW_LEFT:
                             this.x -= 10;
                             break;
-                        case Keyboard_KaiOS.ArrowRight:
+                        case Keyboard_KaiOS.ARROW_RIGHT:
                             this.x += 10;
                             break;
                         default:
-                            console.log("KeyDown");
-                            console.log("KeyCode:" + this.event.keyboard_event.key_code);
+                            //console.log("KeyDown");
+                            //console.log("KeyCode:" + this.event.keyboard_event.key_code);
                             break;
                     }
                     break;

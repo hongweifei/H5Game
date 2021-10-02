@@ -283,10 +283,22 @@ class User_Event extends CommonEvent
 }
 
 
+
+enum EventManagerMOD
+{
+    ALL,
+    MOUSE,
+    KEYBOARD,
+    KEYBOARD_KAIOS,
+    TOUCH,
+    JOY_STICK
+}
+
+
 class EventManager
 {
     /*所有事件都会到这*/
-    static Event:EventManager = new EventManager(); //
+    static EVENT:EventManager = new EventManager(); //
 
     type:EventType = EventType.FIRST_EVENT;                         //EventType
     common_event:CommonEvent = new CommonEvent();                   //
@@ -310,21 +322,42 @@ class EventManager
     
     constructor()
     {
-        addEventListener("mousemove",Mouse.Motion);
-        addEventListener("mousedown",Mouse.ButtonDwon);
-        addEventListener("mouseup",Mouse.ButtonUp);
-        addEventListener("mousewheel",Mouse.Wheel);
-        addEventListener("touchstart",FingerTouch.Start);
-        addEventListener("touchmove",FingerTouch.Motion);
-        addEventListener("touchend",FingerTouch.End);
-        addEventListener("keydown",Keyboard.KeyDown);
-        addEventListener("keyup",Keyboard.KeyUp);
-        addEventListener("keypress",Keyboard.KeyPress);
+        
+    }
 
-        //KaiOS
-        addEventListener("keydown",Keyboard_KaiOS.KeyDown);
-        addEventListener("keyup",Keyboard_KaiOS.KeyUp);
-        addEventListener("keypress",Keyboard_KaiOS.KeyPress);
+
+    Enable(...MOD:EventManagerMOD[])
+    {
+        MOD.forEach(function(mod) {
+            switch (mod)
+            {
+                case EventManagerMOD.ALL:
+                    break;
+                case EventManagerMOD.MOUSE:
+                    addEventListener("mousemove",Mouse.Motion);
+                    addEventListener("mousedown",Mouse.ButtonDwon);
+                    addEventListener("mouseup",Mouse.ButtonUp);
+                    addEventListener("mousewheel",Mouse.Wheel);
+                    break;
+                case EventManagerMOD.KEYBOARD:
+                    addEventListener("keydown",Keyboard.KeyDown);
+                    addEventListener("keyup",Keyboard.KeyUp);
+                    addEventListener("keypress",Keyboard.KeyPress);
+                    break;
+                case EventManagerMOD.KEYBOARD_KAIOS:
+                    addEventListener("keydown",Keyboard_KaiOS.KeyDown);
+                    addEventListener("keyup",Keyboard_KaiOS.KeyUp);
+                    addEventListener("keypress",Keyboard_KaiOS.KeyPress);
+                    break;
+                case EventManagerMOD.TOUCH:
+                    addEventListener("touchstart",FingerTouch.Start);
+                    addEventListener("touchmove",FingerTouch.Motion);
+                    addEventListener("touchend",FingerTouch.End);
+                    break;
+                case EventManagerMOD.JOY_STICK:
+                    break;
+            }
+        });
     }
 
 
@@ -480,42 +513,42 @@ class EventManager
             break;
         }
         /*
-        switch (EventManager.Event.type)
+        switch (EventManager.EVENT.type)
         {
         case EventType.WINDOW_EVENT:
-            EventManager.Event.window_event = new WindowEvent();
+            EventManager.EVENT.window_event = new WindowEvent();
             break;
 
         case EventType.DISPLAY:
-            EventManager.Event.display_event = new DisplayEvent();
+            EventManager.EVENT.display_event = new DisplayEvent();
             break;
 
         case EventType.KEYBOARD_EVENT || EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
-            EventManager.Event.keyboard_event = new _KeyboardEvent_();
+            EventManager.EVENT.keyboard_event = new _KeyboardEvent_();
             break
 
         case EventType.MOUSE_MOTION:
-            EventManager.Event.mouse_motion_event = new MouseMotionEvent();
+            EventManager.EVENT.mouse_motion_event = new MouseMotionEvent();
             break;
 
         case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
-            EventManager.Event.mouse_button_event = new MouseButtonEvent();
+            EventManager.EVENT.mouse_button_event = new MouseButtonEvent();
             break;
 
         case EventType.MOUSE_WHEEL:
-            EventManager.Event.mouse_wheel_event = new _MouseWheelEvent_();
+            EventManager.EVENT.mouse_wheel_event = new _MouseWheelEvent_();
             break;
 
         case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
-            EventManager.Event.finger_touch_event = new FingerTouchEvent();
+            EventManager.EVENT.finger_touch_event = new FingerTouchEvent();
             break;
 
         case EventType.USER_EVENT:
-            EventManager.Event.user_event = new User_Event();
+            EventManager.EVENT.user_event = new User_Event();
             break;
 
         default:
-            EventManager.Event.common_event = new CommonEvent();
+            EventManager.EVENT.common_event = new CommonEvent();
             break;
         }
         */
@@ -526,7 +559,7 @@ class EventManager
      */
     WaitEvent() : boolean
     {
-        const type = EventManager.Event.queue.pop();
+        const type = EventManager.EVENT.queue.pop();
         if (type != undefined)
         {
             this.ClearEvent();
@@ -534,39 +567,39 @@ class EventManager
             switch (type)
             {
                 case EventType.WINDOW_EVENT:
-                    this.window_event = EventManager.Event.queue_event.pop() as WindowEvent;
+                    this.window_event = EventManager.EVENT.queue_event.pop() as WindowEvent;
                     break;
 
                 case EventType.DISPLAY:
-                    this.display_event = EventManager.Event.queue_event.pop() as DisplayEvent;
+                    this.display_event = EventManager.EVENT.queue_event.pop() as DisplayEvent;
                     break;
 
                 case EventType.KEY_DOWN || EventType.KEY_UP || EventType.KEYMAP_CHANGED:
-                    this.keyboard_event = EventManager.Event.queue_event.pop() as _KeyboardEvent_;
+                    this.keyboard_event = EventManager.EVENT.queue_event.pop() as _KeyboardEvent_;
                     break
 
                 case EventType.MOUSE_MOTION:
-                    this.mouse_motion_event = EventManager.Event.queue_event.pop() as MouseMotionEvent;
+                    this.mouse_motion_event = EventManager.EVENT.queue_event.pop() as MouseMotionEvent;
                     break;
 
                 case EventType.MOUSE_BUTTON_DOWN || EventType.MOUSE_BUTTON_UP:
-                    this.mouse_button_event = EventManager.Event.queue_event.pop() as MouseButtonEvent;
+                    this.mouse_button_event = EventManager.EVENT.queue_event.pop() as MouseButtonEvent;
                     break;
 
                 case EventType.MOUSE_WHEEL:
-                    this.mouse_wheel_event = EventManager.Event.queue_event.pop() as _MouseWheelEvent_;
+                    this.mouse_wheel_event = EventManager.EVENT.queue_event.pop() as _MouseWheelEvent_;
                     break;
 
                 case EventType.FINGER_MOTION || EventType.FINGER_DOWN || EventType.FINGER_UP:
-                    this.finger_touch_event = EventManager.Event.queue_event.pop() as FingerTouchEvent;
+                    this.finger_touch_event = EventManager.EVENT.queue_event.pop() as FingerTouchEvent;
                     break;
 
                 case EventType.USER_EVENT:
-                    this.user_event = EventManager.Event.queue_event.pop() as User_Event;
+                    this.user_event = EventManager.EVENT.queue_event.pop() as User_Event;
                     break;
 
                 default:
-                    this.common_event = EventManager.Event.queue_event.pop();
+                    this.common_event = EventManager.EVENT.queue_event.pop();
                     break;
             }
 
