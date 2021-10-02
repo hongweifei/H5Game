@@ -12,27 +12,27 @@ enum MouseButton
 class Mouse
 {
 
-    static Motion(this:Window,ev:MouseEvent)
+    static Motion(this:Window,e:MouseEvent)
     {
-        const e = new MouseMotionEvent(EventType.MOUSE_MOTION,ev.which,null,ev.pageX,ev.pageY,EventManager.Event.mouse_motion_event.x,EventManager.Event.mouse_motion_event.y);
-        EventManager.Event.AddEventB(EventType.MOUSE_MOTION,e);
+        const me = new MouseMotionEvent(EventType.MOUSE_MOTION,e.which,null,e.pageX,e.pageY,EventManager.Event.mouse_motion_event.x,EventManager.Event.mouse_motion_event.y);
+        EventManager.Event.AddEventB(EventType.MOUSE_MOTION,me);
     }
 
-    static ButtonDwon(this:Window,ev:MouseEvent)
+    static ButtonDwon(this:Window,e:MouseEvent)
     {
-        const e = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN,ev.which,ev.button,null,1,ev.pageX,ev.pageY);
-        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_DOWN,e);
+        const me = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN,e.which,e.button,null,1,e.pageX,e.pageY);
+        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_DOWN,me);
     }
 
-    static ButtonUp(this:Window,ev:MouseEvent)
+    static ButtonUp(this:Window,e:MouseEvent)
     {
-        const e = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP,ev.which,ev.button,null,1,ev.pageX,ev.pageY);
-        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_UP,e);
+        const me = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP,e.which,e.button,null,1,e.pageX,e.pageY);
+        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_UP,me);
     }
 
-    static Wheel(this:Window,ev:MouseEvent)
+    static Wheel(this:Window,e:MouseEvent)
     {
-        const e = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
-        EventManager.Event.AddEventB(EventType.MOUSE_WHEEL,e);
+        const me = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
+        EventManager.Event.AddEventB(EventType.MOUSE_WHEEL,me);
     }
 }

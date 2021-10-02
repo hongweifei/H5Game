@@ -28,18 +28,25 @@ class Keyboard_KaiOS
     static SHARP = "#";
 
 
-	static KeyDown(this:Window,ev:KeyboardEvent)
+	static KeyDown(this:Window,e:KeyboardEvent)
     {
-        const e = new _KeyboardEvent_(EventType.KEY_DOWN,null,ev.key);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN,e);
+        if (e.key == Keyboard_KaiOS.BACKSPACE)
+        {
+            if (confirm('是否退出?'))
+                window.close();
+            return;
+        }
+
+        const ke = new _KeyboardEvent_(EventType.KEY_DOWN,null,e.key);
+        EventManager.Event.AddEventB(EventType.KEY_DOWN,ke);
     }
 
     static KeyPress(){}
 
-    static KeyUp(this:Window,ev:KeyboardEvent)
+    static KeyUp(this:Window,e:KeyboardEvent)
     {
-        const e = new _KeyboardEvent_(EventType.KEY_UP,null,ev.key);
-        EventManager.Event.AddEventB(EventType.KEY_UP,e);
+        const ke = new _KeyboardEvent_(EventType.KEY_UP,null,e.key);
+        EventManager.Event.AddEventB(EventType.KEY_UP,ke);
     }
 }
 

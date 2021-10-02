@@ -204,17 +204,17 @@ class Keyboard
     /** 与 Insert 的键控代码值(45)关联的常数。*/
     static INSERT: number = 45;
 
-    static KeyDown(this:Window,ev:KeyboardEvent)
+    static KeyDown(this:Window,e:KeyboardEvent)
     {
-        const e = new _KeyboardEvent_(EventType.KEY_DOWN,null,ev.keyCode);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN,e);
+        const ke = new _KeyboardEvent_(EventType.KEY_DOWN,null,e.keyCode);
+        EventManager.Event.AddEventB(EventType.KEY_DOWN,ke);
     }
 
     static KeyPress(){}
 
-    static KeyUp(this:Window,ev:KeyboardEvent)
+    static KeyUp(this:Window,e:KeyboardEvent)
     {
-        const e = new _KeyboardEvent_(EventType.KEY_UP,null,ev.keyCode);
-        EventManager.Event.AddEventB(EventType.KEY_UP,e);
+        const ke = new _KeyboardEvent_(EventType.KEY_UP,null,e.keyCode);
+        EventManager.Event.AddEventB(EventType.KEY_UP,ke);
     }
 }

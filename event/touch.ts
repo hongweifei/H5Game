@@ -31,29 +31,29 @@ class FingerTouch
     /**
      *触摸开始
      */
-    static Start(this:Window,ev:TouchEvent)
+    static Start(this:Window,e:TouchEvent)
     {
-        const finger = ev.touches[ev.touches.length];
-        const e = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,finger.pageX,finger.pageY,null,null,finger.force);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN,e);
+        const finger = e.touches[e.touches.length];
+        const te = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,finger.pageX,finger.pageY,null,null,finger.force);
+        EventManager.Event.AddEventB(EventType.FINGER_DOWN,te);
     }
 
     /**
      * 移动
      */
-    static Motion(this:Window,ev:TouchEvent)
+    static Motion(this:Window,e:TouchEvent)
     {
-        const e = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,null,null,null,null,null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN,e);
+        const te = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,null,null,null,null,null);
+        EventManager.Event.AddEventB(EventType.FINGER_DOWN,te);
     }
 
     /**
      * 结束
      */
-    static End(this:Window,ev:TouchEvent)
+    static End(this:Window,e:TouchEvent)
     {
-        const e = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,null,null,null,null,null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN,e);
+        const te = new FingerTouchEvent(EventType.FINGER_DOWN,null,null,null,null,null,null,null);
+        EventManager.Event.AddEventB(EventType.FINGER_DOWN,te);
     }
 }
 

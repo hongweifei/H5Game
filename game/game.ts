@@ -5,7 +5,10 @@ class Game
     scene:Scene;
     renderer:Renderer;
     event:EventManaget;
-    img = new Image()
+    FPS:number = 30;
+    interval:number = 1000 / this.FPS;
+    time_start:number = Date.now();
+    img = new Image();
     x = 0;
     y = 0;
 
@@ -23,10 +26,28 @@ class Game
         this.MainLoop();
     }
 
+    Render(delta:number)
+    {
+        let fps = delta * this.interval;
+        if (fps > this.FPS)
+            fps = this.FPS;
+        
+        this.renderer.Clear();
+        this.renderer.DrawFillText("FPS:" + fps,100,100);
+        this.renderer.DrawImageA(this.img,this.x,this.y);
+    }
+
     private MainLoop()
     {
-        this.renderer.Clear();
-        this.renderer.DrawImageA(this.img,this.x,this.y);
+        requestAnimationFrame(this.MainLoop.bind(this));
+
+        let now = Date.now();
+        let delta = now - this.time_start;
+        if (delta > this.interval)
+        {
+            this.time_start = now - (delta % this.interval);
+            this.Render(delta);
+        }
 
         //console.log("mainloop");
         if (this.event.WaitEvent())
@@ -65,10 +86,6 @@ class Game
                         case Keyboard_KaiOS.ArrowRight:
                             this.x += 10;
                             break;
-                        case Keyboard_KaiOS.BACKSPACE:
-                            if (confirm('是否退出游戏?'))
-                                window.close();
-                            break;
 
                         default:
                             console.log("KeyDown");
@@ -81,8 +98,7 @@ class Game
                     break;
             }
         }
-
-        requestAnimationFrame(this.MainLoop.bind(this));
+        
     }
 }
 

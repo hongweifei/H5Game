@@ -19,14 +19,14 @@ var __extends = (this && this.__extends) || (function () {
 var Keyboard = /** @class */ (function () {
     function Keyboard() {
     }
-    Keyboard.KeyDown = function (ev) {
-        var e = new _KeyboardEvent_(EventType.KEY_DOWN, null, ev.keyCode);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN, e);
+    Keyboard.KeyDown = function (e) {
+        var ke = new _KeyboardEvent_(EventType.KEY_DOWN, null, e.keyCode);
+        EventManager.Event.AddEventB(EventType.KEY_DOWN, ke);
     };
     Keyboard.KeyPress = function () { };
-    Keyboard.KeyUp = function (ev) {
-        var e = new _KeyboardEvent_(EventType.KEY_UP, null, ev.keyCode);
-        EventManager.Event.AddEventB(EventType.KEY_UP, e);
+    Keyboard.KeyUp = function (e) {
+        var ke = new _KeyboardEvent_(EventType.KEY_UP, null, e.keyCode);
+        EventManager.Event.AddEventB(EventType.KEY_UP, ke);
     };
     /** 与 0 的键控代码值(48)关联的常数。*/
     Keyboard.NUMBER_0 = 48;
@@ -231,14 +231,19 @@ var Keyboard = /** @class */ (function () {
 var Keyboard_KaiOS = /** @class */ (function () {
     function Keyboard_KaiOS() {
     }
-    Keyboard_KaiOS.KeyDown = function (ev) {
-        var e = new _KeyboardEvent_(EventType.KEY_DOWN, null, ev.key);
-        EventManager.Event.AddEventB(EventType.KEY_DOWN, e);
+    Keyboard_KaiOS.KeyDown = function (e) {
+        if (e.key == Keyboard_KaiOS.BACKSPACE) {
+            if (confirm('是否退出?'))
+                window.close();
+            return;
+        }
+        var ke = new _KeyboardEvent_(EventType.KEY_DOWN, null, e.key);
+        EventManager.Event.AddEventB(EventType.KEY_DOWN, ke);
     };
     Keyboard_KaiOS.KeyPress = function () { };
-    Keyboard_KaiOS.KeyUp = function (ev) {
-        var e = new _KeyboardEvent_(EventType.KEY_UP, null, ev.key);
-        EventManager.Event.AddEventB(EventType.KEY_UP, e);
+    Keyboard_KaiOS.KeyUp = function (e) {
+        var ke = new _KeyboardEvent_(EventType.KEY_UP, null, e.key);
+        EventManager.Event.AddEventB(EventType.KEY_UP, ke);
     };
     Keyboard_KaiOS.ArrowUp = "ArrowUp";
     Keyboard_KaiOS.ArrowDown = "ArrowDown";
@@ -359,24 +364,24 @@ var FingerTouch = /** @class */ (function () {
     /**
      *触摸开始
      */
-    FingerTouch.Start = function (ev) {
-        var finger = ev.touches[ev.touches.length];
-        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, finger.pageX, finger.pageY, null, null, finger.force);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN, e);
+    FingerTouch.Start = function (e) {
+        var finger = e.touches[e.touches.length];
+        var te = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, finger.pageX, finger.pageY, null, null, finger.force);
+        EventManager.Event.AddEventB(EventType.FINGER_DOWN, te);
     };
     /**
      * 移动
      */
-    FingerTouch.Motion = function (ev) {
-        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN, e);
+    FingerTouch.Motion = function (e) {
+        var te = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
+        EventManager.Event.AddEventB(EventType.FINGER_DOWN, te);
     };
     /**
      * 结束
      */
-    FingerTouch.End = function (ev) {
-        var e = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
-        EventManager.Event.AddEventB(EventType.FINGER_DOWN, e);
+    FingerTouch.End = function (e) {
+        var te = new FingerTouchEvent(EventType.FINGER_DOWN, null, null, null, null, null, null, null);
+        EventManager.Event.AddEventB(EventType.FINGER_DOWN, te);
     };
     return FingerTouch;
 }());
@@ -406,21 +411,21 @@ var MouseButton;
 var Mouse = /** @class */ (function () {
     function Mouse() {
     }
-    Mouse.Motion = function (ev) {
-        var e = new MouseMotionEvent(EventType.MOUSE_MOTION, ev.which, null, ev.pageX, ev.pageY, EventManager.Event.mouse_motion_event.x, EventManager.Event.mouse_motion_event.y);
-        EventManager.Event.AddEventB(EventType.MOUSE_MOTION, e);
+    Mouse.Motion = function (e) {
+        var me = new MouseMotionEvent(EventType.MOUSE_MOTION, e.which, null, e.pageX, e.pageY, EventManager.Event.mouse_motion_event.x, EventManager.Event.mouse_motion_event.y);
+        EventManager.Event.AddEventB(EventType.MOUSE_MOTION, me);
     };
-    Mouse.ButtonDwon = function (ev) {
-        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
-        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_DOWN, e);
+    Mouse.ButtonDwon = function (e) {
+        var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, e.which, e.button, null, 1, e.pageX, e.pageY);
+        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_DOWN, me);
     };
-    Mouse.ButtonUp = function (ev) {
-        var e = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, ev.which, ev.button, null, 1, ev.pageX, ev.pageY);
-        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_UP, e);
+    Mouse.ButtonUp = function (e) {
+        var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, e.which, e.button, null, 1, e.pageX, e.pageY);
+        EventManager.Event.AddEventB(EventType.MOUSE_BUTTON_UP, me);
     };
-    Mouse.Wheel = function (ev) {
-        var e = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
-        EventManager.Event.AddEventB(EventType.MOUSE_WHEEL, e);
+    Mouse.Wheel = function (e) {
+        var me = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
+        EventManager.Event.AddEventB(EventType.MOUSE_WHEEL, me);
     };
     return Mouse;
 }());
@@ -821,7 +826,7 @@ var EventManager = /** @class */ (function () {
         addEventListener("keydown", Keyboard.KeyDown);
         addEventListener("keyup", Keyboard.KeyUp);
         addEventListener("keypress", Keyboard.KeyPress);
-        //kaios
+        //KaiOS
         addEventListener("keydown", Keyboard_KaiOS.KeyDown);
         addEventListener("keyup", Keyboard_KaiOS.KeyUp);
         addEventListener("keypress", Keyboard_KaiOS.KeyPress);
@@ -1881,6 +1886,9 @@ var Sprite = /** @class */ (function () {
 }());
 var Game = /** @class */ (function () {
     function Game() {
+        this.FPS = 30;
+        this.interval = 1000 / this.FPS;
+        this.time_start = Date.now();
         this.img = new Image();
         this.x = 0;
         this.y = 0;
@@ -1893,9 +1901,22 @@ var Game = /** @class */ (function () {
         this.img.src = "./asset/image/avatar/男剑士/待机、走路/右侧1.png";
         this.MainLoop();
     };
-    Game.prototype.MainLoop = function () {
+    Game.prototype.Render = function (delta) {
+        var fps = delta * this.interval;
+        if (fps > this.FPS)
+            fps = this.FPS;
         this.renderer.Clear();
+        this.renderer.DrawFillText("FPS:" + fps, 100, 100);
         this.renderer.DrawImageA(this.img, this.x, this.y);
+    };
+    Game.prototype.MainLoop = function () {
+        requestAnimationFrame(this.MainLoop.bind(this));
+        var now = Date.now();
+        var delta = now - this.time_start;
+        if (delta > this.interval) {
+            this.time_start = now - (delta % this.interval);
+            this.Render(delta);
+        }
         //console.log("mainloop");
         if (this.event.WaitEvent()) {
             switch (this.event.type) {
@@ -1929,10 +1950,6 @@ var Game = /** @class */ (function () {
                         case Keyboard_KaiOS.ArrowRight:
                             this.x += 10;
                             break;
-                        case Keyboard_KaiOS.BACKSPACE:
-                            if (confirm('是否退出游戏?'))
-                                window.close();
-                            break;
                         default:
                             console.log("KeyDown");
                             console.log("KeyCode:" + this.event.keyboard_event.key_code);
@@ -1943,7 +1960,6 @@ var Game = /** @class */ (function () {
                     break;
             }
         }
-        requestAnimationFrame(this.MainLoop.bind(this));
     };
     return Game;
 }());
