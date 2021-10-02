@@ -50,6 +50,7 @@ class Scene
      */
     AddLayer(layer:Layer)
     {this.layers.push(layer);this.div.appendChild(layer.GetCanvas())}
+
 }
 
 

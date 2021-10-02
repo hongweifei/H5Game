@@ -1,10 +1,13 @@
 
 
 
+
+
+let game = new Game();
 window.onload = function () {
-    let game = new Game();
     game.Start();
 }
+
 
 /*
 let scene = new Scene("scene1");

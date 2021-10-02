@@ -2088,29 +2088,65 @@ var GL;
     }());
 })(GL || (GL = {}));
 var Sprite = /** @class */ (function () {
-    function Sprite(sprite_path) {
+    function Sprite(sprite_path, width, height) {
+        if (sprite_path === void 0) { sprite_path = ""; }
+        if (width === void 0) { width = 0; }
+        if (height === void 0) { height = 0; }
+        this.rect = new Array();
+        var that = this;
         this.image = new Image();
-        this.rect = null;
         this.image.src = sprite_path;
-        this.width = this.image.width;
-        this.height = this.image.height;
+        this.image.onload = function () {
+            if (width == 0 && height == 0) {
+                that.width = this.width;
+                that.height = this.height;
+            }
+            else {
+                that.width = width;
+                that.height = height;
+            }
+            that.rect.push(new Rect(0, 0, this.width, this.height));
+        };
         //this.rect.push(new Rect(0,0,this.width,this.height));
     }
     /**
      *
      * @param path 图片路径
      */
-    Sprite.prototype.SetImage = function (path) { this.image.src = path; };
+    Sprite.prototype.SetImage = function (path, width, height) {
+        if (width === void 0) { width = 0; }
+        if (height === void 0) { height = 0; }
+        var that = this;
+        this.image.src = path;
+        this.image.onload = function () {
+            if (width == 0 && height == 0) {
+                that.SetWidth(this.width);
+                that.SetHeight(this.height);
+            }
+            else {
+                that.SetWidth(width);
+                that.SetHeight(height);
+            }
+        };
+    };
     /**
      *
      * @param w 要设置的宽
      */
-    Sprite.prototype.SetWidth = function (w) { this.width = w; };
+    Sprite.prototype.SetWidth = function (w) {
+        this.width = w;
+        if (this.rect.length == 1)
+            this.rect[0].w = this.width;
+    };
     /**
      *
      * @param h 要设置的高
      */
-    Sprite.prototype.SetHeight = function (h) { this.height = h; };
+    Sprite.prototype.SetHeight = function (h) {
+        this.height = h;
+        if (this.rect.length == 1)
+            this.rect[0].h = this.height;
+    };
     /**
      * 获取精灵图片，宽高
      */
@@ -2145,58 +2181,63 @@ var Sprite = /** @class */ (function () {
      * @param y 纵坐标
      * @param w 宽，默认精灵宽
      * @param h 高，默认精灵高
-     * @param index 索引，默认0
+     * @param index rect索引，默认0
      */
     Sprite.prototype.Render = function (renderer, x, y, w, h, index) {
         if (w === void 0) { w = this.width; }
         if (h === void 0) { h = this.height; }
         if (index === void 0) { index = 0; }
-        if (this.rect != null) {
-            renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
+        renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
+        /*
+        if (this.rect != null)
+        {
+            renderer.DrawImageC(this.image,this.rect[index].x,this.rect[index].y,
+            this.rect[index].w,this.rect[index].h,x,y,w,h);
         }
-        else {
-            renderer.DrawImageB(this.image, x, y, this.width, this.height, index);
-        }
+        else
+            renderer.DrawImageB(this.image,x,y,this.width,this.height,0);
+        */
     };
     return Sprite;
 }());
+var Character = /** @class */ (function (_super) {
+    __extends(Character, _super);
+    function Character(name, img_path) {
+        var _this = _super.call(this, img_path) || this;
+        _this.speed = 10;
+        _this.x = 0;
+        _this.y = 0;
+        _this.name = name;
+        return _this;
+    }
+    Character.prototype.Render = function (renderer) {
+        _super.prototype.Render.call(this, renderer, this.x, this.y, this.width, this.height);
+        renderer.DrawFillText(this.name, this.x, this.y);
+    };
+    return Character;
+}(Sprite));
 var Game = /** @class */ (function () {
     function Game() {
         this.FPS = 30;
         this.interval = 1000 / this.FPS;
         this.time_start = Date.now();
-        this.img = new Image();
-        this.x = 0;
-        this.y = 0;
         this.scene = new Scene("scene");
         this.scene.AddLayer(new Layer(null, "layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
         this.event.Enable(EventManagerMOD.KEYBOARD, EventManagerMOD.KEYBOARD_KAIOS);
+        this.player = new Character("player", "./img/avatar/man/stand_or_walk/right1.png");
         if (window.screen.height == 320)
             this.scene.GetLayer().SetHeight("280");
     }
     Game.prototype.Start = function () {
-        this.img.src = "./asset/image/avatar/男剑士/待机、走路/右侧1.png";
+        //this.player = new Character("player","./img/avatar/man/stand_or_walk/right1.png");
         this.MainLoop();
     };
-    Game.prototype.Render = function (delta) {
-        var fps = delta * this.interval;
-        if (fps > this.FPS)
-            fps = this.FPS;
+    Game.prototype.Render = function (fps) {
         this.renderer.Clear();
         this.renderer.DrawFillText("FPS:" + fps, 100, 100);
-        this.renderer.DrawImageA(this.img, this.x, this.y);
-    };
-    Game.prototype.MainLoop = function () {
-        requestAnimationFrame(this.MainLoop.bind(this));
-        var now = Date.now();
-        var delta = now - this.time_start;
-        if (delta > this.interval) {
-            this.time_start = now - (delta % this.interval);
-            this.Render(delta);
-        }
-        //console.log("mainloop");
+        this.player.Render(this.renderer);
         if (this.event.WaitEvent()) {
             switch (this.event.type) {
                 case EventType.MOUSE_MOTION:
@@ -2206,28 +2247,28 @@ var Game = /** @class */ (function () {
                 case EventType.KEY_DOWN:
                     switch (this.event.keyboard_event.key_code) {
                         case Keyboard.W:
-                            this.y -= 10;
+                            this.player.y -= this.player.speed;
                             break;
                         case Keyboard.S:
-                            this.y += 10;
+                            this.player.y += this.player.speed;
                             break;
                         case Keyboard.A:
-                            this.x -= 10;
+                            this.player.x -= this.player.speed;
                             break;
                         case Keyboard.D:
-                            this.x += 10;
+                            this.player.x += this.player.speed;
                             break;
                         case Keyboard_KaiOS.ARROW_UP:
-                            this.y -= 10;
+                            this.player.y -= this.player.speed;
                             break;
                         case Keyboard_KaiOS.ARROW_DOWN:
-                            this.y += 10;
+                            this.player.y += this.player.speed;
                             break;
                         case Keyboard_KaiOS.ARROW_LEFT:
-                            this.x -= 10;
+                            this.player.x -= this.player.speed;
                             break;
                         case Keyboard_KaiOS.ARROW_RIGHT:
-                            this.x += 10;
+                            this.player.x += this.player.speed;
                             break;
                         default:
                             //console.log("KeyDown");
@@ -2240,10 +2281,22 @@ var Game = /** @class */ (function () {
             }
         }
     };
+    Game.prototype.MainLoop = function () {
+        requestAnimationFrame(this.MainLoop.bind(this));
+        var now = Date.now();
+        var delta = now - this.time_start;
+        if (delta > this.interval) {
+            this.time_start = now - (delta % this.interval);
+            var fps = delta * this.interval;
+            if (fps > this.FPS)
+                fps = this.FPS;
+            this.Render(fps);
+        }
+    };
     return Game;
 }());
+var game = new Game();
 window.onload = function () {
-    var game = new Game();
     game.Start();
 };
 /*

@@ -17,6 +17,7 @@ graphics/layer.ts ^
 graphics/scene.ts ^
 graphics/renderer.ts ^
 graphics/sprite.ts ^
+game/character.ts ^
 game/game.ts ^
 main.ts
 
