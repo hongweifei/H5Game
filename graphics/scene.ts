@@ -9,6 +9,7 @@ class Scene
     {
         this.div = document.createElement("div");
         this.div.setAttribute("id",scene_id);
+        //this.div.setAttribute("style","clear:both");
         //document.body.insertBefore(this.div,document.body.lastChild);
         document.body.appendChild(this.div);
     }

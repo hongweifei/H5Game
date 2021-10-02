@@ -1169,6 +1169,22 @@ var Path = /** @class */ (function () {
 var Layer = /** @class */ (function () {
     /**
      *
+     * 网页可见区域宽： document.body.clientWidth
+     * 网页可见区域高： document.body.clientHeight
+     * 网页可见区域宽： document.body.offsetWidth (包括边线的宽)
+     * 网页可见区域高： document.body.offsetHeight (包括边线的高)
+     * 网页正文全文宽： document.body.scrollWidth
+     * 网页正文全文高： document.body.scrollHeight
+     * 网页被卷去的高： document.body.scrollTop
+     * 网页被卷去的左： document.body.scrollLeft
+     * 网页正文部分上： window.screenTop
+     * 网页正文部分左： window.screenLeft
+     * 屏幕分辨率的高： window.screen.height
+     * 屏幕分辨率的宽： window.screen.width
+     * 屏幕可用工作区高度： window.screen.availHeight
+     * 屏幕可用工作区宽度： window.screen.availWidth
+     *
+     *
      * @param scene 图层所在场景，默认null
      * @param layer_id 图层id
      * @param width 图层宽
@@ -1177,12 +1193,14 @@ var Layer = /** @class */ (function () {
     function Layer(scene, layer_id, width, height) {
         if (scene === void 0) { scene = null; }
         if (layer_id === void 0) { layer_id = "layer"; }
-        if (width === void 0) { width = window.innerWidth; }
-        if (height === void 0) { height = window.innerHeight; }
+        if (width === void 0) { width = document.body.offsetWidth.toString(); }
+        if (height === void 0) { height = document.body.offsetHeight.toString(); }
+        if (height == document.body.offsetHeight.toString() && document.body.offsetHeight == 0)
+            height = document.body.clientHeight.toString();
         this.canvas = document.createElement("canvas");
         this.canvas.setAttribute("id", layer_id);
-        this.canvas.setAttribute("width", width.toString());
-        this.canvas.setAttribute("height", height.toString());
+        this.canvas.setAttribute("width", width);
+        this.canvas.setAttribute("height", height);
         this.canvas.setAttribute("style", "position: absolute");
         this.width = this.canvas.width;
         this.height = this.canvas.height;
@@ -1190,12 +1208,38 @@ var Layer = /** @class */ (function () {
             this.canvas.setAttribute("id", "layer" + scene.GetLayerNumber().toString());
             scene.AddLayer(this);
         }
+        /*
+        if(this.canvas.requestFullscreen)
+            this.canvas.requestFullscreen();
+        else if(this.canvas.webkitRequestFullScreen)
+            this.canvas.webkitRequestFullScreen();
+        else if(this.canvas.mozRequestFullScreen)
+            this.canvas.mozRequestFullScreen();
+        */
     }
     /**
      *
      * @param id 设置图层的id
      */
     Layer.prototype.SetLayerId = function (id) { this.canvas.setAttribute("id", id); };
+    /**
+     *
+     *
+     * @param width 要设置的width（宽度）
+     */
+    Layer.prototype.SetWidth = function (width) {
+        this.canvas.setAttribute("width", width);
+        this.width = this.canvas.width;
+    };
+    /**
+     *
+     *
+     * @param height 要设置的height（高度）
+     */
+    Layer.prototype.SetHeight = function (height) {
+        this.canvas.setAttribute("height", height);
+        this.height = this.canvas.height;
+    };
     /**
      * 获取图层的画布
      */
@@ -1208,6 +1252,7 @@ var Scene = /** @class */ (function () {
         this.layers = [];
         this.div = document.createElement("div");
         this.div.setAttribute("id", scene_id);
+        //this.div.setAttribute("style","clear:both");
         //document.body.insertBefore(this.div,document.body.lastChild);
         document.body.appendChild(this.div);
     }
@@ -1879,7 +1924,7 @@ var Sprite = /** @class */ (function () {
             renderer.DrawImageC(this.image, this.rect[index].x, this.rect[index].y, this.rect[index].w, this.rect[index].h, x, y, w, h);
         }
         else {
-            renderer.DrawImageB(this.imgae, x, y, this.width, this.height, index);
+            renderer.DrawImageB(this.image, x, y, this.width, this.height, index);
         }
     };
     return Sprite;
@@ -1896,6 +1941,8 @@ var Game = /** @class */ (function () {
         this.scene.AddLayer(new Layer(null, "layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
+        if (window.screen.height == 320)
+            this.scene.GetLayer().SetHeight("280");
     }
     Game.prototype.Start = function () {
         this.img.src = "./asset/image/avatar/男剑士/待机、走路/右侧1.png";

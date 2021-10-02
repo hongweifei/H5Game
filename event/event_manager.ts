@@ -83,8 +83,8 @@ class _KeyboardEvent_ extends CommonEvent
 {
     type:number = EventType.FIRST_EVENT;    /**< KEY_DOWN or KEY_UP */
     state:number = null;                    /**< PRESSED or RELEASED */
-    key_code:number = null;                 /**< The key that was pressed or released */
-    constructor(type:number = EventType.FIRST_EVENT,state:number = null,key_code:number = null)
+    key_code:number|string = null;                 /**< The key that was pressed or released */
+    constructor(type:number = EventType.FIRST_EVENT,state:number = null,key_code:number|string = null)
     {
         super(type);
         this.state = state;

@@ -4,7 +4,7 @@ class Game
 {
     scene:Scene;
     renderer:Renderer;
-    event:EventManaget;
+    event:EventManager;
     FPS:number = 30;
     interval:number = 1000 / this.FPS;
     time_start:number = Date.now();
@@ -18,6 +18,9 @@ class Game
         this.scene.AddLayer(new Layer(null,"layer1"));
         this.renderer = new Renderer(this.scene);
         this.event = new EventManager();
+
+        if (window.screen.height == 320)
+            this.scene.GetLayer().SetHeight("280");
     }
 
     Start()
@@ -31,7 +34,7 @@ class Game
         let fps = delta * this.interval;
         if (fps > this.FPS)
             fps = this.FPS;
-        
+
         this.renderer.Clear();
         this.renderer.DrawFillText("FPS:" + fps,100,100);
         this.renderer.DrawImageA(this.img,this.x,this.y);

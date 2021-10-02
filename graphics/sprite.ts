@@ -86,7 +86,7 @@ class Sprite
         }
         else
         {
-            renderer.DrawImageB(this.imgae,x,y,this.width,this.height,index);
+            renderer.DrawImageB(this.image,x,y,this.width,this.height,index);
         }
     }
 }
