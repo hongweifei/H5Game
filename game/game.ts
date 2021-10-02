@@ -7,8 +7,8 @@
 
 class Game
 {
-    scene:Flown.Scene;
-    renderer:Flown.Renderer;
+    scene:flown.Scene;
+    renderer:flown.Renderer;
     event:EventManager;
     player:Character;
 
@@ -18,9 +18,9 @@ class Game
 
     constructor()
     {
-        this.scene = new Flown.Scene("scene");
-        this.scene.AddLayer(new Flown.Layer(null,"layer1"));
-        this.renderer = new Flown.Renderer(this.scene);
+        this.scene = new flown.Scene("scene");
+        this.scene.AddLayer(new flown.Layer(null,"layer1"));
+        this.renderer = new flown.Renderer(this.scene);
         this.event = new EventManager();
         this.event.Enable(EventManagerMOD.KEYBOARD,EventManagerMOD.KEYBOARD_KAIOS);
         this.player = new Character("player","./img/avatar/man/stand_or_walk/right1.png");

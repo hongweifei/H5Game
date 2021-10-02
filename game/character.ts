@@ -2,7 +2,7 @@
 
 /// <reference path="../graphics/sprite.ts" />
 
-class Character extends Flown.Sprite
+class Character extends flown.Sprite
 {
 	protected name:string;
 	public speed:number = 10;
@@ -15,7 +15,7 @@ class Character extends Flown.Sprite
 		this.name = name;
 	}
 
-	Render(renderer:Flown.Renderer)
+	Render(renderer:flown.Renderer)
 	{
 		super.Render(renderer,this.x,this.y,this.width,this.height);
 		renderer.DrawFillText(this.name,this.x,this.y);

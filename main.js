@@ -1319,8 +1319,8 @@ var EventManager = /** @class */ (function () {
     EventManager.EVENT = new EventManager(); //
     return EventManager;
 }());
-var Flown;
-(function (Flown) {
+var flown;
+(function (flown) {
     var Rect = /** @class */ (function () {
         function Rect(x, y, w, h) {
             if (x === void 0) { x = 0; }
@@ -1334,10 +1334,10 @@ var Flown;
         }
         return Rect;
     }());
-    Flown.Rect = Rect;
-})(Flown || (Flown = {}));
-var Flown;
-(function (Flown) {
+    flown.Rect = Rect;
+})(flown || (flown = {}));
+var flown;
+(function (flown) {
     var Path = /** @class */ (function () {
         function Path(parameters) {
             this.start_x = 0;
@@ -1409,11 +1409,11 @@ var Flown;
         Path.prototype.DeletePoint = function (index) { this.x.splice(index, 1); this.y.splice(index, 1); };
         return Path;
     }());
-    Flown.Path = Path;
-})(Flown || (Flown = {}));
+    flown.Path = Path;
+})(flown || (flown = {}));
 /// <reference path="layer.ts" />
-var Flown;
-(function (Flown) {
+var flown;
+(function (flown) {
     var Scene = /** @class */ (function () {
         function Scene(scene_id) {
             if (scene_id === void 0) { scene_id = "scene"; }
@@ -1462,8 +1462,8 @@ var Flown;
         Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
         return Scene;
     }());
-    Flown.Scene = Scene;
-})(Flown || (Flown = {}));
+    flown.Scene = Scene;
+})(flown || (flown = {}));
 var GL;
 (function (GL) {
     var Scene = /** @class */ (function () {
@@ -1506,8 +1506,8 @@ var Three;
     Three.Scene = Scene;
 })(Three || (Three = {}));
 /// <reference path="scene.ts" />
-var Flown;
-(function (Flown) {
+var flown;
+(function (flown) {
     var Layer = /** @class */ (function () {
         /**
          *
@@ -1588,12 +1588,12 @@ var Flown;
         Layer.prototype.GetCanvas = function () { return this.canvas; };
         return Layer;
     }());
-    Flown.Layer = Layer;
-})(Flown || (Flown = {}));
+    flown.Layer = Layer;
+})(flown || (flown = {}));
 /// <reference path="scene.ts" />
 /// <reference path="path.ts" />
-var Flown;
-(function (Flown) {
+var flown;
+(function (flown) {
     var Renderer = /** @class */ (function () {
         /**
          *
@@ -1874,8 +1874,8 @@ var Flown;
         };
         return Renderer;
     }());
-    Flown.Renderer = Renderer;
-})(Flown || (Flown = {}));
+    flown.Renderer = Renderer;
+})(flown || (flown = {}));
 var GL;
 (function (GL) {
     GL.COLOR_BUFFER_BIT = WebGLRenderingContext.COLOR_BUFFER_BIT;
@@ -2128,8 +2128,8 @@ var GL;
 })(GL || (GL = {}));
 /// <reference path="renderer.ts" />
 /// <reference path="rect.ts" />
-var Flown;
-(function (Flown) {
+var flown;
+(function (flown) {
     var Sprite = /** @class */ (function () {
         function Sprite(sprite_path, width, height) {
             if (sprite_path === void 0) { sprite_path = ""; }
@@ -2148,7 +2148,7 @@ var Flown;
                     that.width = width;
                     that.height = height;
                 }
-                that.rect.push(new Flown.Rect(0, 0, this.width, this.height));
+                that.rect.push(new flown.Rect(0, 0, this.width, this.height));
             };
             //this.rect.push(new Rect(0,0,this.width,this.height));
         }
@@ -2212,7 +2212,7 @@ var Flown;
             this.height = h;
             for (var i = 0; i < vertical; i++) {
                 for (var j = 0; j < horizontal; j++) {
-                    this.rect.push(new Flown.Rect(start_x + w * j, start_y + h * i, w, h));
+                    this.rect.push(new flown.Rect(start_x + w * j, start_y + h * i, w, h));
                 }
             }
         };
@@ -2243,8 +2243,8 @@ var Flown;
         };
         return Sprite;
     }());
-    Flown.Sprite = Sprite;
-})(Flown || (Flown = {}));
+    flown.Sprite = Sprite;
+})(flown || (flown = {}));
 /// <reference path="../graphics/sprite.ts" />
 var Character = /** @class */ (function (_super) {
     __extends(Character, _super);
@@ -2261,7 +2261,7 @@ var Character = /** @class */ (function (_super) {
         renderer.DrawFillText(this.name, this.x, this.y);
     };
     return Character;
-}(Flown.Sprite));
+}(flown.Sprite));
 /// <reference path="../graphics/scene.ts" />
 /// <reference path="../graphics/layer.ts" />
 /// <reference path="../graphics/renderer.ts" />
@@ -2271,9 +2271,9 @@ var Game = /** @class */ (function () {
         this.FPS = 30;
         this.interval = 1000 / this.FPS;
         this.time_start = Date.now();
-        this.scene = new Flown.Scene("scene");
-        this.scene.AddLayer(new Flown.Layer(null, "layer1"));
-        this.renderer = new Flown.Renderer(this.scene);
+        this.scene = new flown.Scene("scene");
+        this.scene.AddLayer(new flown.Layer(null, "layer1"));
+        this.renderer = new flown.Renderer(this.scene);
         this.event = new EventManager();
         this.event.Enable(EventManagerMOD.KEYBOARD, EventManagerMOD.KEYBOARD_KAIOS);
         this.player = new Character("player", "./img/avatar/man/stand_or_walk/right1.png");

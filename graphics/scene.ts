@@ -3,7 +3,7 @@
 /// <reference path="layer.ts" />
 
 
-namespace Flown
+namespace flown
 {
 
     export class Scene

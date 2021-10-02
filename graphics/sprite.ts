@@ -5,7 +5,7 @@
 /// <reference path="rect.ts" />
 
 
-namespace Flown
+namespace flown
 {
     
     export class Sprite
