@@ -2285,11 +2285,11 @@ var Game = /** @class */ (function () {
         requestAnimationFrame(this.MainLoop.bind(this));
         var now = Date.now();
         var delta = now - this.time_start;
+        var fps = 1000 / delta;
+        if (fps > this.FPS)
+            fps = this.FPS;
         if (delta > this.interval) {
             this.time_start = now - (delta % this.interval);
-            var fps = delta * this.interval;
-            if (fps > this.FPS)
-                fps = this.FPS;
             this.Render(fps);
         }
     };

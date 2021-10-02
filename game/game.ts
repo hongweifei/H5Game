@@ -93,12 +93,14 @@ class Game
 
         let now = Date.now();
         let delta = now - this.time_start;
+
+        let fps = 1000 / delta;
+        if (fps > this.FPS)
+            fps = this.FPS;
+        
         if (delta > this.interval)
         {
             this.time_start = now - (delta % this.interval);
-            let fps = delta * this.interval;
-            if (fps > this.FPS)
-                fps = this.FPS;
             this.Render(fps);
         }
     }
