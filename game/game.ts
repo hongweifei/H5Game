@@ -181,7 +181,7 @@ class Game
                 {
                     e.SetState(PlaneState.DEAD, true);
                     that.plane_bullet.splice(index,1);
-                    this.point++;
+                    that.point++;
                 }
             });
             
@@ -239,7 +239,7 @@ class Game
             let y = 0;
             
             let ne = new Enemy(x,y,this.width / 10,this.height / 10);
-            ne.SetSpeed(this.height / 30);
+            ne.SetSpeed(this.height / 60);
             this.enemy.push(ne);
         }
         
