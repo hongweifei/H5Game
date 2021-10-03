@@ -2505,8 +2505,10 @@ var Game = /** @class */ (function () {
         this.event = new EventManager();
         this.event.Enable(EventManagerMOD.KEYBOARD, EventManagerMOD.KEYBOARD_KAIOS);
         this.player = new Character("player", "./img/avatar/man/stand_or_walk/right1.png");
+        /*
         if (window.screen.height == 320)
             this.scene.GetLayer().SetHeight("280");
+        */
         this.width = this.scene.GetLayer().GetWidth();
         this.height = this.scene.GetLayer().GetHeight();
     }
