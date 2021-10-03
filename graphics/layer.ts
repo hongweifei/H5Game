@@ -39,6 +39,8 @@ namespace flown
         constructor(scene:Scene = null,layer_id:string = "layer",width:string = document.body.offsetWidth.toString(),
             height:string = document.body.offsetHeight.toString())
         {
+            if (width == document.body.offsetWidth.toString() && document.body.offsetWidth == 0)
+                width = document.body.clientWidth.toString();
             if (height == document.body.offsetHeight.toString() && document.body.offsetHeight == 0)
                 height = document.body.clientHeight.toString();
             

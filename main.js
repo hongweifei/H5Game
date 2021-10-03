@@ -1351,6 +1351,8 @@ var flown;
             if (layer_id === void 0) { layer_id = "layer"; }
             if (width === void 0) { width = document.body.offsetWidth.toString(); }
             if (height === void 0) { height = document.body.offsetHeight.toString(); }
+            if (width == document.body.offsetWidth.toString() && document.body.offsetWidth == 0)
+                width = document.body.clientWidth.toString();
             if (height == document.body.offsetHeight.toString() && document.body.offsetHeight == 0)
                 height = document.body.clientHeight.toString();
             this.canvas = document.createElement("canvas");
@@ -2511,6 +2513,7 @@ var Game = /** @class */ (function () {
     Game.prototype.Start = function () {
         //this.player = new Character("player","./img/avatar/man/stand_or_walk/right1.png");
         this.plane = new Plane(0, 0, this.width / 10, this.height / 10);
+        this.plane.SetSpeed(this.height / 30);
         this.img.push(new Image());
         this.img.push(new Image());
         this.img.push(new Image());
@@ -2627,7 +2630,9 @@ var Game = /** @class */ (function () {
         if (this.enemy.length < 3 && this.width != 0) {
             var x = Math.random() * this.width;
             var y = 0;
-            this.enemy.push(new Enemy(x, y, this.width / 10, this.height / 10));
+            var ne = new Enemy(x, y, this.width / 10, this.height / 10);
+            ne.SetSpeed(this.height / 30);
+            this.enemy.push(ne);
         }
         if (this.plane.GetState(PlaneState.DEAD)) {
             this.game_over = true;
