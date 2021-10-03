@@ -1,5 +1,6 @@
 
 
+/// <reference path="../event/event_manager.ts" />
 /// <reference path="../graphics/scene.ts" />
 /// <reference path="../graphics/layer.ts" />
 /// <reference path="../graphics/renderer.ts" />

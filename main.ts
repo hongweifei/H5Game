@@ -1,6 +1,6 @@
 
 
-
+/// <reference path="./game/game.ts" />
 
 
 let game = new Game();

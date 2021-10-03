@@ -13,6 +13,101 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var Queue = /** @class */ (function () {
+    function Queue() {
+        this.prev = this;
+        this.next = this;
+    }
+    Queue.prototype.push = function (item) {
+        /*
+        let q:Queue<T> = new Queue<T>();
+        q.data = item;
+
+        q.prev = this.prev;
+        q.next = this;
+
+        this.prev.next = q;
+        this.prev = q;
+        */
+        this.prev.next = new Queue();
+        this.prev.next.data = item;
+        this.prev = this.prev.next;
+        this.prev.prev = null;
+    };
+    Queue.prototype.pop = function () {
+        var q = new Queue();
+        q = this.next;
+        this.next.next.prev = this;
+        this.next = this.next.next;
+        return q.data;
+    };
+    return Queue;
+}());
+var QueueB = /** @class */ (function () {
+    function QueueB() {
+        this.next = this;
+        this.count = 0;
+    }
+    QueueB.prototype.push = function (item) {
+        var q = new QueueB();
+        q.data = item;
+        q.next = this;
+        if (this.count == 0)
+            this.next = q;
+        else {
+            var last_one = this;
+            for (var i = 0; i < this.count; i++) {
+                last_one = last_one.next;
+            }
+            last_one.next = q;
+        }
+    };
+    QueueB.prototype.pop = function () {
+        var q = new QueueB();
+        q = this.next;
+        this.next = this.next.next;
+        return q.data;
+    };
+    return QueueB;
+}());
+var ArrayQueue = /** @class */ (function () {
+    function ArrayQueue() {
+        var _this = this;
+        this.data = new Array();
+        this.push = function (item) { return _this.data.push(item); };
+        this.pop = function () { return _this.data.shift(); };
+    }
+    return ArrayQueue;
+}());
+/**
+ * 0代表 按下 左键 ，1 代表按下 滚轮 ，2 代表按下 右键
+ */
+var MouseButton;
+(function (MouseButton) {
+    MouseButton[MouseButton["LEFT_BUTTON"] = 0] = "LEFT_BUTTON";
+    MouseButton[MouseButton["RIGHT_BUTTON"] = 2] = "RIGHT_BUTTON";
+})(MouseButton || (MouseButton = {}));
+var Mouse = /** @class */ (function () {
+    function Mouse() {
+    }
+    Mouse.Motion = function (e) {
+        var me = new MouseMotionEvent(EventType.MOUSE_MOTION, e.which, null, e.pageX, e.pageY, EventManager.EVENT.mouse_motion_event.x, EventManager.EVENT.mouse_motion_event.y);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_MOTION, me);
+    };
+    Mouse.ButtonDwon = function (e) {
+        var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, e.which, e.button, null, 1, e.pageX, e.pageY);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_BUTTON_DOWN, me);
+    };
+    Mouse.ButtonUp = function (e) {
+        var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, e.which, e.button, null, 1, e.pageX, e.pageY);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_BUTTON_UP, me);
+    };
+    Mouse.Wheel = function (e) {
+        var me = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
+        EventManager.EVENT.AddEventB(EventType.MOUSE_WHEEL, me);
+    };
+    return Mouse;
+}());
 var KeyCode;
 (function (KeyCode) {
     /** 与 Backspace 的键控代码值(8)关联的常数。*/
@@ -469,72 +564,6 @@ var Keyboard_KaiOS = /** @class */ (function () {
     Keyboard_KaiOS.SHARP = "#";
     return Keyboard_KaiOS;
 }());
-var Queue = /** @class */ (function () {
-    function Queue() {
-        this.prev = this;
-        this.next = this;
-    }
-    Queue.prototype.push = function (item) {
-        /*
-        let q:Queue<T> = new Queue<T>();
-        q.data = item;
-
-        q.prev = this.prev;
-        q.next = this;
-
-        this.prev.next = q;
-        this.prev = q;
-        */
-        this.prev.next = new Queue();
-        this.prev.next.data = item;
-        this.prev = this.prev.next;
-        this.prev.prev = null;
-    };
-    Queue.prototype.pop = function () {
-        var q = new Queue();
-        q = this.next;
-        this.next.next.prev = this;
-        this.next = this.next.next;
-        return q.data;
-    };
-    return Queue;
-}());
-var QueueB = /** @class */ (function () {
-    function QueueB() {
-        this.next = this;
-        this.count = 0;
-    }
-    QueueB.prototype.push = function (item) {
-        var q = new QueueB();
-        q.data = item;
-        q.next = this;
-        if (this.count == 0)
-            this.next = q;
-        else {
-            var last_one = this;
-            for (var i = 0; i < this.count; i++) {
-                last_one = last_one.next;
-            }
-            last_one.next = q;
-        }
-    };
-    QueueB.prototype.pop = function () {
-        var q = new QueueB();
-        q = this.next;
-        this.next = this.next.next;
-        return q.data;
-    };
-    return QueueB;
-}());
-var ArrayQueue = /** @class */ (function () {
-    function ArrayQueue() {
-        var _this = this;
-        this.data = new Array();
-        this.push = function (item) { return _this.data.push(item); };
-        this.pop = function () { return _this.data.shift(); };
-    }
-    return ArrayQueue;
-}());
 var TouchDeviceType;
 (function (TouchDeviceType) {
     TouchDeviceType[TouchDeviceType["TOUCH_DEVICE_INVALID"] = -1] = "TOUCH_DEVICE_INVALID";
@@ -601,35 +630,6 @@ function GetNumTouchFingers(touch_id) {
 function GetTouchFinger(touch_id, index) {
     return;
 }
-/**
- * 0代表 按下 左键 ，1 代表按下 滚轮 ，2 代表按下 右键
- */
-var MouseButton;
-(function (MouseButton) {
-    MouseButton[MouseButton["LEFT_BUTTON"] = 0] = "LEFT_BUTTON";
-    MouseButton[MouseButton["RIGHT_BUTTON"] = 2] = "RIGHT_BUTTON";
-})(MouseButton || (MouseButton = {}));
-var Mouse = /** @class */ (function () {
-    function Mouse() {
-    }
-    Mouse.Motion = function (e) {
-        var me = new MouseMotionEvent(EventType.MOUSE_MOTION, e.which, null, e.pageX, e.pageY, EventManager.EVENT.mouse_motion_event.x, EventManager.EVENT.mouse_motion_event.y);
-        EventManager.EVENT.AddEventB(EventType.MOUSE_MOTION, me);
-    };
-    Mouse.ButtonDwon = function (e) {
-        var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_DOWN, e.which, e.button, null, 1, e.pageX, e.pageY);
-        EventManager.EVENT.AddEventB(EventType.MOUSE_BUTTON_DOWN, me);
-    };
-    Mouse.ButtonUp = function (e) {
-        var me = new MouseButtonEvent(EventType.MOUSE_BUTTON_UP, e.which, e.button, null, 1, e.pageX, e.pageY);
-        EventManager.EVENT.AddEventB(EventType.MOUSE_BUTTON_UP, me);
-    };
-    Mouse.Wheel = function (e) {
-        var me = new _MouseWheelEvent_(EventType.MOUSE_WHEEL);
-        EventManager.EVENT.AddEventB(EventType.MOUSE_WHEEL, me);
-    };
-    return Mouse;
-}());
 var HAT_CENTERED = 0x00;
 var HAT_UP = 0x01;
 var HAT_RIGHT = 0x02;
@@ -1319,192 +1319,6 @@ var EventManager = /** @class */ (function () {
     EventManager.EVENT = new EventManager(); //
     return EventManager;
 }());
-var flown;
-(function (flown) {
-    var Rect = /** @class */ (function () {
-        function Rect(x, y, w, h) {
-            if (x === void 0) { x = 0; }
-            if (y === void 0) { y = 0; }
-            if (w === void 0) { w = 0; }
-            if (h === void 0) { h = 0; }
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-        }
-        return Rect;
-    }());
-    flown.Rect = Rect;
-})(flown || (flown = {}));
-var flown;
-(function (flown) {
-    var Path = /** @class */ (function () {
-        function Path(parameters) {
-            this.start_x = 0;
-            this.start_y = 0;
-        }
-        /**
-         * 设置路径开始坐标
-         *
-         * @param x 路径起点横坐标
-         * @param y 路径起点纵坐标
-         */
-        Path.prototype.SetStartPoint = function (x, y) { this.start_x = x; this.start_y = y; };
-        /**
-         * 给路径添加点
-         *
-         * @param x 要添加的点的横坐标
-         * @param y 要添加的点的纵坐标
-         */
-        Path.prototype.AddPoint = function (x, y) { this.x.push(x); this.y.push(y); };
-        /**
-         * 在起点后插入一点
-         *
-         * @param x
-         * @param y
-         */
-        Path.prototype.UnshiftPoint = function (x, y) { this.x.unshift(x); this.y.unshift(y); };
-        /**
-         * 给路径插入点
-         *
-         * @param x 要插入的点的横坐标
-         * @param y 要插入的点的纵坐标
-         * @param index 要插入的索引
-         */
-        Path.prototype.InsertPoint = function (x, y, index) {
-            var points_x;
-            var points_y;
-            for (var i = index; i < this.x.length - index; i++) {
-                points_x.push(this.x[i]);
-                points_y.push(this.y[i]);
-            }
-            this.x[index] = x;
-            this.y[index] = y;
-            for (var i = index + 1; i < this.x.length - index; i++) {
-                this.x[i] = points_x[i - (index + 1)];
-                this.y[i] = points_y[i - (index + 1)];
-            }
-            this.x.push(points_x.pop());
-            this.y.push(points_y.pop());
-        };
-        /**
-         * 获取路径起点
-         */
-        Path.prototype.GetStartPoint = function () { var point = [this.start_x, this.start_y]; return point; };
-        /**
-         * 获取路径中的点，不包含起点
-         *
-         * @param index 索引
-         */
-        Path.prototype.GetPoint = function (index) { var point = [this.x[index], this.y[index]]; return point; };
-        /**
-         * 获取路径中点的数量
-         */
-        Path.prototype.GetSize = function () { return this.x.length + 1; };
-        /**
-         * 删除路径中的一个点
-         *
-         * @param index 要删除的点索引
-         */
-        Path.prototype.DeletePoint = function (index) { this.x.splice(index, 1); this.y.splice(index, 1); };
-        return Path;
-    }());
-    flown.Path = Path;
-})(flown || (flown = {}));
-/// <reference path="layer.ts" />
-var flown;
-(function (flown) {
-    var Scene = /** @class */ (function () {
-        function Scene(scene_id) {
-            if (scene_id === void 0) { scene_id = "scene"; }
-            this.layers = [];
-            this.div = document.createElement("div");
-            this.div.setAttribute("id", scene_id);
-            //this.div.setAttribute("style","clear:both");
-            //document.body.insertBefore(this.div,document.body.lastChild);
-            document.body.appendChild(this.div);
-        }
-        /**
-         * 获取场景div
-         */
-        Scene.prototype.GetDiv = function () { return this.div; };
-        /**
-         * 获取场景图层中的画布
-         *
-         * @param index 索引，要获取的图层画布索引
-         */
-        Scene.prototype.GetCanvas = function (index) {
-            if (index === void 0) { index = 0; }
-            return this.layers[index].GetCanvas();
-        };
-        /**
-         * 获取图层数量
-         */
-        Scene.prototype.GetLayerNumber = function () { return this.layers.length; };
-        /**
-         * 获取图层
-         *
-         * @param index 图层索引
-         */
-        Scene.prototype.GetLayer = function (index) {
-            if (index === void 0) { index = 0; }
-            return this.layers[index];
-        };
-        /**
-         * 获取所有图层
-         */
-        Scene.prototype.GetLayers = function () { return this.layers; };
-        /**
-         * 给场景添加图层
-         *
-         * @param layer 要添加的图层
-         */
-        Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
-        return Scene;
-    }());
-    flown.Scene = Scene;
-})(flown || (flown = {}));
-var GL;
-(function (GL) {
-    var Scene = /** @class */ (function () {
-        function Scene(scene_id, width, height) {
-            if (scene_id === void 0) { scene_id = "scene"; }
-            if (width === void 0) { width = window.innerWidth; }
-            if (height === void 0) { height = window.innerHeight; }
-            this.div = document.createElement("div");
-            this.div.setAttribute("id", scene_id);
-            //document.body.insertBefore(this.div,document.body.lastChild);
-            document.body.appendChild(this.div);
-            this.canvas = document.createElement("canvas");
-            this.canvas.setAttribute("id", "glcanvas");
-            this.canvas.setAttribute("width", width.toString());
-            this.canvas.setAttribute("height", height.toString());
-            this.canvas.setAttribute("style", "position: absolute");
-            this.div.appendChild(this.canvas);
-        }
-        /**
-         * 获取场景div
-         */
-        Scene.prototype.GetDiv = function () { return this.div; };
-        /**
-         * 获取场景图层中的画布
-         *
-         * @param index 索引，要获取的图层画布索引
-         */
-        Scene.prototype.GetCanvas = function () { return this.canvas; };
-        return Scene;
-    }());
-    GL.Scene = Scene;
-})(GL || (GL = {}));
-var Three;
-(function (Three) {
-    var Scene = /** @class */ (function () {
-        function Scene() {
-        }
-        return Scene;
-    }());
-    Three.Scene = Scene;
-})(Three || (Three = {}));
 /// <reference path="scene.ts" />
 var flown;
 (function (flown) {
@@ -1601,6 +1415,175 @@ var flown;
         return Layer;
     }());
     flown.Layer = Layer;
+})(flown || (flown = {}));
+/// <reference path="layer.ts" />
+var flown;
+(function (flown) {
+    var Scene = /** @class */ (function () {
+        function Scene(scene_id) {
+            if (scene_id === void 0) { scene_id = "scene"; }
+            this.layers = [];
+            this.div = document.createElement("div");
+            this.div.setAttribute("id", scene_id);
+            //this.div.setAttribute("style","clear:both");
+            //document.body.insertBefore(this.div,document.body.lastChild);
+            document.body.appendChild(this.div);
+        }
+        /**
+         * 获取场景div
+         */
+        Scene.prototype.GetDiv = function () { return this.div; };
+        /**
+         * 获取场景图层中的画布
+         *
+         * @param index 索引，要获取的图层画布索引
+         */
+        Scene.prototype.GetCanvas = function (index) {
+            if (index === void 0) { index = 0; }
+            return this.layers[index].GetCanvas();
+        };
+        /**
+         * 获取图层数量
+         */
+        Scene.prototype.GetLayerNumber = function () { return this.layers.length; };
+        /**
+         * 获取图层
+         *
+         * @param index 图层索引
+         */
+        Scene.prototype.GetLayer = function (index) {
+            if (index === void 0) { index = 0; }
+            return this.layers[index];
+        };
+        /**
+         * 获取所有图层
+         */
+        Scene.prototype.GetLayers = function () { return this.layers; };
+        /**
+         * 给场景添加图层
+         *
+         * @param layer 要添加的图层
+         */
+        Scene.prototype.AddLayer = function (layer) { this.layers.push(layer); this.div.appendChild(layer.GetCanvas()); };
+        return Scene;
+    }());
+    flown.Scene = Scene;
+})(flown || (flown = {}));
+var GL;
+(function (GL) {
+    var Scene = /** @class */ (function () {
+        function Scene(scene_id, width, height) {
+            if (scene_id === void 0) { scene_id = "scene"; }
+            if (width === void 0) { width = window.innerWidth; }
+            if (height === void 0) { height = window.innerHeight; }
+            this.div = document.createElement("div");
+            this.div.setAttribute("id", scene_id);
+            //document.body.insertBefore(this.div,document.body.lastChild);
+            document.body.appendChild(this.div);
+            this.canvas = document.createElement("canvas");
+            this.canvas.setAttribute("id", "glcanvas");
+            this.canvas.setAttribute("width", width.toString());
+            this.canvas.setAttribute("height", height.toString());
+            this.canvas.setAttribute("style", "position: absolute");
+            this.div.appendChild(this.canvas);
+        }
+        /**
+         * 获取场景div
+         */
+        Scene.prototype.GetDiv = function () { return this.div; };
+        /**
+         * 获取场景图层中的画布
+         *
+         * @param index 索引，要获取的图层画布索引
+         */
+        Scene.prototype.GetCanvas = function () { return this.canvas; };
+        return Scene;
+    }());
+    GL.Scene = Scene;
+})(GL || (GL = {}));
+var Three;
+(function (Three) {
+    var Scene = /** @class */ (function () {
+        function Scene() {
+        }
+        return Scene;
+    }());
+    Three.Scene = Scene;
+})(Three || (Three = {}));
+var flown;
+(function (flown) {
+    var Path = /** @class */ (function () {
+        function Path(parameters) {
+            this.start_x = 0;
+            this.start_y = 0;
+        }
+        /**
+         * 设置路径开始坐标
+         *
+         * @param x 路径起点横坐标
+         * @param y 路径起点纵坐标
+         */
+        Path.prototype.SetStartPoint = function (x, y) { this.start_x = x; this.start_y = y; };
+        /**
+         * 给路径添加点
+         *
+         * @param x 要添加的点的横坐标
+         * @param y 要添加的点的纵坐标
+         */
+        Path.prototype.AddPoint = function (x, y) { this.x.push(x); this.y.push(y); };
+        /**
+         * 在起点后插入一点
+         *
+         * @param x
+         * @param y
+         */
+        Path.prototype.UnshiftPoint = function (x, y) { this.x.unshift(x); this.y.unshift(y); };
+        /**
+         * 给路径插入点
+         *
+         * @param x 要插入的点的横坐标
+         * @param y 要插入的点的纵坐标
+         * @param index 要插入的索引
+         */
+        Path.prototype.InsertPoint = function (x, y, index) {
+            var points_x;
+            var points_y;
+            for (var i = index; i < this.x.length - index; i++) {
+                points_x.push(this.x[i]);
+                points_y.push(this.y[i]);
+            }
+            this.x[index] = x;
+            this.y[index] = y;
+            for (var i = index + 1; i < this.x.length - index; i++) {
+                this.x[i] = points_x[i - (index + 1)];
+                this.y[i] = points_y[i - (index + 1)];
+            }
+            this.x.push(points_x.pop());
+            this.y.push(points_y.pop());
+        };
+        /**
+         * 获取路径起点
+         */
+        Path.prototype.GetStartPoint = function () { var point = [this.start_x, this.start_y]; return point; };
+        /**
+         * 获取路径中的点，不包含起点
+         *
+         * @param index 索引
+         */
+        Path.prototype.GetPoint = function (index) { var point = [this.x[index], this.y[index]]; return point; };
+        /**
+         * 获取路径中点的数量
+         */
+        Path.prototype.GetSize = function () { return this.x.length + 1; };
+        /**
+         * 删除路径中的一个点
+         *
+         * @param index 要删除的点索引
+         */
+        Path.prototype.DeletePoint = function (index) { this.x.splice(index, 1); this.y.splice(index, 1); };
+        return Path;
+    }());
+    flown.Path = Path;
 })(flown || (flown = {}));
 /// <reference path="scene.ts" />
 /// <reference path="path.ts" />
@@ -2138,6 +2121,23 @@ var GL;
         return Shader;
     }());
 })(GL || (GL = {}));
+var flown;
+(function (flown) {
+    var Rect = /** @class */ (function () {
+        function Rect(x, y, w, h) {
+            if (x === void 0) { x = 0; }
+            if (y === void 0) { y = 0; }
+            if (w === void 0) { w = 0; }
+            if (h === void 0) { h = 0; }
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+        }
+        return Rect;
+    }());
+    flown.Rect = Rect;
+})(flown || (flown = {}));
 /// <reference path="renderer.ts" />
 /// <reference path="rect.ts" />
 var flown;
@@ -2479,6 +2479,7 @@ var Enemy = /** @class */ (function (_super) {
     }
     return Enemy;
 }(Plane));
+/// <reference path="../event/event_manager.ts" />
 /// <reference path="../graphics/scene.ts" />
 /// <reference path="../graphics/layer.ts" />
 /// <reference path="../graphics/renderer.ts" />
@@ -2655,6 +2656,7 @@ var Game = /** @class */ (function () {
     };
     return Game;
 }());
+/// <reference path="./game/game.ts" />
 var game = new Game();
 window.onload = function () {
     game.Start();
