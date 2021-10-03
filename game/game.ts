@@ -52,6 +52,7 @@ class Game
         //this.player = new Character("player","./img/avatar/man/stand_or_walk/right1.png");
 
         this.plane = new Plane(0,0,this.width / 10,this.height / 10);
+        this.plane.SetSpeed(this.height / 30);
         this.img.push(new Image());this.img.push(new Image());this.img.push(new Image());
         this.img[0].src = "img/bullet/bullet1.png";
         this.img[1].src = "img/plane/player.png";
@@ -237,7 +238,9 @@ class Game
             let x = Math.random() * this.width;
             let y = 0;
             
-            this.enemy.push(new Enemy(x,y,this.width / 10,this.height / 10));
+            let ne = new Enemy(x,y,this.width / 10,this.height / 10);
+            ne.SetSpeed(this.height / 30);
+            this.enemy.push(ne);
         }
         
         
