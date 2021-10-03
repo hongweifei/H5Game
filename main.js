@@ -2600,7 +2600,7 @@ var Game = /** @class */ (function () {
                 if (collision) {
                     e.SetState(PlaneState.DEAD, true);
                     that.plane_bullet.splice(index, 1);
-                    this.point++;
+                    that.point++;
                 }
             });
             collision = that.plane.IsCollision(e.GetX(), e.GetX() + e.GetWidth(), e.GetY() + e.GetHeight(), e.GetY());
@@ -2631,7 +2631,7 @@ var Game = /** @class */ (function () {
             var x = Math.random() * this.width;
             var y = 0;
             var ne = new Enemy(x, y, this.width / 10, this.height / 10);
-            ne.SetSpeed(this.height / 30);
+            ne.SetSpeed(this.height / 60);
             this.enemy.push(ne);
         }
         if (this.plane.GetState(PlaneState.DEAD)) {
